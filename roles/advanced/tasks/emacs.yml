@@ -1,0 +1,21 @@
+---
+# install and configure emacs
+
+- name: install emacs
+  package:
+    name: emacs24-nox
+    state: present
+  when: emacs_gui is not defined or not emacs_gui
+  become: true
+
+- name: install emacs
+  package:
+    name: emacs24
+    state: present
+  when: emacs_gui is defined and emacs_gui
+  become: true
+
+- name: configure emacs
+  copy: 
+    src: emacs
+    dest: "~{{ user_name }}/.emacs"

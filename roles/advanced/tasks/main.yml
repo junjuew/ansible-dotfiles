@@ -1,0 +1,16 @@
+---
+- include: fish.yml
+  tags: fish
+
+# https://github.com/junegunn/fzf
+# fuzzy commandline finder
+- include: fzf.yml
+  tags: fzf
+
+# https://github.com/rupa/z
+# z navigation for bash
+- include: z.yml
+  tags: z
+
+- include: emacs.yml
+  tags: emacs

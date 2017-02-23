@@ -1,0 +1,8 @@
+---
+dependencies:
+  - 
+    role: mbasanta.pip
+    become: true
+  - 
+    role: angstwad.ubuntu_python_apt
+    become: true

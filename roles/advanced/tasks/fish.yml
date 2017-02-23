@@ -1,0 +1,54 @@
+---
+# fish installation
+# Note this doesn't set th default shell to be fish
+
+- name: add fish repository
+  apt_repository:
+        repo: ppa:fish-shell/release-2
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install fish
+  package: name=fish state=present
+  become: true
+
+- name: create fish config dir
+  file:
+    path: "~{{ user_name }}/.config/fish"
+    state: directory
+
+- name: Install custom fish configuration
+  copy: 
+    src: config.fish
+    dest: "~{{ user_name }}/.config/fish/config.fish"
+
+- name: Install custom fish aliases
+  copy: 
+    src: aliases.fish
+    dest: "~{{ user_name }}/.config/fish/aliases.fish"
+
+- name: Install custom fish functions
+  copy: 
+    src: functions
+    dest: "~{{ user_name }}/.config/fish"
+
+- name: Install fish completons (directories)
+  file:
+    state: directory
+    dest: "~{{ user_name }}/.config/fish/completions"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  when: fish_completions | length > 0
+
+- name: Install fish completions (files)
+  get_url:
+    url: "https://github.com/fish-shell/fish-shell/raw/master/share/completions/{{ item }}.fish"
+    dest: "~{{ user_name }}/.config/fish/completions/{{ item }}.fish"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  with_items:
+    - "{{ fish_completions }}"
+  when: fish_completions | length > 0
+
+# - name: Install oh my fish
+#   shell: curl -L http://get.oh-my.fish | fish

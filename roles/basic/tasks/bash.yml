@@ -1,0 +1,9 @@
+- name: configure bashrc
+  copy: 
+    src: bashrc
+    dest: "~{{ user_name }}/.bashrc"
+
+- name: configure bash_aliases
+  copy: 
+    src: bash_aliases
+    dest: "~{{ user_name }}/.bash_aliases"

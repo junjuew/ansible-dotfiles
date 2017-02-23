@@ -1,0 +1,17 @@
+---
+# This playbook deploys the whole application stack in this site.
+
+- name: apply common configuration to all nodes
+  hosts: all
+  remote_user: "{{ user_name }}"
+
+  roles:
+    - common
+
+- name: apply common configuration to all nodes
+  hosts: desktops
+  remote_user: "{{ user_name }}"
+
+  roles:
+    - basic
+    - advanced

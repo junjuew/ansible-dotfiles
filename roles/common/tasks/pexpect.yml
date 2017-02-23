@@ -1,0 +1,13 @@
+---
+
+- name: uninstall old version of pexpect if exists
+  pip: 
+    name: pexpect
+    state: absent
+  become: true
+
+- name: install pexpect
+  pip: 
+    name: pexpect
+    state: latest
+  become: true

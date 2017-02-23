@@ -1,0 +1,13 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- include: ntpd.yml
+  tags: ntpd
+
+# ansible expect module needs pexpect on the remote
+- include: pexpect.yml
+  tags: pexpect
+
+# upgrade git to latest version
+#- include: git.yml
+#  tags: git

@@ -1,0 +1,12 @@
+---
+
+- name: add git-core ppa
+  apt_repository:
+        repo: ppa:git-core/ppa
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install git
+  apt: name=git state=latest update_cache=yes
+  become: true
+  when: ansible_distribution == 'Ubuntu'

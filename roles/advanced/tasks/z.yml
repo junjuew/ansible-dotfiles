@@ -1,0 +1,50 @@
+---
+# install https://github.com/rupa/z
+# modern commandline cd
+
+- name: make sure git is installed
+  package: name=git state=present
+  become: true
+
+- name: check if user bin dir exists
+  stat:
+    path: "~{{ user_name }}/bin"
+  register: home_bin_dir
+
+- name: create user bin dir if not exists
+  file:
+    path: "~{{ user_name }}/bin"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  when: not home_bin_dir.stat.isdir is defined or not home_bin_dir.stat.isdir
+
+- name: download z.sh
+  get_url:
+    url: https://raw.githubusercontent.com/rupa/z/v1.9/z.sh
+    dest: "~{{ user_name }}/bin/z.sh"
+
+- name: source z.sh in bash startup scripts
+  lineinfile:
+    dest: "~{{ user_name }}/.bashrc"
+    line: "[ -f ~/bin/z.sh ] && source ~/bin/z.sh"
+
+- name: check if fish exists
+  stat:
+    path: "/usr/bin/fish"
+  register: fish_f
+
+# z.fish is from https://github.com/sjl/z-fish
+- name: Install z.fish for fish
+  copy: 
+    src: z.fish
+    dest: "~{{ user_name }}/.config/fish/z.fish"
+  when: fish_f.stat.exists
+
+- name: source z.sh in fish startup scripts
+  lineinfile:
+    dest: "~{{ user_name }}/.config/fish/config.fish"
+    line: ". ~/.config/fish/z.fish"
+
+# - name: install omf z plugin
+#   command: omf install z

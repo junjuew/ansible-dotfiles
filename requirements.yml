@@ -1,0 +1,3 @@
+# Install requirement role from the Ansible Galaxy
+- src: mbasanta.pip
+- src: angstwad.ubuntu_python_apt

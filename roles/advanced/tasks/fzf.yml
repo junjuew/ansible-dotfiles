@@ -1,0 +1,21 @@
+---
+# install https://github.com/junegunn/fzf
+# modern commandline re-search 
+
+- name: make sure git is installed
+  package: name=git state=present
+  become: true
+
+- name: download fzf
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: "~{{ user_name }}/.fzf"
+    depth: 1 
+
+- name: install fzf
+  expect:
+    command: /home/{{ user_name }}/.fzf/install
+    responses:
+        enable fuzzy auto-completion: "y"
+        enable key bindings: "y"
+        update your shell configuration files: "y"
