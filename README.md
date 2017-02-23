@@ -23,7 +23,7 @@ Role "basic"
 -----------------------
 1. configure .bashrc, .bash_aliases
 
-Advanced
+Role "Advanced"
 -----------------------
 Install and configure
 
