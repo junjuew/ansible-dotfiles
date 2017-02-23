@@ -26,6 +26,7 @@ Role "basic"
 Advanced
 -----------------------
 Install and configure
+
 1. fish
 2. [fzf](https://github.com/junegunn/fzf)
 3. [z for bash](https://github.com/rupa/z), [z for fish](https://github.com/sjl/z-fish)
