@@ -45,6 +45,7 @@
   lineinfile:
     dest: "~{{ user_name }}/.config/fish/config.fish"
     line: ". ~/.config/fish/z.fish"
+  when: fish_f.stat.exists
 
 # - name: install omf z plugin
 #   command: omf install z

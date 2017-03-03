@@ -63,6 +63,9 @@
 ;; dired copy to another buffer
 (setq dired-dwim-target t)
 
+;; set default fill-column
+(setq-default fill-column 120)
+
 ;; verilog-mode
 (add-hook 'verilog-mode-hook '(lambda ()
     (add-hook 'local-write-file-hooks (lambda()
