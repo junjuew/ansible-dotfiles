@@ -112,8 +112,8 @@ fi
 stty -ixon
 
 # everything else move to custom bashrc
-if [ -f ~/.bash_custom ]; then
-    . ~/.bash_custom
+if [ -f ~/.bashrc_custom ]; then
+    . ~/.bashrc_custom
 fi
 
 # if advanced feature is there, enable them
