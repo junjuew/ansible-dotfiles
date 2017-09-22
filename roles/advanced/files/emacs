@@ -1,8 +1,5 @@
-(defun prepend-path ( my-path ) (setq load-path (cons (expand-file-name my-path) load-path))) (defun append-path ( my-path ) (setq load-path (append load-path (list (expand-file-name my-path))))) ;; Look first in the directory ~/elisp for elisp files (prepend-path "~/elisp") ;; Load verilog mode only when needed (autoload 'verilog-mode "verilog-mode" "Verilog mode" t ) ;; Any files that end in .v, .dv or .sv should be in verilog mode (add-to-list 'auto-mode-alist '("\\.[ds]?v\\'" . verilog-mode)) ;; Any files in verilog mode should have their keywords colorized 
-
 ;; Tell emacs where is your personal elisp lib dir
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/")
 
 ;; melpa package manager
 (require 'package) ;; You might already have this line

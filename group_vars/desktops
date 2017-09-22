@@ -4,4 +4,4 @@
 
 emacs_gui: True
 fish: True
-fish_completions: ["apt", "apt-get", "dmesg", "git", "grep", "ip"]
+fish_completions: ["apt", "apt-get", "dmesg", "grep", "ip"]

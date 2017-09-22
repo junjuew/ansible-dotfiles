@@ -1,0 +1,10 @@
+---
+# install gnome-tweak-tool
+# gnome-tweak-tool can be used to swap ctl and caps-lock
+# change number of workspaces and many other customization
+# to desktop UI
+
+- name: install gnome-tweak-tool
+  package:
+    name: gnome-tweak-tool
+    state: present

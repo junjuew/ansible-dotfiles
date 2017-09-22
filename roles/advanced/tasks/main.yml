@@ -15,3 +15,6 @@
 
 - include: emacs.yml
   tags: emacs
+
+- include: gnome-tweak-tool.yml
+  tags: gnome-tweak-tool

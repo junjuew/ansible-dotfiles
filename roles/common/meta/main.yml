@@ -1,7 +1,7 @@
 ---
 dependencies:
   - 
-    role: mbasanta.pip
+    role: geerlingguy.pip
     become: true
   - 
     role: angstwad.ubuntu_python_apt

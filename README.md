@@ -26,7 +26,8 @@ Role "Advanced"
 -----------------------
 Install and configure
 
-1. fish
+1. fish + fish completions
 2. [fzf](https://github.com/junegunn/fzf)
 3. [z for bash](https://github.com/rupa/z), [z for fish](https://github.com/sjl/z-fish)
 4. emacs
+4. gnome-tweak-tool
