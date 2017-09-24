@@ -1,50 +1,65 @@
-;; Tell emacs where is your personal elisp lib dir
+;; add personal elisp lib dir to path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;; melpa package manager
-(require 'package) ;; You might already have this line
+;; enable melpa and marmalade package manager
+(require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("marmalade" . "https://marmalade-repo.org/packages/"))
 (when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize) ;; You might already have this line
+(package-initialize)
 
+;; helper functions to install packages
 (defun require-package (p)
   (unless (package-installed-p p)
     (package-install p))
   (require p))
 
-;; custom emacs package management
-; initialize use-package
+;; use-package comes from package.el and is only
+;; available for melpa and elpa
 (if (not (package-installed-p 'use-package))
     (progn
       (package-refresh-contents)
       (package-install 'use-package)))
 (require 'use-package)
 
-; install needed package from melpha using use-package.el
+;; install and enable packages
+;; following packages are from melpa/elpa
+(use-package better-defaults
+  :ensure t)
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode) ;; enable company for all buffers
+  (global-set-key (kbd "C-M-/") 'company-complete) ;; use C-M-/ to force company-complete
+)
+(use-package elpy
+  :ensure t
+  :config
+  (elpy-enable)
+  (setq elpy-rpc-backend "jedi")
+)
 (use-package sr-speedbar
   :ensure t)
-; (use-package color-theme-sanityinc-solarized
-;  :ensure t)
 (use-package dark-mint-theme
   :ensure t)
-(use-package jedi
-  :ensure t)
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)                 ; optional
 
-(use-package jedi-direx
-  :ensure t)
-(eval-after-load "python"
-  '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
-(add-hook 'jedi-mode-hook 'jedi-direx:setup)
-             
+;; use elpy to replace jedi
+;; (use-package jedi
+;;   :ensure t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)                 ; optional
+;; (use-package jedi-direx
+;;   :ensure t)
+;; (eval-after-load "python"
+;;   '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
+;; (add-hook 'jedi-mode-hook 'jedi-direx:setup)
+
 ; (load-theme 'sanityinc-solarized-dark t)
 ; (load-theme 'green-phosphor t)
 (load-theme 'dark-mint t)
-
 
 ;; to enable the line number on the left
 (global-linum-mode t)
@@ -61,7 +76,7 @@
 (setq dired-dwim-target t)
 
 ;; set default fill-column
-(setq-default fill-column 120)
+(setq-default fill-column 80)
 
 ;; verilog-mode
 (add-hook 'verilog-mode-hook '(lambda ()
@@ -88,42 +103,20 @@
   ;; If there is more than one, they won't work right.
  )
 
-(defun my-indent-region (N)
-  (interactive "p")
-  (if mark-active
-      (progn (indent-rigidly (min (mark) (point)) (max (mark) (point)) (* N 4))
-             (setq deactivate-mark nil))
-    (self-insert-command N)))
-
-(defun my-unindent-region (N)
-  (interactive "p")
-  (if mark-active
-      (progn (indent-rigidly (min (mark) (point)) (max (mark) (point)) (* N -4))
-             (setq deactivate-mark nil))
-    (self-insert-command N)))
-
-;;something wrong with the syntax
-;;(global-set-key (kbd "C-c >") 'my-indent-region)
-;;(global-set-key (kdb "C-c <") 'my-unindent-region)
-
-(defun comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if there's no active region."
-    (interactive)
-    (let (beg end)
-        (if (region-active-p)
-            (setq beg (region-beginning) end (region-end))
-            (setq beg (line-beginning-position) end (line-end-position)))
-        (comment-or-uncomment-region beg end)
-        (next-line)))
+;; (defun comment-or-uncomment-region-or-line ()
+;;     "Comments or uncomments the region or the current line if there's no active region."
+;;     (interactive)
+;;     (let (beg end)
+;;         (if (region-active-p)
+;;             (setq beg (region-beginning) end (region-end))
+;;             (setq beg (line-beginning-position) end (line-end-position)))
+;;         (comment-or-uncomment-region beg end)
+;;         (next-line)))
 
 (global-set-key (kbd "<f9>") 'calendar)
-(global-set-key (kbd "C-c /") 'comment-region)
-(global-set-key (kbd "C-c '") 'uncomment-region)
-(global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
-
-;;change default color
-;;(add-to-list 'default-frame-alist '(foreground-color . "orange"))
-;;(add-to-list 'default-frame-alist '(background-color . "black"))
+;; (global-set-key (kbd "C-c /") 'comment-region)
+;; (global-set-key (kbd "C-c '") 'uncomment-region)
+;; (global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
 
 ;enlarge default font
 (set-face-attribute 'default nil :height 130)
@@ -141,8 +134,8 @@
 ; enable global cursor line highlighting mode
 (global-hl-line-mode t)
 
-;python mode auto indentation
-(add-hook 'python-mode-hook '(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
+;; python mode auto indentation
+;; (add-hook 'python-mode-hook '(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
 
 ;; set default tramp mode to be ssh to make it faster
 (setq tramp-default-method "ssh")
@@ -152,15 +145,6 @@
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
 
-
-;enable ispell
-;; (setq ispell-program-name "/usr/bin/aspell")
-
-; enable flyspell
-;;(dolist (hook '(text-mode-hook))
-;;  (add-hook hook (lambda () (flyspell-mode 1))))
-;;(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-;;  (add-hook hook (lambda () (flyspell-mode -1))))
 
 ;; org-mode
 (global-set-key "\C-cl" 'org-store-link)
@@ -174,33 +158,31 @@
 ;; latex mode
 ;; (require-package 'auto-complete-auctex)
 
-;; autocomplete for emacs
-(require-package 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-(setq-default ac-sources
-          '(
-        ac-source-filename
-        ac-source-abbrev 
-        ac-source-dictionary
-        ac-source-words-in-same-mode-buffers))
-
-(require-package 'ac-math) 
-(add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of `latex-mode`
+;; autocomplete for emacs, opt for compnay instead
+;; (require-package 'auto-complete)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (setq-default ac-sources
+;;           '(
+;;         ac-source-filename
+;;         ac-source-abbrev 
+;;         ac-source-dictionary
+;;         ac-source-words-in-same-mode-buffers))
+;; (require-package 'ac-math) 
+;; (add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of `latex-mode`
+;; (dolist (m '(c-mode c++-mode java-mode))
+;;   (add-to-list 'ac-modes m))
+;; (global-auto-complete-mode t)
+;; (setq ac-math-unicode-in-math-p t)
+;; (defun ac-LaTeX-mode-setup () ; add ac-sources to default ac-sources
+;;   (setq ac-sources
+;;         (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+;;                 ac-sources)))
+;; (add-hook 'LaTeX-mode-hook 'ac-LaTeX-mode-setup)
 
 ;; predictive abbreviation expansion
 (require-package 'pabbrev)
 (require 'pabbrev)
-
-(defun ac-LaTeX-mode-setup () ; add ac-sources to default ac-sources
-  (setq ac-sources
-        (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-                ac-sources)))
-(add-hook 'LaTeX-mode-hook 'ac-LaTeX-mode-setup)
-(dolist (m '(c-mode c++-mode java-mode))
-  (add-to-list 'ac-modes m))
-(global-auto-complete-mode t)
-(setq ac-math-unicode-in-math-p t)
 
 ; only supported for emacs 24.4 above
 ;(global-set-key (kbd "C-*") 'isearch-forward-symbol-at-point)
