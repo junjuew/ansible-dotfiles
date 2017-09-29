@@ -46,27 +46,21 @@
 (use-package dark-mint-theme
   :ensure t)
 
-;; use elpy to replace jedi
-;; (use-package jedi
-;;   :ensure t)
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)                 ; optional
-;; (use-package jedi-direx
-;;   :ensure t)
-;; (eval-after-load "python"
-;;   '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
-;; (add-hook 'jedi-mode-hook 'jedi-direx:setup)
-
-; (load-theme 'sanityinc-solarized-dark t)
-; (load-theme 'green-phosphor t)
+;; UI customization
 (load-theme 'dark-mint t)
-
+;enlarge default font
+(set-face-attribute 'default nil :height 130)
 ;; to enable the line number on the left
 (global-linum-mode t)
 ;; show column number as well
 (setq column-number-mode t)
+; enable global cursor line highlighting mode
+(global-hl-line-mode t)
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
 
-;; to setup tabs
+;; setup tabs
 (setq c-basic-indent 4)
 (setq tab-width 4)
 (setq-default indent-tabs-mode nil)
@@ -83,44 +77,31 @@
     (add-hook 'local-write-file-hooks (lambda()
        (untabify (point-min) (point-max))))))
 
-;; recentf stuff
+;; set up recentf
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-    
+
+;; Customize    
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (pabbrev dark-mint-theme sr-speedbar elpy company better-defaults use-package)))
  '(tab-always-indent t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
 
-;; (defun comment-or-uncomment-region-or-line ()
-;;     "Comments or uncomments the region or the current line if there's no active region."
-;;     (interactive)
-;;     (let (beg end)
-;;         (if (region-active-p)
-;;             (setq beg (region-beginning) end (region-end))
-;;             (setq beg (line-beginning-position) end (line-end-position)))
-;;         (comment-or-uncomment-region beg end)
-;;         (next-line)))
-
-(global-set-key (kbd "<f9>") 'calendar)
-;; (global-set-key (kbd "C-c /") 'comment-region)
-;; (global-set-key (kbd "C-c '") 'uncomment-region)
-;; (global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
-
-;enlarge default font
-(set-face-attribute 'default nil :height 130)
-
+;; setup back-up
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t    ; Don't delink hardlinks
   version-control t      ; Use version numbers on backups
@@ -129,22 +110,14 @@
   kept-old-versions 5    ; and how many of the old
  )
 
+;; setup clipboard
 (setq x-select-enable-clipboard t)
-(cua-selection-mode t)
-; enable global cursor line highlighting mode
-(global-hl-line-mode t)
 
-;; python mode auto indentation
-;; (add-hook 'python-mode-hook '(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
+;; cua rectangle support
+(cua-selection-mode t)
 
 ;; set default tramp mode to be ssh to make it faster
 (setq tramp-default-method "ssh")
-
-;; cleaner UI
-(menu-bar-mode -1)
-(toggle-scroll-bar -1)
-(tool-bar-mode -1)
-
 
 ;; org-mode
 (global-set-key "\C-cl" 'org-store-link)
@@ -154,31 +127,6 @@
 
 ;quickly move between windows S-up, S-down, S-left, S-right (S for Shift)
 (windmove-default-keybindings)
-
-;; latex mode
-;; (require-package 'auto-complete-auctex)
-
-;; autocomplete for emacs, opt for compnay instead
-;; (require-package 'auto-complete)
-;; (require 'auto-complete-config)
-;; (ac-config-default)
-;; (setq-default ac-sources
-;;           '(
-;;         ac-source-filename
-;;         ac-source-abbrev 
-;;         ac-source-dictionary
-;;         ac-source-words-in-same-mode-buffers))
-;; (require-package 'ac-math) 
-;; (add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of `latex-mode`
-;; (dolist (m '(c-mode c++-mode java-mode))
-;;   (add-to-list 'ac-modes m))
-;; (global-auto-complete-mode t)
-;; (setq ac-math-unicode-in-math-p t)
-;; (defun ac-LaTeX-mode-setup () ; add ac-sources to default ac-sources
-;;   (setq ac-sources
-;;         (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-;;                 ac-sources)))
-;; (add-hook 'LaTeX-mode-hook 'ac-LaTeX-mode-setup)
 
 ;; predictive abbreviation expansion
 (require-package 'pabbrev)

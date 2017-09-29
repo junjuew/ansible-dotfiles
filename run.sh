@@ -1,5 +1,8 @@
 #! /bin/bash -ex
 
+echo "install dependencies from ansible-galaxy"
+ansible-galaxy install -r requirements.yml
+
 echo "running the scripts for hosts:"
 cat hosts
 

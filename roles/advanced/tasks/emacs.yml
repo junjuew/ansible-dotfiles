@@ -1,21 +1,44 @@
 ---
 # install and configure emacs
-
-- name: install emacs
+- name: install emacs24-nox
   package:
     name: emacs24-nox
     state: present
   when: emacs_gui is not defined or not emacs_gui
   become: true
 
-- name: install emacs
-  package:
-    name: emacs24
+- name: copy emacs requiements
+  copy: 
+    src: emacs.requirements.txt
+    dest: /tmp/emacs.requirements.txt
+    
+- name: install emacs python package requirements
+  pip:
+    requirements: /tmp/emacs.requirements.txt
+    state: latest
+  become: true
+  
+- name: add emacs25 ppa
+  apt_repository:
+    repo: 'ppa:kelleyk/emacs'
     state: present
   when: emacs_gui is defined and emacs_gui
   become: true
 
+- name: install emacs25
+  package:
+    name: emacs25
+    state: present
+  when: emacs_gui is defined and emacs_gui
+  become: true
+
+- name: create emacs.d dir
+  file:
+    path: "~{{ user_name }}/.emacs.d"
+    state: directory
+    mode: 0744
+    
 - name: configure emacs
   copy: 
-    src: emacs
-    dest: "~{{ user_name }}/.emacs"
+    src: emacs.init.el
+    dest: "~{{ user_name }}/.emacs.d/init.el"

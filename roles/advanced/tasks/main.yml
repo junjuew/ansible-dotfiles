@@ -1,20 +1,23 @@
 ---
-- include: fish.yml
+- include_tasks: fish.yml
   tags: fish
   when: fish
 
 # https://github.com/junegunn/fzf
 # fuzzy commandline finder
-- include: fzf.yml
+- include_tasks: fzf.yml
   tags: fzf
 
 # https://github.com/rupa/z
 # z navigation for bash
-- include: z.yml
+- include_tasks: z.yml
   tags: z
 
-- include: emacs.yml
+- include_tasks: emacs.yml
   tags: emacs
 
-- include: gnome-tweak-tool.yml
+- include_tasks: gnome-tweak-tool.yml
   tags: gnome-tweak-tool
+
+- include_tasks: direnv.yml
+  tags: direnv
