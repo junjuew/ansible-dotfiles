@@ -41,10 +41,56 @@
   (elpy-enable)
   (setq elpy-rpc-backend "jedi")
 )
-(use-package sr-speedbar
+(use-package ivy
   :ensure t)
-(use-package dark-mint-theme
+(use-package hydra
   :ensure t)
+(use-package swiper
+  :ensure t)
+(use-package counsel
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+;;  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+  )
+;; (use-package ido-vertical-mode
+;;   :ensure t)
+;; (use-package flx-ido
+;;   :ensure t)
+;; (use-package ido-completing-read+
+;;   :ensure t)
+;; (use-package sr-speedbar
+;;   :ensure t)
+;; (use-package dark-mint-theme
+;;   :ensure t)
+
+;; ;; ido mode setup
+;; (ido-mode 1)
+;; (ido-vertical-mode 1)
+;; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+;; (ido-everywhere 1)
+;; (flx-ido-mode 1)
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-use-faces nil)
+;; (ido-ubiquitous-mode 1)
 
 ;; UI customization
 (load-theme 'dark-mint t)
@@ -70,7 +116,10 @@
 (setq dired-dwim-target t)
 
 ;; set default fill-column
-(setq-default fill-column 80)
+(setq-default fill-column 79)
+
+;; python customization
+(setq python-indent 4)
 
 ;; verilog-mode
 (add-hook 'verilog-mode-hook '(lambda ()
@@ -137,3 +186,5 @@
 
 ; alias all yes to no to y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(put 'dired-find-alternate-file 'disabled nil)
