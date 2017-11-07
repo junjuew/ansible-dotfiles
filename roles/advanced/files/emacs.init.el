@@ -70,27 +70,23 @@
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-  )
-;; (use-package ido-vertical-mode
-;;   :ensure t)
-;; (use-package flx-ido
-;;   :ensure t)
-;; (use-package ido-completing-read+
-;;   :ensure t)
-;; (use-package sr-speedbar
-;;   :ensure t)
-;; (use-package dark-mint-theme
-;;   :ensure t)
-
-;; ;; ido mode setup
-;; (ido-mode 1)
-;; (ido-vertical-mode 1)
-;; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-;; (ido-everywhere 1)
-;; (flx-ido-mode 1)
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-use-faces nil)
-;; (ido-ubiquitous-mode 1)
+)
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1)
+)
+(use-package yasnippet-snippets
+  :ensure t)
+;; start speedbar if we're using a window system
+(use-package sr-speedbar
+  :ensure t
+  :config
+  (when window-system
+    (sr-speedbar-open))
+)
+(use-package dark-mint-theme
+  :ensure t)
 
 ;; UI customization
 (load-theme 'dark-mint t)
@@ -141,7 +137,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (pabbrev dark-mint-theme sr-speedbar elpy company better-defaults use-package)))
+    (yasnippet-bundle yasnippet-snippets pabbrev dark-mint-theme sr-speedbar elpy company better-defaults use-package)))
  '(tab-always-indent t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
