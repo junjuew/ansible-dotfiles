@@ -85,6 +85,11 @@
   (when window-system
     (sr-speedbar-open))
 )
+(use-package magit
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
+)
 (use-package dark-mint-theme
   :ensure t)
 
