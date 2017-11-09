@@ -1,6 +1,11 @@
+;; load personal elisp
 ;; add personal elisp lib dir to path
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+(require 'py-pyment)
+(setq py-pyment-options '("--output" "google"))
+(global-set-key (kbd "C-c C-g") 'py-pyment-region)
 
+;; load packages from package managers
 ;; enable melpa and marmalade package manager
 (require 'package)
 (add-to-list 'package-archives
@@ -78,6 +83,11 @@
 )
 (use-package yasnippet-snippets
   :ensure t)
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode 1)
+)
 ;; start speedbar if we're using a window system
 (use-package sr-speedbar
   :ensure t
@@ -170,10 +180,10 @@
 (setq tramp-default-method "ssh")
 
 ;; org-mode
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-col" 'org-store-link)
+(global-set-key "\C-coa" 'org-agenda)
+(global-set-key "\C-coc" 'org-capture)
+(global-set-key "\C-cob" 'org-iswitchb)
 
 ;quickly move between windows S-up, S-down, S-left, S-right (S for Shift)
 (windmove-default-keybindings)
@@ -182,8 +192,9 @@
 (require-package 'pabbrev)
 (require 'pabbrev)
 
-; only supported for emacs 24.4 above
-;(global-set-key (kbd "C-*") 'isearch-forward-symbol-at-point)
+;; only supported for emacs 24.4 above
+(when (>= emacs-major-version 25)
+  (global-set-key (kbd "C-*") 'isearch-forward-symbol-at-point))
 
 ; alias all yes to no to y or n
 (defalias 'yes-or-no-p 'y-or-n-p)

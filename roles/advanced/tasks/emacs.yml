@@ -37,8 +37,24 @@
     path: "~{{ user_name }}/.emacs.d"
     state: directory
     mode: 0744
+
+- name: create emacs.d elisp for personal packages
+  file:
+    path: "~{{ user_name }}/.emacs.d/elisp"
+    state: directory
+    mode: 0744
     
-- name: configure emacs
+- name: configure emacs init
   copy: 
-    src: emacs.init.el
+    src: init.el
     dest: "~{{ user_name }}/.emacs.d/init.el"
+
+- name: configure emacs buftra elisp (dependency for pyment)
+  copy: 
+    src: buftra.el
+    dest: "~{{ user_name }}/.emacs.d/elisp/buftra.el"
+
+- name: configure emacs pyment elisp
+  copy: 
+    src: py-pyment.el
+    dest: "~{{ user_name }}/.emacs.d/elisp/py-pyment.el"

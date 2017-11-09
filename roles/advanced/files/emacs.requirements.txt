@@ -4,3 +4,4 @@ importmagic
 autopep8
 yapf
 rope
+-e git+https://github.com/dadadel/pyment.git#egg=pyment
