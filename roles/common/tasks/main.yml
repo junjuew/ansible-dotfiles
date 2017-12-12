@@ -1,6 +1,4 @@
 ---
-# This playbook contains common plays that will be run on all nodes.
-
 - include_tasks: ntpd.yml
   tags: ntpd
 
@@ -9,5 +7,5 @@
   tags: pexpect
 
 # upgrade git to latest version
-#- include_tasks: git.yml
-#  tags: git
+- include_tasks: git.yml
+  tags: git

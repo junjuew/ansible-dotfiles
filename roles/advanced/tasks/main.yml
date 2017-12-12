@@ -1,7 +1,6 @@
 ---
 - include_tasks: fish.yml
   tags: fish
-  when: fish
 
 # https://github.com/junegunn/fzf
 # fuzzy commandline finder
@@ -12,15 +11,6 @@
 # z navigation for bash
 - include_tasks: z.yml
   tags: z
-
-- include_tasks: emacs.yml
-  tags: emacs
-
-- include_tasks: gnome-tweak-tool.yml
-  tags: gnome-tweak-tool
-
-- include_tasks: guake.yml
-  tags: guake
 
 - include_tasks: direnv.yml
   tags: direnv

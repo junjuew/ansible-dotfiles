@@ -1,11 +1,4 @@
 ---
-# install and configure emacs
-- name: install emacs24-nox
-  package:
-    name: emacs24-nox
-    state: present
-  when: emacs_gui is not defined or not emacs_gui
-  become: true
 
 - name: copy emacs requiements
   copy: 
@@ -16,6 +9,7 @@
   pip:
     requirements: /tmp/emacs.requirements.txt
     state: latest
+    extra_args: --user
   become: true
   
 - name: add emacs25 ppa
@@ -49,12 +43,12 @@
     src: init.el
     dest: "~{{ user_name }}/.emacs.d/init.el"
 
-- name: configure emacs buftra elisp (dependency for pyment)
+- name: add buftra.el for python doc-string autogen
   copy: 
     src: buftra.el
     dest: "~{{ user_name }}/.emacs.d/elisp/buftra.el"
 
-- name: configure emacs pyment elisp
+- name: add py-pyment for python doc-string autogen
   copy: 
     src: py-pyment.el
     dest: "~{{ user_name }}/.emacs.d/elisp/py-pyment.el"

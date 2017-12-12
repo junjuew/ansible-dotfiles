@@ -1,0 +1,7 @@
+---
+
+- name: install emacs-nox
+  package:
+    name: emacs-nox
+    state: present
+  become: true

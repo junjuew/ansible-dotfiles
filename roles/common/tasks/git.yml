@@ -7,6 +7,6 @@
   when: ansible_distribution == 'Ubuntu'
 
 - name: install git
-  apt: name=git state=latest update_cache=yes
+  package: name=git state=latest
   become: true
   when: ansible_distribution == 'Ubuntu'

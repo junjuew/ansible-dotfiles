@@ -8,10 +8,19 @@
   roles:
     - common
 
-- name: apply common configuration to all nodes
+- name: apply basic and advanced to servers
+  hosts: servers
+  remote_user: "{{ user_name }}"
+
+  roles:
+    - basic
+    - advanced
+
+- name: apply basic, advanced, and gui to desktops
   hosts: desktops
   remote_user: "{{ user_name }}"
 
   roles:
     - basic
     - advanced
+    - gui

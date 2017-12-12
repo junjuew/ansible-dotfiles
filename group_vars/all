@@ -1,9 +1,5 @@
 ---
-# Variables listed here are applicable to all host groups
 
 user_name: "{{ lookup('env','ANSIBLE_ENV_CONFIG_USER') }}"
 # root password
 ansible_become_pass: "{{ lookup('env','ANSIBLE_ENV_CONFIG_PS') }}"
-bashrc: yes
-emacs: no
-fish: no
