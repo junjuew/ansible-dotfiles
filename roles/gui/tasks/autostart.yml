@@ -1,0 +1,6 @@
+---
+
+- name: copy autostart entries
+  copy: 
+    src: autostart
+    dest: "~{{ user_name }}/.config/autostart"

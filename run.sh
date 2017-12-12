@@ -1,4 +1,4 @@
-#! /bin/bash -ex
+#! /bin/bash -x
 
 echo "install dependencies from ansible-galaxy"
 ansible-galaxy install -r requirements.yml
