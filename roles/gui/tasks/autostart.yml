@@ -3,4 +3,19 @@
 - name: copy autostart entries
   copy: 
     src: autostart
-    dest: "~{{ user_name }}/.config/autostart"
+    dest: "~{{ user_name }}/.config"
+
+- name: set xmodmap autostart entry
+  copy:
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Exec=/usr/bin/xmodmap "/home/{{ user_name }}/.xmodmaprc"
+      Hidden=false
+      NoDisplay=true
+      X-GNOME-Autostart-enabled=true
+      Name[en_US]=Xmodmap
+      Name=Xmodmap
+      Comment[en_US]=
+      Comment=
+    dest: "~{{ user_name }}/.config/autostart/xmodmap.desktop"

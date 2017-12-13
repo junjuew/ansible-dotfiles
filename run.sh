@@ -1,6 +1,6 @@
-#! /bin/bash -x
+#! /bin/bash -e
 
-echo "install dependencies from ansible-galaxy"
+echo "install dependencies from ansible-galaxy..."
 ansible-galaxy install -r requirements.yml
 
 echo "running the scripts for hosts:"
@@ -12,4 +12,6 @@ read -s -p "Password:" passwd
 
 export ANSIBLE_ENV_CONFIG_USER=${username}
 export ANSIBLE_ENV_CONFIG_PS=${passwd}
+
+echo "Running ansible playbook..."
 ansible-playbook -i hosts site.yml
