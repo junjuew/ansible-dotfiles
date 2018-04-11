@@ -1,2 +1,4 @@
 [desktops]
 localhost ansible_connection=local
+# or use -u arg when invoked to specify the ansible_user
+remote ansible_connection=ssh ansible_user=user ansible_port=22
