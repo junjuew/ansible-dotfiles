@@ -9,22 +9,14 @@ To run:
 
         ./run.sh
 
+What's in this Repo
+-----------------------
+* hosts: inventory file specifying hostnames or IPs and connection configurations of remote machines.
+* group_vars: default variables for groups of machines.
+* requirements.yml: role requirements from Ansible Galaxy.
+* roles: tasks that would be performed for different hosts, organized by roles.
+* site.yml: playbook to execute which specifies roles for host groups. 
+
 Role "common"
 -----------------------
-1. setup ntp
-
-
-Role "basic"
------------------------
-1. configure .bashrc, .bash_aliases
-
-Role "Advanced"
------------------------
-Install and configure
-
-1. fish + fish completions
-2. [fzf](https://github.com/junegunn/fzf)
-3. [z for bash](https://github.com/rupa/z), [z for fish](https://github.com/sjl/z-fish)
-4. emacs25 or emacs24-nox
-4. gnome-tweak-tool
-5. [direnv](https://direnv.net/)
+ntp, git, pexpect
