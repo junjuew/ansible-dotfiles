@@ -38,7 +38,7 @@
     dest: "~{{ user_name }}/.config/fish/completions"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-  when: fish_completions | length > 0
+  when: fish_completions is defined and fish_completions | length > 0
 
 - name: Install fish completions (files)
   get_url:
@@ -48,7 +48,7 @@
     group: "{{ user_name }}"
   with_items:
     - "{{ fish_completions }}"
-  when: fish_completions | length > 0
+  when: fish_completions is defined and fish_completions | length > 0
 
 # - name: Install oh my fish
 #   shell: curl -L http://get.oh-my.fish | fish

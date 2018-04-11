@@ -1,12 +1,18 @@
 ---
 # This playbook deploys the whole application stack in this site.
+- hosts: all
+  gather_facts: False 
+  tasks:
+  - name: install python 2 if not installed
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
+    become: true
 
 - name: apply common configuration to all nodes
   hosts: all
   roles:
     - common
 
-- name: apply basic and advanced to servers
+- name: deploying servers
   hosts: servers
   roles:
     - bash
@@ -20,3 +26,10 @@
     - editor
     - fish
     - gui
+
+- name: install gpu drivers
+  hosts: gpus
+  vars:
+    gpu: true
+  roles:
+    - { role: CSCfi.cuda, become: true }
