@@ -6,7 +6,7 @@ ansible-galaxy install -r requirements.yml
 echo "running the scripts for hosts:"
 cat hosts
 
-echo "Please enter the username with sudo privelege"
+echo "Please enter the username with sudo privelege from the deploy machines"
 read -p "Username:" username
 read -s -p "Password:" passwd
 
