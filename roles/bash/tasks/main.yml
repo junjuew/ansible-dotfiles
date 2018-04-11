@@ -1,6 +1,6 @@
 ---
-- include_tasks: fish.yml
-  tags: fish
+- include_tasks: bash.yml
+  tags: bash
 
 # https://github.com/junegunn/fzf
 # fuzzy commandline finder

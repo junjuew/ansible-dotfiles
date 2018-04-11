@@ -9,12 +9,14 @@
 - name: apply basic and advanced to servers
   hosts: servers
   roles:
-    - basic
-    - advanced
+    - bash
+    - editor
+    - fish
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktops
   roles:
-    - basic
-    - advanced
+    - bash
+    - editor
+    - fish
     - gui

@@ -1,0 +1,14 @@
+---
+# automatically set directory-based project specific configurations
+# https://direnv.net/
+
+- name: install direnv
+  package:
+    name: direnv
+    state: present
+  become: true
+
+- name: add bash hook
+  lineinfile:
+    path: '~{{ user_name }}/.bashrc'
+    regexp: '.*direnv.*bash'

@@ -2,18 +2,9 @@
 # automatically set directory-based project specific configurations
 # https://direnv.net/
 
-- name: install direnv
-  package:
-    name: direnv
-    state: present
-  become: true
-
-- name: add bash hook
-  lineinfile:
-    path: '~{{ user_name }}/.bashrc'
-    regexp: '.*direnv.*bash'
-    insertbefore: 'exec fish$'
-    line: 'eval "$(direnv hook bash)"'
+- name: check if direnv is installed
+  shell: command -v direnv > /dev/null 2>&1
+  register: is_direnv_exist
 
 - name: check if fish config exits    
   stat:
@@ -25,4 +16,4 @@
     path: '~{{ user_name }}/.config/fish/config.fish'
     regexp: '.*direnv.*fish'
     line: 'eval (direnv hook fish)'
-  when: fish_config.stat.exists == True
+  when: is_direnv_exist and fish_config.stat.exists == True

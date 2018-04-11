@@ -1,6 +1,3 @@
 ---
-- include_tasks: bash.yml
-  tags: bash
-
 - include_tasks: emacs-nox.yml
   tags: emacs-nox
