@@ -1,0 +1,21 @@
+---
+- name: install tensorflow
+  pip:
+    name: tensorflow-gpu
+    extra_args: --user --upgrade
+  tags: tensorflow
+
+- name: download tensorflow
+  git:
+    repo: https://github.com/tensorflow/tensorflow.git
+    dest: "~{{ user_name }}/tensorflow/tensorflow"
+
+- name: download tensorflow models
+  git:
+    repo: https://github.com/tensorflow/models.git
+    dest: "~{{ user_name }}/tensorflow/models"
+
+- name: set up pythonpath for tensorflow models
+  copy: 
+    src: .envrc
+    dest: "~{{ user_name }}/tensorflow/models/research/.envrc"

@@ -31,5 +31,13 @@
   hosts: gpus
   vars:
     gpu: true
+    cuda_packages:
+      - cuda-9-0
   roles:
     - { role: CSCfi.cuda, become: true }
+    - cudnn
+
+- name: install tensorflow object detection api
+  hosts: tensorflow-object-detection-api
+  roles:
+    - tensorflow-object-detection-api
