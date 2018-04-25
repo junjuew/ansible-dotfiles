@@ -1,11 +1,21 @@
 ---
 # This playbook deploys the whole application stack in this site.
+
+# need to install python 2 since ansible by default uses python2 as interpreter
+# see: https://github.com/ansible/ansible/issues/17081
 - hosts: all
   gather_facts: False 
   tasks:
   - name: install python 2 if not installed
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
     become: true
+  tags: must_run
+
+- name: create a user
+  hosts: all
+  roles:
+    - user
+  tags: user_setup
 
 - name: apply common configuration to all nodes
   hosts: all

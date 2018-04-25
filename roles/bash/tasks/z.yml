@@ -8,23 +8,23 @@
 
 - name: check if user bin dir exists
   stat:
-    path: "~{{ user_name }}/bin"
+    path: "~/bin"
   register: home_bin_dir
 
 - name: create user bin dir if not exists
   file:
-    path: "~{{ user_name }}/bin"
+    path: "~/bin"
     state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   when: not home_bin_dir.stat.isdir is defined or not home_bin_dir.stat.isdir
 
 - name: download z.sh
   get_url:
     url: https://raw.githubusercontent.com/rupa/z/v1.9/z.sh
-    dest: "~{{ user_name }}/bin/z.sh"
+    dest: "~/bin/z.sh"
 
 - name: source z.sh in bash startup scripts
   lineinfile:
-    dest: "~{{ user_name }}/.bashrc"
+    dest: "~/.bashrc"
     line: "[ -f ~/bin/z.sh ] && source ~/bin/z.sh"

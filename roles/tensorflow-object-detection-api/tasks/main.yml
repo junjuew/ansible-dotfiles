@@ -7,17 +7,17 @@
 - name: download tensorflow
   git:
     repo: https://github.com/tensorflow/tensorflow.git
-    dest: "~{{ user_name }}/tensorflow/tensorflow"
+    dest: "~/tensorflow/tensorflow"
 
 - name: download tensorflow models
   git:
     repo: https://github.com/tensorflow/models.git
-    dest: "~{{ user_name }}/tensorflow/models"
+    dest: "~/tensorflow/models"
 
 - name: set up pythonpath for tensorflow models
   copy: 
     src: .envrc
-    dest: "~{{ user_name }}/tensorflow/models/research/.envrc"
+    dest: "~/tensorflow/models/research/.envrc"
 
 - name: install dependencies used by tensorflow models
   package:
@@ -50,19 +50,21 @@
     name: matplotlib
     extra_args: --user --upgrade
 
-- name: Creates ~/Donwloads if not exist
+- name: create user Downloads dir if not exists
   file:
-    path: "~{{ user_name }}/Downloads"
+    path: "~/Downloads"
     state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
 
 - name: install protobuf3 required by tensorflow models
   get_url:
     url: https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip
-    dest: "~{{ user_name }}/Downloads/protoc-3.5.1-linux-x86_64.zip"
+    dest: "~/Downloads/protoc-3.5.1-linux-x86_64.zip"
 
 - name: Creates ~/protoc-x.x.x dir if not exist
   file:
-    path: "~{{ user_name }}/Downloads/protoc-3.5.1"
+    path: "~/Downloads/protoc-3.5.1"
     state: directory
 
 - name: make sure unzip is installed
@@ -73,18 +75,25 @@
 
 - name: Extract protocbuf
   unarchive:
-    src: "~{{ user_name }}/Downloads/protoc-3.5.1-linux-x86_64.zip"
-    dest: "~{{ user_name }}/Downloads/protoc-3.5.1"
+    src: "~/Downloads/protoc-3.5.1-linux-x86_64.zip"
+    dest: "~/Downloads/protoc-3.5.1"
     remote_src: yes
+
+- name: create user /tmp/protoc-x.x.x dir
+  file:
+    path: "/tmp/protoc-3.5.1"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
 
 - name: Extract protoc into ~/bin
   unarchive:
-    src: "~{{ user_name }}/Downloads/protoc-3.5.1-linux-x86_64.zip"
-    dest: "~{{ user_name }}/Downloads/protoc-3.5.1"
+    src: "~/Downloads/protoc-3.5.1-linux-x86_64.zip"
+    dest: "/tmp/protoc-3.5.1"
     remote_src: yes
 
 - name: Move protoc
-  command: cp "~{{ user_name }}/Downloads/protoc-3.5.1/bin/protoc" "/usr/local/bin/" 
+  command: cp "/tmp/protoc-3.5.1/bin/protoc" "/usr/local/bin/" 
   become: yes
 
 - name: give average users execution right of protoc
@@ -94,8 +103,8 @@
   become: yes
 
 - name: Move protobuf include files
-  command: cp -r "~{{ user_name }}/Downloads/protoc-3.5.1/include/google" "/usr/local/include/" 
+  command: cp -r "/tmp/protoc-3.5.1/include/google" "/usr/local/include/" 
   become: yes
 
 - name: compile tensorflow models proto
-  command: bash -c "protoc object_detection/protos/*.proto --python_out=." chdir="~{{ user_name }}/tensorflow/models/research"
+  command: bash -c "protoc object_detection/protos/*.proto --python_out=." chdir="~/tensorflow/models/research"

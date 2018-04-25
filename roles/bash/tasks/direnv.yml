@@ -10,7 +10,7 @@
 
 - name: add bash hook
   lineinfile:
-    path: '~{{ user_name }}/.bashrc'
+    path: '~/.bashrc'
     regexp: '.*direnv.*bash'
     insertbefore: 'exec fish$'
     line: 'eval "$(direnv hook bash)"'

@@ -14,38 +14,38 @@
 
 - name: create fish config dir
   file:
-    path: "~{{ user_name }}/.config/fish"
+    path: "~/.config/fish"
     state: directory
 
 - name: Install custom fish configuration
   copy: 
     src: config.fish
-    dest: "~{{ user_name }}/.config/fish/config.fish"
+    dest: "~/.config/fish/config.fish"
 
 - name: Install custom fish aliases
   copy: 
     src: aliases.fish
-    dest: "~{{ user_name }}/.config/fish/aliases.fish"
+    dest: "~/.config/fish/aliases.fish"
 
 - name: Install custom fish functions
   copy: 
     src: functions
-    dest: "~{{ user_name }}/.config/fish"
+    dest: "~/.config/fish"
 
 - name: Install fish completons (directories)
   file:
     state: directory
-    dest: "~{{ user_name }}/.config/fish/completions"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    dest: "~/.config/fish/completions"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   when: fish_completions is defined and fish_completions | length > 0
 
 - name: Install fish completions (files)
   get_url:
     url: "https://github.com/fish-shell/fish-shell/raw/master/share/completions/{{ item }}.fish"
-    dest: "~{{ user_name }}/.config/fish/completions/{{ item }}.fish"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    dest: "~/.config/fish/completions/{{ item }}.fish"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   with_items:
     - "{{ fish_completions }}"
   when: fish_completions is defined and fish_completions | length > 0

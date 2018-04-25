@@ -1,0 +1,32 @@
+---
+# Create users on the remote server
+- name: Make sure we have a passwordless_sudo group
+  group:
+    name: passwordless_sudo
+    state: present
+  become: true
+
+- name: Allow 'passwordless_sudo' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%passwordless_sudo'
+    line: '%passwordless_sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  become: true
+
+- name: create user specify by {{ user_name }}
+  user:
+    name: "{{ user_name }}"
+    password: "{{ user_password | password_hash('sha512') }}"
+    groups: passwordless_sudo
+    append: yes
+  become: true
+
+- name: Set authorized keys to user account
+  authorized_key:
+    user: "{{ user_name }}"
+    state: present
+    key: "https://github.com/{{ github_user_name_for_ssh_keys }}.keys"
+    validate_certs: False
+  become: true

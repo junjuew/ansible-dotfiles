@@ -28,27 +28,27 @@
 
 - name: create emacs.d dir
   file:
-    path: "~{{ user_name }}/.emacs.d"
+    path: "~/.emacs.d"
     state: directory
     mode: 0744
 
 - name: create emacs.d elisp for personal packages
   file:
-    path: "~{{ user_name }}/.emacs.d/elisp"
+    path: "~/.emacs.d/elisp"
     state: directory
     mode: 0744
     
 - name: configure emacs init
   copy: 
     src: init.el
-    dest: "~{{ user_name }}/.emacs.d/init.el"
+    dest: "~/.emacs.d/init.el"
 
 - name: add buftra.el for python doc-string autogen
   copy: 
     src: buftra.el
-    dest: "~{{ user_name }}/.emacs.d/elisp/buftra.el"
+    dest: "~/.emacs.d/elisp/buftra.el"
 
 - name: add py-pyment for python doc-string autogen
   copy: 
     src: py-pyment.el
-    dest: "~{{ user_name }}/.emacs.d/elisp/py-pyment.el"
+    dest: "~/.emacs.d/elisp/py-pyment.el"

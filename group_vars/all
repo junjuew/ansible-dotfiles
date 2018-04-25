@@ -1,5 +1,7 @@
 ---
-
+# the username and password to use to create the user on remote machines
 user_name: "{{ lookup('env','ANSIBLE_ENV_CONFIG_USER') }}"
-# root password
-ansible_become_pass: "{{ lookup('env','ANSIBLE_ENV_CONFIG_PS') }}"
+user_password: "{{ lookup('env','ANSIBLE_ENV_CONFIG_PS') }}"
+
+# the github username to download ssh keys from
+github_user_name_for_ssh_keys: "{{ lookup('env','ANSIBLE_ENV_CONFIG_GITHUB_USER') }}"
