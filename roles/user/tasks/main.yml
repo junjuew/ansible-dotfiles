@@ -15,12 +15,13 @@
     validate: 'visudo -cf %s'
   become: true
 
-- name: create user specify by {{ user_name }}
+- name: create user {{ user_name }}
   user:
     name: "{{ user_name }}"
     password: "{{ user_password | password_hash('sha512') }}"
     groups: passwordless_sudo
     append: yes
+    shell: /bin/bash
   become: true
 
 - name: Set authorized keys to user account
