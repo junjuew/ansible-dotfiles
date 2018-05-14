@@ -2,8 +2,8 @@
 - include_tasks: fish.yml
   tags: fish
 
-- include_tasks: direnv.yml
-  tags: fish
+- include_tasks: fisherman.yml
+  tags: fisherman
 
-- include_tasks: z.yml
+- include_tasks: direnv.yml
   tags: fish
