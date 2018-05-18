@@ -9,3 +9,12 @@
 # upgrade git to latest version
 - include_tasks: git.yml
   tags: git
+
+- include_tasks: git.yml
+  tags: git
+
+- name: install xclip
+  package:
+    name: xclip
+    state: latest
+  become: true
