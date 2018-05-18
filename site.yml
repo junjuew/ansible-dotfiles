@@ -47,7 +47,8 @@
     - { role: CSCfi.cuda, become: true }
     - cudnn
 
-- name: install tensorflow object detection api
-  hosts: tensorflow-object-detection-api
+- name: install packages needed for cv
+  hosts: cv
   roles:
-    - tensorflow-object-detection-api
+    - { role: conda, tags: ['conda'] }
+    - { role: tensorflow-object-detection-api, tags: ['tensorflow'] }

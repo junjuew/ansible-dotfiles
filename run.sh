@@ -7,12 +7,18 @@ case $key in
     -s|--user_setup)
         setup_user=true
         ;;
+    -p|--pass_through_args)
+        # forward the extra args to the ansible-playbook cmd
+        extra_args="$2"
+        shift
+        ;;
     *)  # unknown option
         ;;
 esac
 shift # past argument or value
 done
 
+echo "extra args passed into ansible-playbook are ${extra_args}"
 echo "install dependencies from ansible-galaxy..."
 ansible-galaxy install -r requirements.yml
 
@@ -40,4 +46,4 @@ if [ "$setup_user" = true ] ; then
 fi
 
 echo "Running ansible playbook as USER ${existing_user}"
-ansible-playbook -i hosts -u ${existing_user} --skip-tags user_setup site.yml
+ansible-playbook -i hosts -u ${existing_user} --skip-tags user_setup ${extra_args} site.yml
