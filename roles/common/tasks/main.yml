@@ -18,3 +18,5 @@
     name: xclip
     state: latest
   become: true
+
+- include_tasks: tmux.yml
