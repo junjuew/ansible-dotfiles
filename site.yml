@@ -26,14 +26,12 @@
   hosts: servers
   roles:
     - bash
-    - editor
     - fish
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktops
   roles:
     - bash
-    - editor
     - fish
     - gui
 
