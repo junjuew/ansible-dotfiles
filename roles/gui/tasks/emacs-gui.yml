@@ -4,7 +4,6 @@
   package:
     name: emacs
     state: present
-  when: emacs_gui is defined and emacs_gui
   become: true
 
 - name: download spacemacs
