@@ -10,40 +10,10 @@
     repo: https://github.com/tmux-plugins/tpm
     dest: '~/.tmux/plugins/tpm'
 
-- name: configure tmux to initialize tmux plugin manager
-  lineinfile:
-    path: '~/.tmux.conf'
-    line: "run '~/.tmux/plugins/tpm/tpm'"
-    regexp: "run '~/.tmux/plugins/tpm/tpm'"
-    state: present
-    insertafter: EOF
-    create: True
-    owner: '{{ ansible_env.USER }}'
-    group: '{{ ansible_env.USER }}'
-
-- name: add in tmux tpm
-  lineinfile:
-    path: '~/.tmux.conf'
-    line: "set -g @plugin 'tmux-plugins/tpm'" 
-    state: present
-    regexp: "set -g @plugin 'tmux-plugins/tpm'"  
-    insertbefore: "run '~/.tmux/plugins/tpm/tpm'"
-
-- name: add in tmux sensible
-  lineinfile:
-    path: '~/.tmux.conf'
-    line: "set -g @plugin 'tmux-plugins/tmux-sensible'" 
-    state: present
-    regexp: "set -g @plugin 'tmux-plugins/tmux-sensible'"  
-    insertafter: "set -g @plugin 'tmux-plugins/tpm'"
-
-- name: add in tmux tpm
-  lineinfile:
-    path: '~/.tmux.conf'
-    line: "set -g @plugin 'tmux-plugins/tmux-yank'"
-    state: present
-    regexp: "set -g @plugin 'tmux-plugins/tmux-yank'" 
-    insertafter: "set -g @plugin 'tmux-plugins/tpm'"
+- name: configure tmux
+  copy:
+    src: tmux.conf
+    dest: "~/.tmux.conf"
 
 - name: launch tpm installation script to install plugins
   shell: "tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
