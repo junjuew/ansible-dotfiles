@@ -44,3 +44,6 @@
     state: present
     regexp: "set -g @plugin 'tmux-plugins/tmux-yank'" 
     insertafter: "set -g @plugin 'tmux-plugins/tpm'"
+
+- name: launch tpm installation script to install plugins
+  shell: "tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
