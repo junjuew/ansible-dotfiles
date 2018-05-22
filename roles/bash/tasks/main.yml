@@ -14,3 +14,15 @@
 
 - include_tasks: direnv.yml
   tags: direnv
+
+- name: install xclip
+  package:
+    name: xclip
+    state: latest
+  become: true
+
+- include_tasks: pathpicker.yml
+  tags: pathpicker
+
+- include_tasks: tmux.yml
+  tags: tmux

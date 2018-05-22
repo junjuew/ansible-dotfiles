@@ -1,0 +1,20 @@
+---
+- name: clone facebook's pathpicker repo
+  git:
+    repo: https://github.com/facebook/PathPicker.git
+    dest: "~/.pathpicker"
+
+- name: create user bin dir if not exists
+  file:
+    path: "~/bin"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: add pathpicker to local path
+  file:
+    src: "~/.pathpicker/fpp"
+    dest: "~/bin/fpp"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    state: link
