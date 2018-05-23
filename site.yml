@@ -27,12 +27,14 @@
   roles:
     - bash
     - fish
+    - tmux
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktops
   roles:
     - bash
     - fish
+    - tmux
     - gui
 
 - name: install gpu drivers

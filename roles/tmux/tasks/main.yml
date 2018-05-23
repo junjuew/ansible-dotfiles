@@ -1,0 +1,29 @@
+---
+- name: install tmux
+  package:
+    name: tmux
+    state: latest
+  become: true
+
+- name: install tmux plugin manager
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: '~/.tmux/plugins/tpm'
+
+- name: configure tmux
+  copy:
+    src: tmux.conf
+    dest: "~/.tmux.conf"
+
+- name: configure tmux remote conf
+  copy:
+    src: tmux.remote.conf
+    dest: "~/.tmux/tmux.remote.conf"
+
+- name: configure tmux renew env
+  copy:
+    src: renew_env.sh
+    dest: "~/.tmux/renew_env.sh"
+
+- name: launch tpm installation script to install plugins
+  shell: "tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
