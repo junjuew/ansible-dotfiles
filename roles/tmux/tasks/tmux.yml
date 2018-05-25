@@ -1,4 +1,10 @@
 ---
+# add in custom tmux ppa to update tmux to 2.7
+# tmux lower than 2.2 does not support setting the prefix to be none
+# which is needed for tmux nesting
+- apt_repository:
+    repo: ppa:jamesw05/tmux
+
 - name: install tmux
   package:
     name: tmux
