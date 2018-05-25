@@ -2,13 +2,16 @@
 # add in custom tmux ppa to update tmux to 2.7
 # tmux lower than 2.2 does not support setting the prefix to be none
 # which is needed for tmux nesting
-- apt_repository:
+- name: add custom tmux repo
+  apt_repository:
     repo: ppa:jamesw05/tmux
+  become: true
 
 - name: install tmux
-  package:
+  apt:
     name: tmux
     state: latest
+    update_cache: yes
   become: true
 
 - name: install tmux plugin manager
