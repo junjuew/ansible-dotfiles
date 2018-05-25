@@ -1,8 +1,17 @@
 ---
+# add in custom tmux ppa to update tmux to 2.7
+# tmux lower than 2.2 does not support setting the prefix to be none
+# which is needed for tmux nesting
+- name: add custom tmux repo
+  apt_repository:
+    repo: ppa:jamesw05/tmux
+  become: true
+
 - name: install tmux
-  package:
+  apt:
     name: tmux
     state: latest
+    update_cache: yes
   become: true
 
 - name: install tmux plugin manager
@@ -26,4 +35,4 @@
     dest: "~/.tmux/renew_env.sh"
 
 - name: launch tpm installation script to install plugins
-  shell: "tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
+  shell: "tmux kill-server || true && tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
