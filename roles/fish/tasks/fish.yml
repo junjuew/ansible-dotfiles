@@ -32,26 +32,13 @@
     src: functions
     dest: "~/.config/fish"
 
-- name: Install fish completons (directories)
-  file:
-    state: directory
-    dest: "~/.config/fish/completions"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-#  when: fish_completions is defined and fish_completions | length > 0
-
 - name: clone fish git repo
   git:
     repo: https://github.com/fish-shell/fish-shell
     dest: "/tmp/fish-shell"
 
 - name: Install fish completions (files)
-  copy:
-    src: "{{ item }}"
-    dest: ~/.config/fish/completions
-    remote_src: yes
-  with_fileglob:
-    - /tmp/fish-shell/share/completions/*
+  command: cp -r /tmp/fish-shell/share/completions ~/.config/fish/completions
 
 # # - name: Install oh my fish
 #   shell: curl -L http://get.oh-my.fish | fish
