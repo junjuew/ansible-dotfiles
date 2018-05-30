@@ -12,6 +12,15 @@ case $key in
         extra_args="$2"
         shift
         ;;
+    -h|--help)
+        printf "Usage: run.sh [-s] [-p|--pass_through_args ansible-playbook-arguments]\n"
+        printf "Run ansible-playbook using site.yml\n\n"
+        printf "\t-s setup a passwordless sudoer user first.\n"
+        printf "\t-p|--pass_through_args arguments passed to ansible-playbook cmd.\n"
+        printf "Example:\n"
+        printf "./run.sh -s -p \'--tags conda\'\n"
+        exit
+        ;;
     *)  # unknown option
         ;;
 esac
@@ -46,4 +55,4 @@ if [ "$setup_user" = true ] ; then
 fi
 
 echo "Running ansible playbook as USER ${existing_user}"
-ansible-playbook -i hosts -u ${existing_user} --skip-tags user_setup ${extra_args} site.yml
+ansible-playbook -i hosts -u ${existing_user} --skip-tags "user_setup" ${extra_args} site.yml

@@ -1,33 +1,39 @@
 ---
-- name: download miniconda installation script
-  get_url:
-    url: 'https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh'
-    dest: '/tmp/miniconda.sh'
+- name: check if conda is installed
+  shell: 'command -v conda > /dev/null 2>&1'
+  register: conda_installed
 
-- name: run the installation script
-  shell: 'bash /tmp/miniconda.sh -b -p ${HOME}/miniconda'
+- block:
+  - name: download miniconda installation script
+    get_url:
+      url: 'https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh'
+      dest: '/tmp/miniconda.sh'
 
-- name: create bashrc_custom file if it do not exits
-  copy:
-    content: ""
-    dest: '~/.bashrc_custom'
-    force: no
-    owner: '{{ ansible_env.USER }}'
-    group: '{{ ansible_env.USER }}'
-    mode: u=rw,g=r,o=r
+  - name: run the installation script
+    shell: 'bash /tmp/miniconda.sh -b -p ${HOME}/miniconda'
 
-- name: add miniconda path to bashrc_custom
-  lineinfile:
-    path: '~/.bashrc_custom'
-    line: 'export PATH=${HOME}/miniconda/bin:${PATH}'
+  - name: create bashrc_custom file if it do not exits
+    copy:
+      content: ""
+      dest: '~/.bashrc_custom'
+      force: no
+      owner: '{{ ansible_env.USER }}'
+      group: '{{ ansible_env.USER }}'
+      mode: u=rw,g=r,o=r
 
-- name: check if config.fish exists at ~/.config/fish/config.fish
-  stat:
-    path: '~/.config/fish/config.fish'
-  register: config_fish_exists
+  - name: add miniconda path to bashrc_custom
+    lineinfile:
+      path: '~/.bashrc_custom'
+      line: 'export PATH=${HOME}/miniconda/bin:${PATH}'
 
-- name: add conda path to fish.config if fish.config exists
-  lineinfile:
-    path: '~/.config/fish/config.fish'
-    line: 'source (conda info --root)/etc/fish/conf.d/conda.fish'
-  when: config_fish_exists.stat.exists == True
+  - name: check if config.fish exists at ~/.config/fish/config.fish
+    stat:
+      path: '~/.config/fish/config.fish'
+    register: config_fish_exists
+
+  - name: add conda path to fish.config if fish.config exists
+    lineinfile:
+      path: '~/.config/fish/config.fish'
+      line: 'source (conda info --root)/etc/fish/conf.d/conda.fish'
+    when: config_fish_exists.stat.exists == True
+  when: not conda_installed
