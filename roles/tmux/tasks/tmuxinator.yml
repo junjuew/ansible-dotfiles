@@ -5,10 +5,15 @@
     state: present
   become: yes
 
+- name: download tmuxinator bash completion
+  get_url:
+    url: 'https://github.com/tmuxinator/tmuxinator/blob/master/completion/tmuxinator.bash'
+    dest: '~/.tmuxinator.bash'
+
 - name: install tmuxinator completion for bash
   lineinfile:
     dest: "~/.bashrc_custom"
-    line: "source ~/.bin/tmuxinator.bash"
+    line: "source ~/.tmuxinator.bash"
     create: yes
     mode: "u=rw,g=r,a=r"
 

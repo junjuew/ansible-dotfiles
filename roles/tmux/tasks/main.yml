@@ -7,7 +7,7 @@
     repo: ppa:jamesw05/tmux
   become: true
 
-- name: install tmux
+- name: install tmux if it is not the latest
   apt:
     name: tmux
     state: latest
