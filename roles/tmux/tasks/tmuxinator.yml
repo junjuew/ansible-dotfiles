@@ -7,8 +7,9 @@
 
 - name: download tmuxinator bash completion
   get_url:
-    url: 'https://github.com/tmuxinator/tmuxinator/blob/master/completion/tmuxinator.bash'
+    url: 'https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.bash'
     dest: '~/.tmuxinator.bash'
+    force: yes
 
 - name: install tmuxinator completion for bash
   lineinfile:
