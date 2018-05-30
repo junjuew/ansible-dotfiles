@@ -36,3 +36,5 @@
 
 - name: launch tpm installation script to install plugins
   shell: "tmux kill-server || true && tmux start-server && tmux new-session -s tpm-install -d && ~/.tmux/plugins/tpm/scripts/install_plugins.sh && tmux kill-server"
+
+- import_tasks: tmuxinator.yml

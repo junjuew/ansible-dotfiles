@@ -34,7 +34,7 @@
   roles:
     - bash
     - fish
-    - tmux
+    - { role: tmux, tags: ['tmux'] }
     - gui
 
 - name: install gpu drivers
