@@ -22,7 +22,7 @@
   shell: "command -v fish > /dev/null 2>&1"
   register: fish_installed
 
-- block:
+- block: # setup tmuxinator for fish
   - name: create fish completions dir if not exist
     file:
       path: "~/.config/fish/completions"
@@ -42,3 +42,10 @@
       group: "{{ ansible_env.USER }}"
       state: link
   when: fish_installed
+
+- name: install commonly used tmuxinator projects
+  copy:
+    src: "{{ item }}"
+    dest: "~/.tmuxinator/"
+  with_fileglob:
+    - "tmuxinator/*"

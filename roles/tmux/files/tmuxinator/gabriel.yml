@@ -7,7 +7,7 @@ root: ~/work/gabriel
 # socket_name: foo
 
 # Runs before everything. Use it to start daemons etc.
-pre: conda activate gabriel
+# pre: sudo /etc/rc.d/mysqld start
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 # pre_window: rbenv shell 2.0.0-p247
@@ -29,7 +29,10 @@ pre: conda activate gabriel
 
 windows:
   - binary:
+      root: ~/work/gabriel/server/bin
       layout: main-vertical
       panes:
         - control:
+            - # just bash
         - ucomm:
+            - # just bash
