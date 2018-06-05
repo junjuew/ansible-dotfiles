@@ -25,3 +25,7 @@ if test -e ~/.config/fish/aliases.fish
    echo "sourcing ~/.config/fish/aliases.fish"
    . ~/.config/fish/aliases.fish
 end
+
+if type -q conda
+   source (conda info --root)/etc/fish/conf.d/conda.fish
+end
