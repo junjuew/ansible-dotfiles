@@ -1,0 +1,30 @@
+---
+# setup box dav sync
+- name: install davfs
+  apt:
+    name: davfs2
+    state: latest
+  become: true
+
+- name: create box dir if not exits
+  file:
+    path: "{{ ansible_env.HOME }}/box" 
+    state: directory
+
+- name: edit fstab to include the box dav
+  lineinfile:
+    dest: "/etc/fstab"
+    line: "https://dav.box.com/dav   {{ ansible_env.HOME }}/box   davfs  _netdev,rw,user,suid,dev,exec,auto,async,uid={{ ansible_env.USER }},gid={{ ansible_env.USER }}  0   0"
+    create: yes
+  become: yes
+
+- name: create .davfs2 if not exits
+  file:
+    path: "~/.davfs2"
+    state: directory
+
+- name: add in box login credentials
+  lineinfile:
+    dest: "~/.davfs2/secrets"
+    line: "https://dav.box.com/dav  {{ box_user_name }}  \"{{ box_password }}\""
+    create: yes
