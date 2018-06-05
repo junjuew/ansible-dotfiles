@@ -28,3 +28,4 @@
     dest: "~/.davfs2/secrets"
     line: "https://dav.box.com/dav  {{ box_user_name }}  \"{{ box_password }}\""
     create: yes
+    mode: 0600
