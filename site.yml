@@ -31,16 +31,10 @@
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktops
-  vars_prompt:
-    - name: "box_user_name"
-      prompt: "What is box.com user name?"
-    - name: "box_password"
-      prompt: "What is your box.com external password?"
   roles:
     - bash
     - fish
     - { role: tmux, tags: ['tmux'] }
-    - { role: box, tags: ['box'] }
     - gui
 
 - name: install gpu drivers
