@@ -1,0 +1,5 @@
+[gpu-passthrough]
+# cloudlet001 ansible_connection=ssh ansible_user=junjuew gpu_driver_version=387 gpu_device_ids=10de:1024
+
+[kvm-host]
+cloudlet001 ansible_connection=ssh ansible_user=junjuew

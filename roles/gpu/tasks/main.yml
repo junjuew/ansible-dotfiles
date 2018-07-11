@@ -1,0 +1,52 @@
+---
+- name: (GPUPASS) modify grub config to enable IOMMU
+  lineinfile:
+    dest: /etc/default/grub
+    state: present
+    regexp: "^GRUB_CMDLINE_LINUX="
+    line: "GRUB_CMDLINE_LINUX=\"intel_iommu=on iommu=pt rd.driver.pre=vfio-pci\""
+
+- name: (GPUPASS) update grub
+  command: update-grub
+
+- name: (GPUPASS) update initram-fs modules for VFIO
+  blockinfile:
+    path: /etc/initramfs-tools/modules
+    state: present
+    block: |
+      vfio
+      vfio_iommu_type1
+      vfio_pci
+      vfio_virqfd
+
+- name: (GPUPASS) update initram-fs
+  command: update-initramfs -u
+
+- name: (GPUPASS) add GPU devices to VFIO conf
+  blockinfile:
+    path: /etc/modprobe.d/vfio.conf
+    create: yes
+    state: present
+    block: |
+      blacklist nvidia
+      blacklist nvidia_{{gpu_driver_version}}
+      blacklist nvidia_{{gpu_driver_version}}_uvm
+      blacklist nvidia_{{gpu_driver_version}}_modeset
+      blacklist nvidia_{{gpu_driver_version}}_drm
+      options vfio-pci ids={{gpu_device_ids}}
+      options vfio-pci disable_vga=1
+
+- name: (GPUPASS) add GPU devices to VFIO conf
+  blockinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    create: yes
+    state: present
+    block: |
+      blacklist nvidia
+      blacklist nvidia_{{gpu_driver_version}}
+      blacklist nvidia_{{gpu_driver_version}}_uvm
+      blacklist nvidia_{{gpu_driver_version}}_modeset
+      blacklist nvidia_{{gpu_driver_version}}_drm
+
+- name: (GPUPASS) reboot and...
+  command: /sbin/reboot

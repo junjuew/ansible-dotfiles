@@ -1,0 +1,37 @@
+---
+- name: add virtualization ppa
+  apt_repository:
+        repo: ppa:jacob/virtualisation
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install qemu-kvm
+  package: name=qemu-kvm state=latest
+  become: true
+
+- name: install libvirt-bin
+  package: name=libvirt-bin state=latest
+  become: true
+
+- name: install qemu-utils
+  package: name=qemu-utils state=latest
+  become: true
+
+- name: install virtinst
+  package: name=virtinst state=latest
+  become: true
+
+- name: install virt-manager
+  package: name=virt-manager state=latest
+  become: true
+
+- name: install bridge-utils
+  package: name=bridge-utils state=latest
+  become: true
+
+- name: add current user to libvirtd group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: libvirtd
+    append: yes
+  become: true
