@@ -1,0 +1,7 @@
+---
+# from https://github.com/uchida/ansible-role-nvidia-docker/blob/master/handlers/main.yml
+
+- name: restart docker service
+  service:
+    name: docker
+    state: restarted

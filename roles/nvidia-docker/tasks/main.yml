@@ -1,0 +1,29 @@
+---
+# from
+# https://github.com/uchida/ansible-role-nvidia-docker/blob/master/tasks/debian_v2.yml
+# modified by junjuew
+
+- name: nvidia-docker (v2) release key is registered
+  apt_key:
+    url: https://nvidia.github.io/nvidia-docker/gpgkey
+    state: present
+
+- name: register nvidia-docker (v2) apt repository is registered
+  shell: 'distribution=$(. /etc/os-release;echo $ID$VERSION_ID); \
+  curl -s -L
+  https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
+  sudo tee /etc/apt/sources.list.d/nvidia-docker.list; \
+  sudo apt-get update'
+  args:
+    executable: /bin/bash
+
+- name: nvidia-docker (v1) is uninstalled
+  apt:
+    name: nvidia-docker
+    state: absent
+
+- name: nvidia-docker (v2) is installed
+  apt:
+    name: "nvidia-docker2={{ nvidia_docker_version }}+docker{{ nvidia_docker_docker_version }}-1"
+    state: present
+  notify: restart docker service

@@ -2,3 +2,4 @@
 - src: angstwad.ubuntu_python_apt
 - src: bobbyrenwick.pip
 - src: CSCfi.cuda
+- src: geerlingguy.docker
