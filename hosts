@@ -1,4 +1,30 @@
+[servers]
+cloudlet026.maas ansible_connection=ssh ansible_port=22
+# cloudlet027.maas ansible_connection=ssh ansible_port=22
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
+# cloudlet029.maas ansible_connection=ssh ansible_port=22
+# cloudlet030.maas ansible_connection=ssh ansible_port=22
+# cloudlet001 ansible_connection=ssh ansible_port=22
+# localhost ansible_connection=local
+
+[gpus]
+# cloudlet026.maas ansible_connection=ssh ansible_port=22
+# cloudlet027.maas ansible_connection=ssh ansible_port=22
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
+# cloudlet029.maas ansible_connection=ssh ansible_port=22
+# cloudlet030.maas ansible_connection=ssh ansible_port=22
+# cloudlet001 ansible_connection=ssh ansible_port=22
+
+[tensorflow-object-detection-api]
+# cloudlet002 ansible_connection=ssh ansible_port=22
+# cloudlet026.maas ansible_connection=ssh ansible_port=22
+# cloudlet027.maas ansible_connection=ssh ansible_port=22
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
+# cloudlet029.maas ansible_connection=ssh ansible_port=22
+# cloudlet030.maas ansible_connection=ssh ansible_port=22
+
+[cv]
+# cloudlet001 ansible_connection=ssh ansible_port=22
+
 [desktops]
-localhost ansible_connection=local
-# or use -u arg when invoked to specify the ansible_user
-remote ansible_connection=ssh ansible_user=user ansible_port=22
+# localhost ansible_connection=local
