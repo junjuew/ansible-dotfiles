@@ -53,11 +53,6 @@
     - { role: conda, tags: ['conda'] }
     - { role: tensorflow-object-detection-api, tags: ['tensorflow'] }
 
-- name: install packages needed for gpu-passthrough
-  hosts: gpu-passthrough
-  roles:
-    - { role: gpu, become: true }
-
 - name: install packages needed for kvm-host
   hosts: kvm-host
   roles:

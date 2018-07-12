@@ -1,0 +1,14 @@
+[gpu-passthrough]
+# cloudlet001 ansible_connection=ssh ansible_user=junjuew gpu_driver_version=387 gpu_device_ids=10de:1024
+
+[gpu]
+# cloudlet001 ansible_connection=ssh ansible_port=20002 ansible_user=ubuntu
+
+[docker-host]
+# cloudlet001 ansible_connection=ssh ansible_port=20002 ansible_user=ubuntu
+
+[nvidia-docker-host]
+# cloudlet001 ansible_connection=ssh ansible_port=20002 ansible_user=ubuntu
+
+[tensorflow]
+# cloudlet001 ansible_connection=ssh ansible_port=9098 ansible_user=root
