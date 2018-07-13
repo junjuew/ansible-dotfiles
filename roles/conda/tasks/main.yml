@@ -2,6 +2,7 @@
 - name: check if conda is installed
   shell: 'command -v conda > /dev/null 2>&1'
   register: conda_installed
+  ignore_errors: yes
 
 - block:
   - name: download miniconda installation script
@@ -36,4 +37,4 @@
       path: '~/.config/fish/config.fish'
       line: 'source (conda info --root)/etc/fish/conf.d/conda.fish'
     when: config_fish_exists.stat.exists == True
-  when: not conda_installed
+  when: conda_installed is failed

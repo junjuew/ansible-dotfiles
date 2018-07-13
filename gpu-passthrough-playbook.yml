@@ -10,15 +10,19 @@
 
 - name: install packages needed for gpu-passthrough
   hosts: gpu-passthrough
-  roles:
-    - { role: gpu-passthrough, become: true }
+  tasks:
+    - include_role:
+        name: gpu-passthrough
+      vars:
+        ansible_become: yes
+      when: "ansible_distribution == 'Ubuntu'"
 
 - name: install gpu drivers
   hosts: gpu
   vars:
     gpu: true
     cuda_packages:
-      - cuda-8-0
+      - cuda-9-0
   roles:
     - { role: CSCfi.cuda, become: true }
 

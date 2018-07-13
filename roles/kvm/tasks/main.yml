@@ -29,9 +29,9 @@
   package: name=bridge-utils state=latest
   become: true
 
-- name: add current user to libvirtd group
+- name: add current user to libvirt group
   user:
     name: "{{ ansible_env.USER }}"
-    groups: libvirtd
+    groups: libvirt
     append: yes
   become: true

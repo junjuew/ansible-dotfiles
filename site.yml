@@ -45,7 +45,6 @@
       - cuda-9-0
   roles:
     - { role: CSCfi.cuda, become: true }
-    - cudnn
 
 - name: install packages needed for cv
   hosts: cv
@@ -60,11 +59,16 @@
 
 - name: install docker packages
   hosts: docker-host
-  roles:
-    - role: geerlingguy.docker
+  tasks:
+    - include_role:
+        name: geerlingguy.docker
       vars: 
-         docker_package: "docker-{{ docker_edition }}"
-         docker_package_state: present
+        docker_package: "docker-ce=18.03.1~ce-0~ubuntu"
+        docker_package_state: present
+        docker_users: 
+          - "{{ ansible_env.USER }}"
+        ansible_become: yes
+      when: "ansible_distribution == 'Ubuntu'"
 
 - name: install nvidia-docker
   hosts: nvidia-docker-host
@@ -72,5 +76,7 @@
     - include_role:
         name: nvidia-docker
       vars:
-        nvidia_docker_version: '2.0'
+        nvidia_docker_version: '2.0.3'
+        nvidia_docker_docker_version: '18.03.1'
+        ansible_become: yes
       when: "ansible_distribution == 'Ubuntu'"

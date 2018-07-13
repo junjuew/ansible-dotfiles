@@ -1,4 +1,6 @@
 ---
+# Configure GPU passthrough on a Ubuntu Machine
+
 - name: (GPUPASS) modify grub config to enable IOMMU
   lineinfile:
     dest: /etc/default/grub
@@ -28,13 +30,21 @@
     create: yes
     state: present
     block: |
-      blacklist nvidia
-      blacklist nvidia_{{gpu_driver_version}}
-      blacklist nvidia_{{gpu_driver_version}}_uvm
-      blacklist nvidia_{{gpu_driver_version}}_modeset
-      blacklist nvidia_{{gpu_driver_version}}_drm
       options vfio-pci ids={{gpu_device_ids}}
       options vfio-pci disable_vga=1
+
+- name: (GPUPASS) Get the installed NVIDIA driver version
+  shell: 'dpkg -l | awk \'{print $2}\' | \
+  grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"'
+  register: detected_gpu_driver_version
+  ignore_error: yes
+
+- debug: var=detected_gpu_driver_version
+
+- name: (GPUPASS) Get the installed NVIDIA driver version
+  set_fact:
+    gpu_driver_version: "{{ detected_gpu_driver_version.stdout }}"
+  when: (gpu_driver_version is undefined) and (detected_gpu_driver_version.stdout != "")
 
 - name: (GPUPASS) black list nvidia drivers
   blockinfile:
@@ -47,6 +57,7 @@
       blacklist nvidia_{{gpu_driver_version}}_uvm
       blacklist nvidia_{{gpu_driver_version}}_modeset
       blacklist nvidia_{{gpu_driver_version}}_drm
+    when: gpu_driver_version is defined
 
 - name: (GPUPASS) reboot and...
   command: /sbin/reboot
