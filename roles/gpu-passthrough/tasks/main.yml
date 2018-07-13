@@ -6,10 +6,12 @@
     dest: /etc/default/grub
     state: present
     regexp: "^GRUB_CMDLINE_LINUX="
-    line: "GRUB_CMDLINE_LINUX=\"intel_iommu=on iommu=pt rd.driver.pre=vfio-pci\""
+    line: "GRUB_CMDLINE_LINUX=\"intel_iommu=on iommu=pt\""
+  register: grub
 
 - name: (GPUPASS) update grub
   command: update-grub
+  when: grub is changed
 
 - name: (GPUPASS) update initram-fs modules for VFIO
   blockinfile:
@@ -20,9 +22,22 @@
       vfio_iommu_type1
       vfio_pci
       vfio_virqfd
+  register: initramfs_modules
 
 - name: (GPUPASS) update initram-fs
   command: update-initramfs -u
+  when: initramfs_modules is changed
+
+- name: (GPUPASS) Get NVIDIA device ids
+  shell: lspci -nn | grep -oP '.*NVIDIA.*\[\K[\w:]+' | paste -s -d ','
+  register: detected_gpu_device_ids
+
+- name: (GPUPASS) Get NVIDIA device ids
+  set_fact:
+    gpu_device_ids: "{{ detected_gpu_device_ids.stdout }}"
+  when: (gpu_device_ids is undefined) and (detected_gpu_device_ids.stdout != "\n")
+
+- debug: var=gpu_device_ids
 
 - name: (GPUPASS) add GPU devices to VFIO conf
   blockinfile:
@@ -34,8 +49,7 @@
       options vfio-pci disable_vga=1
 
 - name: (GPUPASS) Get the installed NVIDIA driver version
-  shell: 'dpkg -l | awk \'{print $2}\' | \
-  grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"'
+  shell: dpkg -l | awk '{print $2}' | grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"
   register: detected_gpu_driver_version
   ignore_error: yes
 
@@ -57,7 +71,19 @@
       blacklist nvidia_{{gpu_driver_version}}_uvm
       blacklist nvidia_{{gpu_driver_version}}_modeset
       blacklist nvidia_{{gpu_driver_version}}_drm
-    when: gpu_driver_version is defined
+  when: gpu_driver_version is defined
+
+- name: (GPUPASS) black list audio driver snd_hda_intel for GTX 1080 series
+  blockinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    create: yes
+    state: present
+    block: |
+      blacklist snd_hda_intel
 
 - name: (GPUPASS) reboot and...
-  command: /sbin/reboot
+  shell: /sbin/reboot
+  when: (grub is changed) and (initramfs_modules is changed)
+
+- name: (GPUPASS) Wait 600 seconds for target connection to become reachable/usable
+  wait_for_connection:

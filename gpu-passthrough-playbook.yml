@@ -8,6 +8,8 @@
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
     become: true
 
+# if 'gpu_device_driver' or 'gpu_device_ids' variables are not set, they would
+# be detected automatically
 - name: install packages needed for gpu-passthrough
   hosts: gpu-passthrough
   tasks:
