@@ -27,14 +27,5 @@
       path: '~/.bashrc_custom'
       line: 'export PATH=${HOME}/miniconda/bin:${PATH}'
 
-  - name: check if config.fish exists at ~/.config/fish/config.fish
-    stat:
-      path: '~/.config/fish/config.fish'
-    register: config_fish_exists
-
-  - name: add conda path to fish.config if fish.config exists
-    lineinfile:
-      path: '~/.config/fish/config.fish'
-      line: 'source (conda info --root)/etc/fish/conf.d/conda.fish'
-    when: config_fish_exists.stat.exists == True
-  when: conda_installed is failed
+# config.fish already handles sourcing miniconda fish config file gracefully. No
+# need to add it here
