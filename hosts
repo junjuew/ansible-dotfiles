@@ -1,10 +1,13 @@
 [servers]
-cloudlet026.maas ansible_connection=ssh ansible_port=22
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
 # cloudlet027.maas ansible_connection=ssh ansible_port=22
 # cloudlet028.maas ansible_connection=ssh ansible_port=22
 # cloudlet029.maas ansible_connection=ssh ansible_port=22
 # cloudlet030.maas ansible_connection=ssh ansible_port=22
 # cloudlet001 ansible_connection=ssh ansible_port=22
+# localhost ansible_connection=local
+
+[desktops]
 # localhost ansible_connection=local
 
 [gpus]
@@ -25,6 +28,13 @@ cloudlet026.maas ansible_connection=ssh ansible_port=22
 
 [cv]
 # cloudlet001 ansible_connection=ssh ansible_port=22
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
 
-[desktops]
-# localhost ansible_connection=local
+[kvm-host]
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
+
+[docker-host]
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
+
+[nvidia-docker-host]
+# cloudlet028.maas ansible_connection=ssh ansible_port=22
