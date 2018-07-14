@@ -1,34 +1,7 @@
 ---
 # Configure GPU passthrough on a Ubuntu Machine
 
-- name: (GPUPASS) modify grub config to enable IOMMU
-  lineinfile:
-    dest: /etc/default/grub
-    state: present
-    regexp: "^GRUB_CMDLINE_LINUX="
-    line: "GRUB_CMDLINE_LINUX=\"intel_iommu=on iommu=pt\""
-  register: grub
-
-- name: (GPUPASS) update grub
-  command: update-grub
-  when: grub is changed
-
-- name: (GPUPASS) update initram-fs modules for VFIO
-  blockinfile:
-    path: /etc/initramfs-tools/modules
-    state: present
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough vfio module'
-    block: |
-      vfio
-      vfio_iommu_type1
-      vfio_pci
-      vfio_virqfd
-  register: initramfs_modules
-
-- name: (GPUPASS) update initram-fs
-  command: update-initramfs -u
-  when: initramfs_modules is changed
-
+# get NVIDIA GPU device info
 - name: (GPUPASS) Get NVIDIA device ids
   shell: lspci -nn | grep -oP '.*NVIDIA.*\[\K[\w:]+' | paste -s -d ','
   register: detected_gpu_device_ids
@@ -43,7 +16,7 @@
 - name: (GPUPASS) Get the installed NVIDIA driver version
   shell: dpkg -l | awk '{print $2}' | grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"
   register: detected_gpu_driver_version
-  ignore_error: yes
+  ignore_errors: yes
 
 - debug: var=detected_gpu_driver_version
 
@@ -54,15 +27,56 @@
 
 - debug: var=gpu_driver_version
 
+# configure grub and modprobe
+- name: (GPUPASS) modify grub config to enable IOMMU
+  lineinfile:
+    dest: /etc/default/grub
+    state: present
+    regexp: "^GRUB_CMDLINE_LINUX="
+    line: "GRUB_CMDLINE_LINUX=\"intel_iommu=on iommu=pt\""
+  register: grub
+
+- name: (GPUPASS) update grub
+  command: update-grub
+  when: grub is changed
+
+- name: (GPUPASS) disable nvidia driver configuration
+  command: mv /etc/modprobe.d/nvidia-graphics-drivers.conf /etc/modprobe.d/nvidia-graphics-drivers.disable
+  ignore_errors: yes
+
+- name: (GPUPASS) update initram-fs modules for VFIO
+  blockinfile:
+    path: /etc/initramfs-tools/modules
+    state: present
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough vfio module'
+    block: |
+      vfio
+      vfio_iommu_type1
+      vfio_pci
+      vfio_virqfd
+      softdep nvidia_{{gpu_driver_version}} pre: vfio vfio_pci
+      softdep nvidia pre: vfio vfio_pci
+      softdep snd_hda_intel pre: vfio vfio_pci
+
+- name: (GPUPASS) add GPU devices to VFIO conf
+  blockinfile:
+    path: /etc/modprobe.d/vfio.conf
+    create: yes
+    state: present
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu passthrough vfio-pci config'
+    block: |
+      options vfio-pci ids={{gpu_device_ids}}
+      options vfio-pci disable_vga=1
+
 - name: (GPUPASS) blacklist nvidia gpu driver
   blockinfile:
     path: /etc/modprobe.d/vfio.conf
     create: yes
     state: present
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough nvidia driver load order'
-    block: |-
-      softdep vfio post: nvidia_{{gpu_driver_version}} 
-      softdep vfio_pci post: nvidia_{{gpu_driver_version}} 
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough nvidia driver load order'
+    block: |
+      softdep nvidia_{{gpu_driver_version}} pre: vfio vfio_pci
+      softdep nvidia pre: vfio vfio_pci
   when: gpu_driver_version is defined
 
 - name: (GPUPASS) blacklist audio driver snd_hda_intel for GTX series
@@ -70,50 +84,12 @@
     path: /etc/modprobe.d/vfio.conf
     create: yes
     state: present
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough snd_hda_intel module load order'
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough snd_hda_intel module load order'
     block: |
-      softdep vfio post: snd_hda_intel
-      softdep vfio_pci post: snd_hda_intel
-#      blacklist snd_hda_intel
+      softdep snd_hda_intel pre: vfio vfio_pci
 
-- name: (GPUPASS) add GPU devices to VFIO conf
-  blockinfile:
-    path: /etc/modprobe.d/vfio.conf
-    create: yes
-    state: present
-    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough vfio-pci config'
-    block: |
-      options vfio-pci ids={{gpu_device_ids}}
-      options vfio-pci disable_vga=1
-
-  # blacklist nvidia_{{gpu_driver_version}}_modeset
-  # blacklist nvidia_{{gpu_driver_version}}_uvm
-  # blacklist nvidia_{{gpu_driver_version}}_drm     
-  # blacklist nvidia_{{gpu_driver_version}}
-  # blacklist nvidia
-
-# - name: (GPUPASS) black list nvidia drivers
-#   blockinfile:
-#     path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
-#     create: yes
-#     state: present
-#     marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough nvidia blacklist'
-#     block: |
-#       install nvidia /bin/false
-#       install nvidia_{{gpu_driver_version}} /bin/false
-#       install nvidia_{{gpu_driver_version}}_uvm /bin/false
-#       install nvidia_{{gpu_driver_version}}_modeset /bin/false
-#       install nvidia_{{gpu_driver_version}}_drm /bin/false
-#   when: gpu_driver_version is defined
-
-# - name: (GPUPASS) black list audio driver snd_hda_intel for GTX 1080 series
-#   blockinfile:
-#     path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
-#     create: yes
-#     state: present
-#     marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough snd_hda_intel blacklist'
-#     block: |
-#       install snd_hda_intel /bin/false
+- name: (GPUPASS) update initram-fs
+  command: update-initramfs -u
 
 - name: (GPUPASS) reboot
   shell: "sleep 5 && reboot"

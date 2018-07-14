@@ -1,21 +1,10 @@
 ---
 # Stop Passthrough. Let host take over GPU.
 
-- name: (GPUPASS) update initram-fs modules for VFIO
-  blockinfile:
-    path: /etc/initramfs-tools/modules
-    state: absent
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough vfio module'
-  register: initramfs_modules
-
-- name: (GPUPASS) update initram-fs
-  command: update-initramfs -u
-  when: initramfs_modules is changed
-
 - name: (GPUNOPASS) Get the installed NVIDIA driver version
   shell: dpkg -l | awk '{print $2}' | grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"
   register: detected_gpu_driver_version
-  ignore_error: yes
+  ignore_errors: yes
 
 - debug: var=detected_gpu_driver_version
 
@@ -24,26 +13,40 @@
     gpu_driver_version: "{{ detected_gpu_driver_version.stdout }}"
   when: (gpu_driver_version is undefined) and (detected_gpu_driver_version.stdout != "")
 
+- name: (GPUPASS) update initram-fs modules for VFIO
+  blockinfile:
+    path: /etc/initramfs-tools/modules
+    state: absent
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough vfio module'
+  register: initramfs_modules
+
+- name: (GPUPASS) enable nvidia driver configuration
+  command: mv /etc/modprobe.d/nvidia-graphics-drivers.disable /etc/modprobe.d/nvidia-graphics-drivers.conf
+  ignore_errors: yes
+
+- name: (GPUPASS) add GPU devices to VFIO conf
+  blockinfile:
+    path: /etc/modprobe.d/vfio.conf
+    create: yes
+    state: absent
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu passthrough vfio-pci config'
+
 - name: (GPUNOPASS) set nvidia driver to be loaded before vfio
   blockinfile:
     path: /etc/modprobe.d/vfio.conf
     create: yes
-    state: present
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough nvidia driver load order'
-    block: |-
-      softdep vfio pre: nvidia_{{gpu_driver_version}} 
-      softdep vfio_pci pre: nvidia_{{gpu_driver_version}} 
-  when: gpu_driver_version is defined
+    state: absent
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough nvidia driver load order'
 
 - name: (GPUNOPASS) set snd_hda_intel audio driver to be loaded before vfio
   blockinfile:
     path: /etc/modprobe.d/vfio.conf
     create: yes
-    state: present
-    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough snd_hda_intel module load order'
-    block: |
-      softdep vfio pre: snd_hda_intel
-      softdep vfio_pci pre: snd_hda_intel
+    state: absent
+    marker: '# {mark} ANSIBLE MANAGED BLOCK: gpu-passthrough snd_hda_intel module load order'
+
+- name: (GPUPASS) update initram-fs
+  command: update-initramfs -u
 
 - name: (GPUNOPASS) reboot and...
   shell: "sleep 5 && reboot"
