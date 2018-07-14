@@ -23,14 +23,14 @@
     - common
 
 - name: deploying servers
-  hosts: servers
+  hosts: server
   roles:
     - bash
     - fish
     - tmux
 
 - name: apply basic, advanced, and gui to desktops
-  hosts: desktops
+  hosts: desktop
   roles:
     - bash
     - fish
@@ -38,7 +38,7 @@
     - gui
 
 - name: install gpu drivers
-  hosts: gpus
+  hosts: gpu
   vars:
     gpu: true
     cuda_packages:

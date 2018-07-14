@@ -1,4 +1,4 @@
-[servers]
+[server]
 # cloudlet028.maas ansible_connection=ssh ansible_port=22
 # cloudlet027.maas ansible_connection=ssh ansible_port=22
 # cloudlet028.maas ansible_connection=ssh ansible_port=22
@@ -7,24 +7,16 @@
 # cloudlet001 ansible_connection=ssh ansible_port=22
 # localhost ansible_connection=local
 
-[desktops]
+[desktop]
 # localhost ansible_connection=local
 
-[gpus]
+[gpu]
 # cloudlet026.maas ansible_connection=ssh ansible_port=22
 # cloudlet027.maas ansible_connection=ssh ansible_port=22
 # cloudlet028.maas ansible_connection=ssh ansible_port=22
 # cloudlet029.maas ansible_connection=ssh ansible_port=22
 # cloudlet030.maas ansible_connection=ssh ansible_port=22
 # cloudlet001 ansible_connection=ssh ansible_port=22
-
-[tensorflow-object-detection-api]
-# cloudlet002 ansible_connection=ssh ansible_port=22
-# cloudlet026.maas ansible_connection=ssh ansible_port=22
-# cloudlet027.maas ansible_connection=ssh ansible_port=22
-# cloudlet028.maas ansible_connection=ssh ansible_port=22
-# cloudlet029.maas ansible_connection=ssh ansible_port=22
-# cloudlet030.maas ansible_connection=ssh ansible_port=22
 
 [cv]
 # cloudlet001 ansible_connection=ssh ansible_port=22
