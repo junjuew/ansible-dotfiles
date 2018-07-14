@@ -60,26 +60,30 @@
     gpu_driver_version: "{{ detected_gpu_driver_version.stdout }}"
   when: (gpu_driver_version is undefined) and (detected_gpu_driver_version.stdout != "")
 
+- debug: var=gpu_driver_version
+
 - name: (GPUPASS) black list nvidia drivers
   blockinfile:
-    path: /etc/modprobe.d/blacklist.conf
+    path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
     create: yes
     state: present
+    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough nvidia blacklist'
     block: |
-      blacklist nvidia
-      blacklist nvidia_{{gpu_driver_version}}
-      blacklist nvidia_{{gpu_driver_version}}_uvm
-      blacklist nvidia_{{gpu_driver_version}}_modeset
-      blacklist nvidia_{{gpu_driver_version}}_drm
+      install nvidia /bin/false
+      install nvidia_{{gpu_driver_version}} /bin/false
+      install nvidia_{{gpu_driver_version}}_uvm /bin/false
+      install nvidia_{{gpu_driver_version}}_modeset /bin/false
+      install nvidia_{{gpu_driver_version}}_drm /bin/false
   when: gpu_driver_version is defined
 
 - name: (GPUPASS) black list audio driver snd_hda_intel for GTX 1080 series
   blockinfile:
-    path: /etc/modprobe.d/blacklist.conf
+    path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
     create: yes
     state: present
+    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough snd_hda_intel blacklist'
     block: |
-      blacklist snd_hda_intel
+      install snd_hda_intel /bin/false
 
 - name: (GPUPASS) reboot and...
   shell: /sbin/reboot
