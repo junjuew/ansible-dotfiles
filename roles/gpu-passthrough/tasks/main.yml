@@ -17,6 +17,7 @@
   blockinfile:
     path: /etc/initramfs-tools/modules
     state: present
+    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough vfio module'
     block: |
       vfio
       vfio_iommu_type1
@@ -39,15 +40,6 @@
 
 - debug: var=gpu_device_ids
 
-- name: (GPUPASS) add GPU devices to VFIO conf
-  blockinfile:
-    path: /etc/modprobe.d/vfio.conf
-    create: yes
-    state: present
-    block: |
-      options vfio-pci ids={{gpu_device_ids}}
-      options vfio-pci disable_vga=1
-
 - name: (GPUPASS) Get the installed NVIDIA driver version
   shell: dpkg -l | awk '{print $2}' | grep "nvidia-[0-9]*$" | tail -n 1 | tr -dc "0-9"
   register: detected_gpu_driver_version
@@ -62,32 +54,73 @@
 
 - debug: var=gpu_driver_version
 
-- name: (GPUPASS) black list nvidia drivers
+- name: (GPUPASS) blacklist nvidia gpu driver
   blockinfile:
-    path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
+    path: /etc/modprobe.d/vfio.conf
     create: yes
     state: present
-    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough nvidia blacklist'
-    block: |
-      install nvidia /bin/false
-      install nvidia_{{gpu_driver_version}} /bin/false
-      install nvidia_{{gpu_driver_version}}_uvm /bin/false
-      install nvidia_{{gpu_driver_version}}_modeset /bin/false
-      install nvidia_{{gpu_driver_version}}_drm /bin/false
+    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough nvidia driver load order'
+    block: |-
+      softdep vfio post: nvidia_{{gpu_driver_version}} 
+      softdep vfio_pci post: nvidia_{{gpu_driver_version}} 
   when: gpu_driver_version is defined
 
-- name: (GPUPASS) black list audio driver snd_hda_intel for GTX 1080 series
+- name: (GPUPASS) blacklist audio driver snd_hda_intel for GTX series
   blockinfile:
-    path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
+    path: /etc/modprobe.d/vfio.conf
     create: yes
     state: present
-    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough snd_hda_intel blacklist'
+    marker: '# {marker} ANSIBLE MANAGED BLOCK: gpu-passthrough snd_hda_intel module load order'
     block: |
-      install snd_hda_intel /bin/false
+      softdep vfio post: snd_hda_intel
+      softdep vfio_pci post: snd_hda_intel
+#      blacklist snd_hda_intel
 
-- name: (GPUPASS) reboot and...
-  shell: /sbin/reboot
-  when: (grub is changed) and (initramfs_modules is changed)
+- name: (GPUPASS) add GPU devices to VFIO conf
+  blockinfile:
+    path: /etc/modprobe.d/vfio.conf
+    create: yes
+    state: present
+    marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough vfio-pci config'
+    block: |
+      options vfio-pci ids={{gpu_device_ids}}
+      options vfio-pci disable_vga=1
+
+  # blacklist nvidia_{{gpu_driver_version}}_modeset
+  # blacklist nvidia_{{gpu_driver_version}}_uvm
+  # blacklist nvidia_{{gpu_driver_version}}_drm     
+  # blacklist nvidia_{{gpu_driver_version}}
+  # blacklist nvidia
+
+# - name: (GPUPASS) black list nvidia drivers
+#   blockinfile:
+#     path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
+#     create: yes
+#     state: present
+#     marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough nvidia blacklist'
+#     block: |
+#       install nvidia /bin/false
+#       install nvidia_{{gpu_driver_version}} /bin/false
+#       install nvidia_{{gpu_driver_version}}_uvm /bin/false
+#       install nvidia_{{gpu_driver_version}}_modeset /bin/false
+#       install nvidia_{{gpu_driver_version}}_drm /bin/false
+#   when: gpu_driver_version is defined
+
+# - name: (GPUPASS) black list audio driver snd_hda_intel for GTX 1080 series
+#   blockinfile:
+#     path: /etc/modprobe.d/ansible-gpu-passthrough-blacklist.conf
+#     create: yes
+#     state: present
+#     marker: '# ANSIBLE MANAGED BLOCK: gpu passthrough snd_hda_intel blacklist'
+#     block: |
+#       install snd_hda_intel /bin/false
+
+- name: (GPUPASS) reboot
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: (grub is changed) or (initramfs_modules is changed)
 
 - name: (GPUPASS) Wait 600 seconds for target connection to become reachable/usable
   wait_for_connection:
+    delay: 20

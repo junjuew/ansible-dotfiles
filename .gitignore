@@ -2,3 +2,4 @@ roles/angstwad.ubuntu_python_apt
 roles/mbasanta.pip
 site.retry
 *~
+*.retry

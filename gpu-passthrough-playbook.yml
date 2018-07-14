@@ -19,6 +19,15 @@
         ansible_become: yes
       when: "ansible_distribution == 'Ubuntu'"
 
+- name: stop gpu passthrough. let host occupy GPU. 
+  hosts: gpu-stop-passthrough
+  tasks:
+    - include_role:
+        name: gpu-stop-passthrough
+      vars:
+        ansible_become: yes
+      when: "ansible_distribution == 'Ubuntu'"
+
 - name: install gpu drivers
   hosts: gpu
   vars:
