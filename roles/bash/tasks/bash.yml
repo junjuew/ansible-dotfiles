@@ -1,3 +1,9 @@
+---
+
+- name: rename bashrc if there is one
+  shell: "mv {{ ansible_env.HOME }}/.bashrc {{ ansible_env.HOME }}/.bashrc.old"
+  ignore_errors: true
+
 - name: configure bashrc
   copy: 
     src: bashrc
