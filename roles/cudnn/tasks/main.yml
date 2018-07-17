@@ -1,18 +1,26 @@
 ---
 
-- name: Check if libcudnn7 is installed
-  command: dpkg-query -W libcudnn7
+- name: Check if the specified version of libcudnn is installed
+  shell: dpkg -l | grep libcudnn{{ cudnn_major_version }} | grep {{ cudnn_minor_version }} | grep ^ii
   register: libcudnn_check_deb
   failed_when: libcudnn_check_deb.rc > 1
   changed_when: libcudnn_check_deb.rc == 1
 
-- name: download cudnn 7 deb (for cuda 9.0)
+- name: Remove libcudnn packages of different versions if a user chooses to do so
+  apt:
+    name: libcudnn*
+    state: absent
+  become: true
+  ignore_errors: true
+  when: (libcudnn_check_deb.rc == 1) and ({{ remove_other_versions }})
+
+- name: download cudnn deb
   get_url:
-    url: "https://www.dropbox.com/s/xh92a72zebkc8v7/libcudnn7_7.1.3.16-1%2Bcuda9.0_amd64.deb?dl=1"
-    dest: "/tmp/libcudnn7_7.1.3.16-1+cuda9.0_amd64.deb"
+    url: "http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{{ ubuntu_version }}/x86_64/libcudnn{{ cudnn_major_version }}_{{ cudnn_minor_version}}-1%2Bcuda{{ cuda_version }}_amd64.deb"
+    dest: "/tmp/libcudnn{{ cudnn_major_version}}_{{ cudnn_minor_version }}-1%2Bcuda{{ cuda_version }}_amd64.deb"
   when: libcudnn_check_deb.rc == 1
 
 - name: Install libcudnn
-  apt: deb="/tmp/libcudnn7_7.1.3.16-1+cuda9.0_amd64.deb"
+  apt: deb="/tmp/libcudnn{{ cudnn_major_version}}_{{ cudnn_minor_version }}-1%2Bcuda{{ cuda_version }}_amd64.deb"
   become: true
   when: libcudnn_check_deb.rc == 1

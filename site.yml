@@ -37,14 +37,26 @@
     - { role: tmux, tags: ['tmux'] }
     - gui
 
-- name: install gpu drivers
+- name: install gpu drivers, cuda, and cudnn
   hosts: gpu
-  vars:
-    gpu: true
-    cuda_packages:
-      - cuda-9-0
-  roles:
-    - { role: CSCfi.cuda, become: true }
+  tasks:
+      - name: install cuda
+        include_role:
+          name: CSCfi.cuda
+        vars:
+          gpu: true
+          cuda_packages: 
+            - cuda-9-0
+          ansible_become: yes
+      - name: install cudnn
+        include_role:
+          name: cudnn
+        vars:
+          ubuntu_version: 1604
+          cudnn_major_version: 7
+          cudnn_minor_version: 7.1.4.18
+          cuda_version: 9.0
+          remove_other_versions: true
 
 - name: install packages needed for cv
   hosts: cv
