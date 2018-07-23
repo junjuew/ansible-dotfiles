@@ -24,3 +24,14 @@
   apt: deb="/tmp/libcudnn{{ cudnn_major_version}}_{{ cudnn_minor_version }}-1%2Bcuda{{ cuda_version }}_amd64.deb"
   become: true
   when: libcudnn_check_deb.rc == 1
+
+- name: download cudnn-dev deb
+  get_url:
+    url: "http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{{ ubuntu_version }}/x86_64/libcudnn{{ cudnn_major_version }}-dev_{{ cudnn_minor_version}}-1%2Bcuda{{ cuda_version }}_amd64.deb"
+    dest: "/tmp/libcudnn{{ cudnn_major_version}}-dev_{{ cudnn_minor_version }}-1%2Bcuda{{ cuda_version }}_amd64.deb"
+  when: libcudnn_check_deb.rc == 1
+
+- name: Install libcudnn-dev
+  apt: deb="/tmp/libcudnn{{ cudnn_major_version}}-dev_{{ cudnn_minor_version }}-1%2Bcuda{{ cuda_version }}_amd64.deb"
+  become: true
+  when: libcudnn_check_deb.rc == 1
