@@ -1,0 +1,3 @@
+---
+nvidia_container_runtime_package: "nvidia-container-runtime"
+nvidia_container_package: "nvidia-docker2"

@@ -14,7 +14,7 @@ case $key in
         ;;
     -h|--help)
         printf "Usage: run.sh [-s] [-p|--pass_through_args ansible-playbook-arguments]\n"
-        printf "Run ansible-playbook using site.yml\n\n"
+        printf "Run ansible-playbook using common-setup-playbook.yml\n\n"
         printf "\t-s setup a passwordless sudoer user first.\n"
         printf "\t-p|--pass_through_args arguments passed to ansible-playbook cmd.\n"
         printf "Example:\n"
@@ -50,9 +50,9 @@ if [ "$setup_user" = true ] ; then
     export ANSIBLE_ENV_CONFIG_GITHUB_USER=${github_username}
 
     echo "Running ansible playbook to create USER ${username}"
-    ansible-playbook -i hosts -u ${existing_user} --tags "must_run,user_setup" site.yml
+    ansible-playbook -i hosts -u ${existing_user} --tags "must_run,user_setup" common-setup-playbook.yml
     existing_user=${username}
 fi
 
 echo "Running ansible playbook as USER ${existing_user}"
-ansible-playbook -i hosts -u ${existing_user} --skip-tags "user_setup" ${extra_args} site.yml
+ansible-playbook -i hosts -u ${existing_user} --skip-tags "user_setup" ${extra_args} common-setup-playbook.yml

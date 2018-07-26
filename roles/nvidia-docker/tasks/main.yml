@@ -22,8 +22,27 @@
     name: nvidia-docker
     state: absent
 
-- name: nvidia-docker (v2) is installed
+- name: install nvidia-container-runtime package
   apt:
-    name: "nvidia-docker2={{ nvidia_docker_version }}+docker{{ nvidia_docker_docker_version }}-1"
+    name: "{{ nvidia_container_runtime_package }}"
+    state: present
+
+- name: install nvidia-docker (v2)
+  apt:
+    name: "{{ nvidia_docker_package }}"
+    state: present
+  notify: restart docker service
+
+- name: remove docker default-runtime config
+  lineinfile:
+    path: /etc/docker/daemon.json
+    regexp: '"default-runtime"'
+    state: absent
+
+- name: set nvidia-docker to be the default docker runtime
+  lineinfile:
+    path: /etc/docker/daemon.json
+    line: '"default-runtime": "nvidia",'
+    insertbefore: '"runtimes":'
     state: present
   notify: restart docker service
