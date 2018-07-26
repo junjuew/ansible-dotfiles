@@ -1,0 +1,4 @@
+---
+kubelet_package: "kubelet"
+kubeadm_package: "kubeadm"
+kubectl_package: "kubectl"

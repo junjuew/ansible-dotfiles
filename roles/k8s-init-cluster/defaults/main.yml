@@ -1,0 +1,2 @@
+---
+kubeadm_init_extra_args: ""

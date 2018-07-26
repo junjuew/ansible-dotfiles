@@ -1,0 +1,48 @@
+---
+# Install Kubernetes components
+
+- name: install APT Transport HTTPS
+  apt:
+    name: apt-transport-https
+    state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: add Kubernetes apt-key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: add Kubernetes' APT repository
+  apt_repository:
+    repo: "deb http://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release }} main"
+    state: present
+    filename: 'kubernetes'
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install kubelet
+  package:
+    name: "{{ kubelet_package }}"
+    state: present
+    update_cache: true
+  become: true
+
+- name: install kubeadm
+  package:
+    name: "{{ kubeadm_package }}"
+    state: present
+  become: true
+
+- name: install kubectl
+  package:
+    name: "{{ kubectl_package }}"
+    state: present
+  become: true
+
+- name: disable swap
+  shell: "swapoff -a"
+  become: true
+  when: ansible_distribution == 'Ubuntu'

@@ -1,0 +1,8 @@
+[gpu]
+cloudlet030.maas ansible_connection=ssh ansible_port=22
+
+[k8s-master]
+cloudlet030.maas ansible_connection=ssh ansible_port=22
+
+[k8s-worker]
+cloudlet030.maas ansible_connection=ssh ansible_port=22

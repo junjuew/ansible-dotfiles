@@ -1,0 +1,54 @@
+---
+# This playbook installs kubernetes and its dependencies for GPU-equipped machines
+
+- hosts: all
+  gather_facts: False 
+  tasks:
+  - name: install python 2 if not installed
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
+    become: true
+
+- name: install nvidia drivers
+  hosts: gpu
+  tasks:
+      - name: install nvidia driver
+        include_role:
+          name: nvidia-driver
+        vars:
+          nvidia_driver_package: nvidia-396
+
+- name: install docker packages
+  hosts: k8s-master:k8s-worker
+  tasks:
+    - include_role:
+        name: geerlingguy.docker
+      vars: 
+        docker_package: "docker-ce=17.03.2~ce-0~ubuntu-xenial"
+        docker_package_state: present
+        docker_users: 
+          - "{{ ansible_env.USER }}"
+        ansible_become: yes
+      when: ("ansible_distribution == 'Ubuntu'") and ("ansible_distribution_release == 'xenial'")
+
+- name: install nvidia-docker
+  hosts: gpu
+  tasks:
+    - include_role:
+        name: nvidia-docker
+      vars:
+        nvidia_container_runtime_package: nvidia-container-runtime=2.0.0+docker17.03.2-1
+        nvidia_docker_package: nvidia-docker2=2.0.3+docker17.03.2-1
+        ansible_become: yes
+      when: "ansible_distribution == 'Ubuntu'"
+
+- name: install k8s
+  hosts: k8s-master:k8s-worker
+  tasks:
+    - include_role:
+        name: k8s
+      vars:
+        kubelet_package: kubelet=1.11.1-00
+        kubeadm_package: kubeadm=1.11.1-00
+        kubectl_package: kubectl=1.11.1-00
+        ansible_become: yes
+      when: "ansible_distribution == 'Ubuntu'"

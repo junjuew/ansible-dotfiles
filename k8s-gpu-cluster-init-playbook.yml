@@ -1,0 +1,54 @@
+---
+# This playbook creates a k8s cluster with GPU support.
+# k8s-gpu-playbook.yml should be run before this playbook to make sure all packages are installed.
+
+- name: create a k8s cluster
+  hosts: k8s-master
+  tasks:
+    - include_role:
+        name: k8s-init-cluster
+
+- hosts: k8s-master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: get kubeadmn join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: record kubeadm join command
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+- hosts: k8s-worker
+  become: yes
+  tasks:
+    - name: add k8s nodes to the cluster
+      shell: "{{ hostvars[groups['k8s-master'][0]]['join_command'] }}"
+  ignore_errors: yes # ignoring error here since this command will fail is a node is both a k8s-master and a k8s-worker
+
+- hosts: k8s-worker
+  become: yes
+  tasks:
+    - name: enable DevicePlugin
+      lineinfile:
+        path: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+        line: Environment="KUBELET_EXTRA_ARGS=--feature-gates=DevicePlugins=true"
+        insertafter: '[Service]'
+        state: present
+
+- hosts: k8s-worker
+  become: yes
+  tasks:
+    - name: restart kubelet
+      become: yes
+      systemd: 
+        daemon_reload: yes
+        name: kubelet
+        state: restarted
+      when: "ansible_distribution == 'Ubuntu'"
+
+- hosts: k8s-master
+  tasks:
+    - name: deploy the nvidia device plugin daemonset
+      shell: "kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.11/nvidia-device-plugin.yml"
