@@ -1,0 +1,9 @@
+[Unit]
+Description=Set NVIDIA GPU card's compute mode to be default
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'command -v nvidia-smi && nvidia-smi -c 0'
