@@ -22,6 +22,20 @@
     name: nvidia-docker
     state: absent
 
+- name: remove installed nvidia-container-runtime package when removed_installed is set
+  apt:
+    name: nvidia-container-runtime
+    purge: yes
+    state: absent
+  when: remove_installed
+
+- name: remove installed nvidia-docker2 when removed_installed is set
+  apt:
+    name: nvidia-docker2
+    purge: yes
+    state: absent
+  when: remove_installed
+
 - name: install nvidia-container-runtime package
   apt:
     name: "{{ nvidia_container_runtime_package }}"

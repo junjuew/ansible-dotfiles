@@ -14,14 +14,14 @@
   become: true
   register: nvidia_driver_installation
 
-- name: make sure the nvidia GPU is started in the "DEFAULT" computing mode
+- name: install a service to make sure the GPU is started in the "DEFAULT" computing mode
   copy: 
     src: nvidia-smi-compute-mode.service
     dest: /etc/systemd/system/nvidia-smi-compute-mode.service
   become: true
   when: ansible_distribution == 'Ubuntu'
 
-- name: enable such service
+- name: enable above service at boot
   systemd: 
     name: nvidia-smi-compute-mode.service
     enabled: yes

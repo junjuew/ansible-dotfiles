@@ -20,6 +20,12 @@
 - name: install docker packages
   hosts: k8s-master:k8s-worker
   tasks:
+    - name: uninstall previously installed docker
+      package: 
+        name: docker-ce
+        state: absent
+      become: yes
+
     - include_role:
         name: geerlingguy.docker
       vars: 
