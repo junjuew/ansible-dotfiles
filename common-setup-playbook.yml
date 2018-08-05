@@ -37,6 +37,15 @@
     - { role: tmux, tags: ['tmux'] }
     - gui
 
+- name: install desktop dev environment
+  hosts: dev-desktop
+  roles:
+    - bash
+    - fish
+    - { role: tmux, tags: ['tmux'] }
+    - gui
+    - vscode
+
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu
   tasks:

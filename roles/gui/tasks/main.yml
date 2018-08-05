@@ -6,8 +6,8 @@
 - include_tasks: gnome-tweak-tool.yml
   tags: gnome-tweak-tool
 
-- include_tasks: guake.yml
-  tags: guake
+- include_tasks: tilda.yml
+  tags: tilda
 
 - include_tasks: autostart.yml
   tags: autostart

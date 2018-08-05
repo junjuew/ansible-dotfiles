@@ -10,6 +10,9 @@
 [desktop]
 # localhost ansible_connection=local
 
+[dev-desktop]
+# localhost ansible_connection=local
+
 [gpu]
 # cloudlet026.maas ansible_connection=ssh ansible_port=22
 # cloudlet027.maas ansible_connection=ssh ansible_port=22

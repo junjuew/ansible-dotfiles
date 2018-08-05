@@ -1,0 +1,73 @@
+---
+# install and setup custom settings for VSCode
+
+- name: install vscode
+  include_role:
+    name: ngetchell.vscode
+  vars: 
+    ansible_become: yes
+
+- name: rename keybindings.json if there is one
+  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/keybindings.json {{ ansible_env.HOME }}/.config/Code/User/keybindings.json.old"
+  ignore_errors: true
+
+- name: rename keybindings.json if there is one
+  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/settings.json {{ ansible_env.HOME }}/.config/Code/User/settings.json.old"
+  ignore_errors: true
+
+- name: Copy keybindings.json
+  copy: 
+    src: keybindings.json
+    dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
+
+- name: Copy settings.json
+  copy: 
+    src: settings.json
+    dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+
+- name: install extensions
+  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/settings.json {{ ansible_env.HOME }}/.config/Code/User/settings.json.old"
+  ignore_errors: true
+
+- name: install multiple extensions
+  shell: "code --install-extension {{ item }}"
+  loop:
+    - 2gua.rainbow-brackets
+    - austin.code-gnu-global
+    - batisteo.vscode-django
+    - christian-kohler.npm-intellisense
+    - DavidAnson.vscode-markdownlint
+    - dbaeumer.jshint
+    - dbaeumer.vscode-eslint
+    - donjayamanne.jupyter
+    - donjayamanne.python-extension-pack
+    - DotJoshJohnson.xml
+    - eamodio.gitlens
+    - EditorConfig.EditorConfig
+    - eg2.tslint
+    - esbenp.prettier-vscode
+    - formulahendry.code-runner
+    - formulahendry.dotnet-test-explorer
+    - HookyQR.beautify
+    - James-Yu.latex-workshop
+    - jhofker.awesome-vscode
+    - kriegalex.vscode-cudacpp
+    - Leopotam.csharpfixformat
+    - magicstack.MagicPython
+    - mitaki28.vscode-clang
+    - ms-python.python
+    - ms-vscode.cpptools
+    - ms-vscode.csharp
+    - ms-vscode.Go
+    - ms-vsliveshare.vsliveshare
+    - oderwat.indent-rainbow
+    - PeterJausovec.vscode-docker
+    - rbbit.typescript-hero
+    - sandcastle.whitespace
+    - stkb.rewrap
+    - tht13.python
+    - tomoki1207.pdf
+    - VisualStudioExptTeam.vscodeintellicode
+    - vscodevim.vim
+    - wholroyd.jinja
+    - yzhang.markdown-all-in-one
