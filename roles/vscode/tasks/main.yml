@@ -25,10 +25,6 @@
     src: settings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
 
-- name: install extensions
-  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/settings.json {{ ansible_env.HOME }}/.config/Code/User/settings.json.old"
-  ignore_errors: true
-
 - name: install multiple extensions
   shell: "code --install-extension {{ item }}"
   loop:

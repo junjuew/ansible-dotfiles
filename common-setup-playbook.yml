@@ -44,7 +44,7 @@
     - fish
     - { role: tmux, tags: ['tmux'] }
     - gui
-    - vscode
+    - { role: vscode, tags: ['vscode']}
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu
