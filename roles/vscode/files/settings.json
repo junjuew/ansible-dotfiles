@@ -16,7 +16,7 @@
             "commands": [":nohl"],
         },
         {
-            "before": ["<Enter>"],
+            "before": ["<C-j>"],
             "after": ["o", "<Esc>"],
         },
     ],

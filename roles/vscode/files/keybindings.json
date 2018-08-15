@@ -159,4 +159,9 @@
         "key": "ctrl+g t",
         "command": "editor.action.goToTypeDefinition"
     },
+    {
+        "key": "enter",
+        "command": "-latex-workshop.onEnterKey",
+        "when": "editorTextFocus && !editorReadonly && !suggestWidgetVisible && editorLangId == 'latex' && vim.mode != 'CommandlineInProgress'"
+    },
 ]
