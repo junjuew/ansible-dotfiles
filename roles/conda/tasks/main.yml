@@ -36,5 +36,14 @@
       path: '~/.bashrc_custom'
       line: 'export PATH=${HOME}/miniconda/bin:${PATH}'
 
+  - name: rename condarc if there is one
+    shell: "mv {{ ansible_env.HOME }}/.condarc {{ ansible_env.HOME }}/.condarc.old"
+    ignore_errors: true
+
+  - name: copy .condarc file
+    copy:
+      src: condarc
+      dest: "{{ ansible_env.HOME}}/.condarc"
+
 # config.fish already handles sourcing miniconda fish config file gracefully. No
 # need to add it here
