@@ -1,4 +1,5 @@
 {
+    "gitlens.currentLine.scrollable": false,
     "gitlens.advanced.messages": {
         "suppressShowKeyBindingsNotice": true
     },
