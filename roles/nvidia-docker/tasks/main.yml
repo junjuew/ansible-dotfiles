@@ -8,6 +8,11 @@
     url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
 
+- name: make sure curl is installed
+  apt:
+    name: curl
+    state: present
+
 - name: register nvidia-docker (v2) apt repository is registered
   shell: 'distribution=$(. /etc/os-release;echo $ID$VERSION_ID); \
   curl -s -L
