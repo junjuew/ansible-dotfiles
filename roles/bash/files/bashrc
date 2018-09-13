@@ -115,10 +115,8 @@ fi
 # enable ctrl-s to foward search in bash
 stty -ixon
 
-# set default editor if emacs or vim exists
-if command -v emacs 2>&1 > /dev/null; then
-   export EDITOR="emacs -nw"
-elif command -v vim 2>&1 > /dev/null; then
+# set default editor if vim exists
+if command -v vim 2>&1 > /dev/null; then
    export EDITOR="vim"
 fi
 
