@@ -1,7 +1,7 @@
 ---
-
-- include_tasks: emacs-gui.yml
-  tags: emacs-gui
+# stop installing emacs, since vs code is given preference
+# - include_tasks: emacs-gui.yml
+#  tags: emacs-gui
 
 - include_tasks: gnome-tweak-tool.yml
   tags: gnome-tweak-tool
