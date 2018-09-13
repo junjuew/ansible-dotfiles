@@ -1,0 +1,4 @@
+---
+- name: install vagrant
+  package: name=vagrant state=latest
+  become: true

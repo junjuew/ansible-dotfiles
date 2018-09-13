@@ -77,6 +77,7 @@
   hosts: kvm-host
   roles:
     - kvm
+    - vagrant
 
 - name: install docker packages
   hosts: docker-host
