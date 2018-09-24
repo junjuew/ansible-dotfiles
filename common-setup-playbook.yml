@@ -36,6 +36,7 @@
     - fish
     - { role: tmux, tags: ['tmux'] }
     - gui
+    - lazygit
 
 - name: install desktop dev environment
   hosts: dev-desktop
@@ -45,6 +46,7 @@
     - { role: tmux, tags: ['tmux'] }
     - gui
     - { role: vscode, tags: ['vscode']}
+    - lazygit
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu

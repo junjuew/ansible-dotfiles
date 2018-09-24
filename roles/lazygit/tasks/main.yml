@@ -1,0 +1,10 @@
+---
+- name: add apt repository
+  apt_repository:
+    repo: ppa:lazygit-team/release
+    state: present
+  become: true
+
+- name: install lazygit
+  package: name=lazygit state=latest
+  become: true

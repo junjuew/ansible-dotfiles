@@ -1,7 +1,7 @@
 ---
 # install tilda
 
-- name: install guake
+- name: install tilda
   package:
     name: tilda
     state: present
