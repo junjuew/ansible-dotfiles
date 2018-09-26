@@ -27,4 +27,7 @@
         "<C-f>": false
     },
     "explorer.confirmDelete": false,
+    "python.jediEnabled": false,
+    "python.formatting.autopep8Args": ["--max-line-length", "120"],
+
 }
