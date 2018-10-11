@@ -28,6 +28,11 @@
     },
     "explorer.confirmDelete": false,
     "python.jediEnabled": false,
-    "python.formatting.autopep8Args": ["--max-line-length", "120"],
+    "python.formatting.autopep8Args": [
+        "--max-line-length",
+        "120"
+    ],
+    "explorer.confirmDragAndDrop": false,
+    "workbench.editor.enablePreview": false
 
 }
