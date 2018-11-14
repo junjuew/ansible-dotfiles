@@ -16,7 +16,3 @@ What's in this Repo
 * requirements.yml: role requirements from Ansible Galaxy.
 * roles: tasks that would be performed for different hosts, organized by roles.
 * site.yml: playbook to execute which specifies roles for host groups. 
-
-Role "common"
------------------------
-ntp, git, pexpect
