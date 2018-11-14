@@ -1,4 +1,10 @@
-# Personal Configuration Setup on a New Machine Using Ansible
+# Automated Configuration, Preferences and Software Installation for Linux using Ansible Scripts
+
+These ansible scripts gear up your vanilla Linux (with a focus on Ubuntu) with
+helpful and better defaults and packages to make you smile. In ancient times,
+such automated configurations are often implemented with [Dotfiles]. But why use
+easily breakable and hard to read shell scripts when we have mature IT
+automation tools like [Ansible](https://www.ansible.com/)?
 
 ## How to Use
 
