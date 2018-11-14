@@ -29,10 +29,14 @@
   shell: "code --install-extension {{ item }}"
   loop:
     - 2gua.rainbow-brackets
+    - annsk.alignment
     - austin.code-gnu-global
+    - aztechcorps.aio-compiler
     - batisteo.vscode-django
     - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
     - DavidAnson.vscode-markdownlint
+    - davidbroetje.algorithm-mnemonics-vscode
     - dbaeumer.jshint
     - dbaeumer.vscode-eslint
     - donjayamanne.jupyter
@@ -44,8 +48,12 @@
     - esbenp.prettier-vscode
     - formulahendry.code-runner
     - formulahendry.dotnet-test-explorer
+    - GitHub.vscode-pull-request-github
+    - hars.CppSnippets
     - HookyQR.beautify
+    - IBM.output-colorizer
     - James-Yu.latex-workshop
+    - jchannon.csharpextensions
     - jhofker.awesome-vscode
     - kriegalex.vscode-cudacpp
     - Leopotam.csharpfixformat
@@ -55,12 +63,23 @@
     - ms-vscode.csharp
     - ms-vscode.Go
     - ms-vsliveshare.vsliveshare
+    - msjsdiag.debugger-for-chrome
     - oderwat.indent-rainbow
     - PeterJausovec.vscode-docker
     - rbbit.typescript-hero
+    - reloadedextensions.reloaded-cpp
     - sandcastle.whitespace
+    - searKing.preview-vscode
+    - sourcegraph.sourcegraph
     - stkb.rewrap
+    - streetsidesoftware.code-spell-checker
     - tht13.python
+    - tomoki1207.pdf
+    - twxs.cmake
+    - vector-of-bool.cmake-tools
     - VisualStudioExptTeam.vscodeintellicode
     - vscodevim.vim
+    - webfreak.debug
     - wholroyd.jinja
+    - wlhe.c-cpp-snippets
+    - yzhang.markdown-all-in-one
