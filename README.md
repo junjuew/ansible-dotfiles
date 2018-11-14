@@ -15,4 +15,14 @@ What's in this Repo
 * group_vars: default variables for groups of machines.
 * requirements.yml: role requirements from Ansible Galaxy.
 * roles: tasks that would be performed for different hosts, organized by roles.
-* site.yml: playbook to execute which specifies roles for host groups. 
+* hosts-*: host group files with machine access info. Hosts are the target of
+  playbook. There is one such hosts file for each playbook to demonstrate
+  available roles to apply with the playbook.
+* *-playbook.yml: playbooks to set up machines, including
+  * [common-setup-playbook.yml](common-setup-playbook.yml): playbook to setup
+        development machines.
+  * [gpu-passthrough-playbook.yml](gpu-passthrough-playbook.yml): playbook to
+    enable/disable gpu passthrough to kvm guests.
+  * [k8s-gpu-playbook.yml](k8s-gpu-playbook.yml) and
+    [k8s-gpu-cluster-init-playbook.yml](k8s-gpu-cluster-init-playbook.yml):
+    playbooks to install and create k8s GPU cluster.

@@ -1,5 +1,7 @@
 ---
-# This playbook installs kubernetes and its dependencies for GPU-equipped machines
+# This playbook installs kubernete packages and its dependencies for GPU-equipped machines.
+# It does not initialize or create a cluster.  Use k8s-gpu-cluster-init-playbook to create a 
+# cluster after k8s packages are installed.
 
 - hosts: all
   gather_facts: False 
