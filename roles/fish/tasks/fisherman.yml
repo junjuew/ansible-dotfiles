@@ -12,10 +12,10 @@
     dest: "~/.config/fish/functions/fisher.fish"
 
 - name: install z fish binding
-  shell: env fish -c "fisher z"
+  shell: env fish -c "fisher add jethrokuan/z"
 
 - name: install fzf fish binding
-  shell: env fish -c "fisher fzf"
+  shell: env fish -c "fisher add jethrokuan/fzf"
 
 - name: install fish bang-bang
-  shell: env fish -c "fisher nyarly/fish-bang-bang"
+  shell: env fish -c "fisher add nyarly/fish-bang-bang"

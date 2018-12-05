@@ -1,9 +1,0 @@
----
-# This playbook contains common plays that will be run on all nodes.
-
-- name: install ntp
-  package: name=ntp state=present
-  become: true
-
-- name: ensure ntp is running
-  service: name=ntp state=started enabled=yes

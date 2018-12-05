@@ -26,7 +26,7 @@
     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
 
 - name: install multiple extensions
-  shell: "code --install-extension {{ item }}"
+  shell: "echo 0 | code --install-extension {{ item }}"
   loop:
     - 2gua.rainbow-brackets
     - annsk.alignment
