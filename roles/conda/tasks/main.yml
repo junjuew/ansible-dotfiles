@@ -44,6 +44,7 @@
     copy:
       src: condarc
       dest: "{{ ansible_env.HOME}}/.condarc"
+  when: conda_installed.rc != 0
 
 # config.fish already handles sourcing miniconda fish config file gracefully. No
 # need to add it here

@@ -19,3 +19,6 @@
 
 - name: install fish bang-bang
   shell: env fish -c "fisher add nyarly/fish-bang-bang"
+
+- name: install bass to allow running bash scripts in fish
+  shell: env fish -c "fisher add edc/bass"
