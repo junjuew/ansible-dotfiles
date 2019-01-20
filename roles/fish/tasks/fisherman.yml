@@ -6,10 +6,12 @@
     path: "~/.config/fish/functions"
     state: directory
 
-- name: install fisherman
+- name: install or update fisherman
   get_url:
     url: https://git.io/fisher
     dest: "~/.config/fish/functions/fisher.fish"
+    force: yes
+    backup: yes
 
 - name: install z fish binding
   shell: env fish -c "fisher add jethrokuan/z"
