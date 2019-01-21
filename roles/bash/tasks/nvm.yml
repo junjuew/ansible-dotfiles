@@ -10,6 +10,7 @@
 - name: add nvm path to bashrc_custom
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc_custom"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK nvm #"
     block: |
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

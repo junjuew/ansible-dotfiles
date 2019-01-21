@@ -22,19 +22,16 @@
   copy: 
     src: config.fish
     dest: "~/.config/fish/config.fish"
-    backup: yes
 
 - name: Install custom fish aliases
   copy: 
     src: aliases.fish
     dest: "~/.config/fish/aliases.fish"
-    backup: yes
 
 - name: Install custom fish functions
   copy: 
     src: functions
     dest: "~/.config/fish"
-    backup: yes
 
 - name: clone fish git repo
   git:

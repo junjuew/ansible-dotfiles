@@ -1,8 +1,8 @@
 ---
-- name: check if conda is installed
-  shell: 'command -v conda > /dev/null 2>&1'
-  register: conda_installed
-  ignore_errors: yes
+- name: check if miniconda dir exists
+  stat:
+    path: "{{ ansible_env.HOME }}/miniconda"
+  register: miniconda_dir
 
 - block:
   - name: download miniconda installation script
@@ -10,8 +10,7 @@
       url: 'https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh'
       dest: '/tmp/miniconda.sh'
 
-  - name: run the installation script. Does not let the installer modify the
-  bashrc and install miniconda to directory miniconda
+  - name: run the installation script. Does not let the installer modify the bashrc and install miniconda to directory miniconda
     shell: 'bash /tmp/miniconda.sh -b -p ${HOME}/miniconda'
 
   - name: create bashrc_custom file if it do not exits
@@ -26,7 +25,7 @@
   - name: add miniconda path to bashrc_custom
     blockinfile:
       path: "{{ ansible_env.HOME }}/.bashrc_custom"
-      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK miniconda -->"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK miniconda #"
       block: |
         . {{ ansible_env.HOME }}/miniconda/etc/profile.d/conda.sh
         conda activate
@@ -36,7 +35,7 @@
       src: condarc
       dest: "{{ ansible_env.HOME}}/.condarc"
       backup: yes
-  when: conda_installed.rc != 0
+  when: miniconda_dir.stat.exists == False
 
 # config.fish already handles sourcing miniconda fish config file gracefully. No
 # need to add it here

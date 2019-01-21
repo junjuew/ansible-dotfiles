@@ -7,23 +7,22 @@
   vars: 
     ansible_become: yes
 
-- name: rename keybindings.json if there is one
-  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/keybindings.json {{ ansible_env.HOME }}/.config/Code/User/keybindings.json.old"
-  ignore_errors: true
-
-- name: rename keybindings.json if there is one
-  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/settings.json {{ ansible_env.HOME }}/.config/Code/User/settings.json.old"
-  ignore_errors: true
+- name: Create vscode user setting directory
+  file: 
+    path: "{{ ansible_env.HOME }}/.config/Code/User"
+    state: directory
 
 - name: Copy keybindings.json
   copy: 
     src: keybindings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
+    backup: yes
 
 - name: Copy settings.json
   copy: 
     src: settings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    backup: yes
 
 - name: install multiple extensions
   shell: "echo 0 | code --install-extension {{ item }}"
@@ -32,17 +31,20 @@
     - annsk.alignment
     - austin.code-gnu-global
     - aztechcorps.aio-compiler
-    - batisteo.vscode-django
+    - bierner.lit-html
+    - blanu.vscode-styled-jsx
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - DavidAnson.vscode-markdownlint
     - davidbroetje.algorithm-mnemonics-vscode
     - dbaeumer.jshint
+    - dbaeumer.vscode-eslint
     - donjayamanne.jupyter
-    - donjayamanne.python-extension-pack
     - DotJoshJohnson.xml
+    - dsznajder.es7-react-js-snippets
     - eamodio.gitlens
     - EditorConfig.EditorConfig
+    - eg2.vscode-npm-script
     - esbenp.prettier-vscode
     - formulahendry.code-runner
     - formulahendry.dotnet-test-explorer
@@ -59,8 +61,10 @@
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
     - njpwerner.autodocstring
+    - NuclleaR.vscode-extension-auto-import
     - oderwat.indent-rainbow
     - PeterJausovec.vscode-docker
+    - redhat.java
     - reloadedextensions.reloaded-cpp
     - sandcastle.whitespace
     - searKing.preview-vscode
@@ -71,7 +75,13 @@
     - twxs.cmake
     - vector-of-bool.cmake-tools
     - VisualStudioExptTeam.vscodeintellicode
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-pack
+    - vscjava.vscode-java-test
+    - vscjava.vscode-maven
     - vscodevim.vim
+    - vsmobile.vscode-react-native
     - webfreak.debug
     - wholroyd.jinja
     - wlhe.c-cpp-snippets

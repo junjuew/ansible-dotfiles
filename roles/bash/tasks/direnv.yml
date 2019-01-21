@@ -8,9 +8,10 @@
     state: present
   become: true
 
-- name: add bash hook
-  lineinfile:
-    path: '~/.bashrc'
-    regexp: '.*direnv.*bash'
-    insertbefore: 'exec fish$'
-    line: 'eval "$(direnv hook bash)"'
+- name: add direnv's hook for bash
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK direnv #"
+    insertbefore: 'fish$'
+    block: |
+      eval "$(direnv hook bash)"
