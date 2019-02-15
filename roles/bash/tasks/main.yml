@@ -23,3 +23,6 @@
 
 - include_tasks: pathpicker.yml
   tags: pathpicker
+
+- include_tasks: nvm.yml
+  tags: nvm

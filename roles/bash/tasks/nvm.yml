@@ -1,0 +1,17 @@
+---
+# nvm is a nodejs version manager, implemented as a bash script
+# https://github.com/creationix/nvm#ansible
+- name: install nvm
+  shell: >
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: add nvm path to bashrc_custom
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc_custom"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK nvm #"
+    block: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

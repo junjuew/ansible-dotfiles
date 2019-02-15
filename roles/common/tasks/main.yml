@@ -1,6 +1,6 @@
 ---
-- include_tasks: ntpd.yml
-  tags: ntpd
+- include_tasks: time.yml
+  tags: time
 
 # ansible expect module needs pexpect on the remote
 - include_tasks: pexpect.yml

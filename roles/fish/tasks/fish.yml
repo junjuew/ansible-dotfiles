@@ -4,7 +4,8 @@
 
 - name: add fish repository
   apt_repository:
-        repo: ppa:fish-shell/release-2
+    repo: ppa:fish-shell/release-2
+    state: present
   become: true
   when: ansible_distribution == 'Ubuntu'
 
@@ -36,9 +37,7 @@
   git:
     repo: https://github.com/fish-shell/fish-shell
     dest: "/tmp/fish-shell"
+    version: "fb679ac9c3eefee8714e175a469fcd0ceaf05ea6" # the last commit before fish 3.0.0
 
 - name: Install fish completions (files)
   command: cp -r /tmp/fish-shell/share/completions ~/.config/fish/completions
-
-# # - name: Install oh my fish
-#   shell: curl -L http://get.oh-my.fish | fish

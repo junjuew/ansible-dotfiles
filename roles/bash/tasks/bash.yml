@@ -1,15 +1,17 @@
 ---
-
-- name: rename bashrc if there is one
-  shell: "mv {{ ansible_env.HOME }}/.bashrc {{ ansible_env.HOME }}/.bashrc.old"
-  ignore_errors: true
-
-- name: configure bashrc
+- name: copy bashrc
   copy: 
     src: bashrc
     dest: "~/.bashrc"
+    backup: yes
 
-- name: configure bash_aliases
+- name: copy bash_aliases
   copy: 
     src: bash_aliases
     dest: "~/.bash_aliases"
+
+- name: create bashrc_custom if it does not exist
+  copy:
+    content: ""
+    dest: "{{ ansible_env.HOME }}/.bashrc_custom"
+    force: no

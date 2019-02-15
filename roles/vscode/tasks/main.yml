@@ -7,40 +7,40 @@
   vars: 
     ansible_become: yes
 
-- name: rename keybindings.json if there is one
-  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/keybindings.json {{ ansible_env.HOME }}/.config/Code/User/keybindings.json.old"
-  ignore_errors: true
-
-- name: rename keybindings.json if there is one
-  shell: "mv {{ ansible_env.HOME }}/.config/Code/User/settings.json {{ ansible_env.HOME }}/.config/Code/User/settings.json.old"
-  ignore_errors: true
+- name: Create vscode user setting directory
+  file: 
+    path: "{{ ansible_env.HOME }}/.config/Code/User"
+    state: directory
 
 - name: Copy keybindings.json
   copy: 
     src: keybindings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
+    backup: yes
 
 - name: Copy settings.json
   copy: 
     src: settings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    backup: yes
 
 - name: install multiple extensions
-  shell: "code --install-extension {{ item }}"
+  shell: "echo 0 | code --install-extension {{ item }}"
   loop:
     - 2gua.rainbow-brackets
     - annsk.alignment
     - austin.code-gnu-global
     - aztechcorps.aio-compiler
-    - batisteo.vscode-django
+    - bierner.lit-html
+    - blanu.vscode-styled-jsx
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - DavidAnson.vscode-markdownlint
     - davidbroetje.algorithm-mnemonics-vscode
     - dbaeumer.jshint
     - donjayamanne.jupyter
-    - donjayamanne.python-extension-pack
     - DotJoshJohnson.xml
+    - dsznajder.es7-react-js-snippets
     - eamodio.gitlens
     - EditorConfig.EditorConfig
     - esbenp.prettier-vscode
@@ -51,19 +51,18 @@
     - HookyQR.beautify
     - IBM.output-colorizer
     - James-Yu.latex-workshop
-    - jchannon.csharpextensions
     - kriegalex.vscode-cudacpp
-    - Leopotam.csharpfixformat
     - magicstack.MagicPython
     - ms-python.python
     - ms-vscode.cpptools
-    - ms-vscode.csharp
     - ms-vscode.Go
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
+    - njpwerner.autodocstring
+    - NuclleaR.vscode-extension-auto-import
     - oderwat.indent-rainbow
     - PeterJausovec.vscode-docker
-    - rbbit.typescript-hero
+    - redhat.java
     - reloadedextensions.reloaded-cpp
     - sandcastle.whitespace
     - searKing.preview-vscode
@@ -71,12 +70,18 @@
     - stkb.rewrap
     - streetsidesoftware.code-spell-checker
     - tht13.python
-    - tomoki1207.pdf
     - twxs.cmake
     - vector-of-bool.cmake-tools
     - VisualStudioExptTeam.vscodeintellicode
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-pack
+    - vscjava.vscode-java-test
+    - vscjava.vscode-maven
     - vscodevim.vim
+    - vsmobile.vscode-react-native
     - webfreak.debug
     - wholroyd.jinja
     - wlhe.c-cpp-snippets
     - yzhang.markdown-all-in-one
+    - zxh404.vscode-proto3

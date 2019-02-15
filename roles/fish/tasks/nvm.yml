@@ -1,0 +1,14 @@
+---
+# add nvm hooks to fish
+# nvm is a bash script that is not compatible with fish by default
+- name: check if nvm is installed
+  stat:
+    path: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+  register: nvm_sh_file
+
+# nvm.fish depends on bass, which is installed through the fisherman script
+- name: add nvm fish hook if nvm is installed
+  copy: 
+    src: nvm.fish
+    dest: "{{ ansible_env.HOME }}/.config/fish/functions/nvm.fish"
+  when: nvm_sh_file.stat.exists == True

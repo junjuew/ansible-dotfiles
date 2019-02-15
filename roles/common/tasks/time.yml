@@ -1,0 +1,11 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: remove ntp
+  package: name=ntp state=absent
+  become: true
+
+- name: install chrony
+  package: name=chrony state=present
+  become: true
+
