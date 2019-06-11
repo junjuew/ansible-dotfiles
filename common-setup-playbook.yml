@@ -26,14 +26,14 @@
   hosts: server
   roles:
     - bash
-    - fish
+    - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
   roles:
     - bash
-    - fish
+    - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
     - gui
     - lazygit
@@ -42,7 +42,7 @@
   hosts: dev-desktop
   roles:
     - bash
-    - fish
+    - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
     - gui
     - { role: vscode, tags: ["vscode"] }

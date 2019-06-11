@@ -79,3 +79,4 @@ alias gitpom='git push origin master'
 alias xclip="xclip -selection c"
 alias python='python -B'
 alias fpp='fpp -ni'
+alias lg='lazygit'
