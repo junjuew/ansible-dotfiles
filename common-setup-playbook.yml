@@ -4,11 +4,11 @@
 # need to install python 2 since ansible by default uses python2 as interpreter
 # see: https://github.com/ansible/ansible/issues/17081
 - hosts: all
-  gather_facts: False 
+  gather_facts: False
   tasks:
-  - name: install python 2 if not installed
-    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
-    become: true
+    - name: install python 2 if not installed
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
+      become: true
   tags: must_run
 
 - name: create a user
@@ -27,14 +27,14 @@
   roles:
     - bash
     - fish
-    - tmux
+    - { role: tmux, tags: ["tmux"] }
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
   roles:
     - bash
     - fish
-    - { role: tmux, tags: ['tmux'] }
+    - { role: tmux, tags: ["tmux"] }
     - gui
     - lazygit
 
@@ -43,37 +43,37 @@
   roles:
     - bash
     - fish
-    - { role: tmux, tags: ['tmux'] }
+    - { role: tmux, tags: ["tmux"] }
     - gui
-    - { role: vscode, tags: ['vscode']}
+    - { role: vscode, tags: ["vscode"] }
     - lazygit
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu
   tasks:
-      - name: install cuda
-        include_role:
-          name: CSCfi.cuda
-        vars:
-          gpu: true
-          cuda_packages: 
-            - cuda-9-0
-          ansible_become: yes
-      - name: install cudnn
-        include_role:
-          name: cudnn
-        vars:
-          ubuntu_version: 1604
-          cudnn_major_version: 7
-          cudnn_minor_version: 7.1.4.18
-          cuda_version: 9.0
-          remove_other_versions: true
+    - name: install cuda
+      include_role:
+        name: CSCfi.cuda
+      vars:
+        gpu: true
+        cuda_packages:
+          - cuda-9-0
+        ansible_become: yes
+    - name: install cudnn
+      include_role:
+        name: cudnn
+      vars:
+        ubuntu_version: 1604
+        cudnn_major_version: 7
+        cudnn_minor_version: 7.1.4.18
+        cuda_version: 9.0
+        remove_other_versions: true
 
 - name: install packages needed for cv
   hosts: cv
   roles:
-    - { role: conda, tags: ['conda'] }
-    - { role: tensorflow-object-detection-api, tags: ['tensorflow'] }
+    - { role: conda, tags: ["conda"] }
+    - { role: tensorflow-object-detection-api, tags: ["tensorflow"] }
 
 - name: install packages needed for kvm-host
   hosts: kvm-host
@@ -86,10 +86,9 @@
   tasks:
     - include_role:
         name: geerlingguy.docker
-      vars: 
-        docker_package: "docker-ce=17.03.2~ce-0~ubuntu-xenial"
+      vars:
         docker_package_state: present
-        docker_users: 
+        docker_users:
           - "{{ ansible_env.USER }}"
         ansible_become: yes
       when: ("ansible_distribution == 'Ubuntu'") and ("ansible_distribution_release == 'xenial'")
@@ -100,7 +99,5 @@
     - include_role:
         name: nvidia-docker
       vars:
-        nvidia_container_runtime_package: nvidia-container-runtime=2.0.0+docker17.03.2-1
-        nvidia_docker_package: nvidia-docker2=2.0.3+docker17.03.2-1
         ansible_become: yes
       when: "ansible_distribution == 'Ubuntu'"
