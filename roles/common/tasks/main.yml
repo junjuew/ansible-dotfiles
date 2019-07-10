@@ -9,3 +9,7 @@
 # upgrade git to latest version
 - include_tasks: git.yml
   tags: git
+
+- name: add aptitude
+  package: name=aptitude state=latest
+  tags: aptitude
