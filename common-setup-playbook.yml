@@ -28,6 +28,7 @@
     - bash
     - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
+    - { role: better-cli-utils, tags: "better-cli-utils"}
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
@@ -36,7 +37,7 @@
     - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
     - gui
-    - lazygit
+    - { role: better-cli-utils, tags: "better-cli-utils"}
 
 - name: install desktop dev environment
   hosts: dev-desktop
@@ -46,7 +47,7 @@
     - { role: tmux, tags: ["tmux"] }
     - gui
     - { role: vscode, tags: ["vscode"] }
-    - lazygit
+    - { role: better-cli-utils, tags: "better-cli-utils"}
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu

@@ -132,6 +132,9 @@ fi
 # source z.sh if present
 [ -f ~/bin/z.sh ] && source ~/bin/z.sh
 
+# source nix if present
+[ -e ~/.nix-profile/etc/profile.d/nix.sh ] && source ~/.nix-profile/etc/profile.d/nix.sh
+
 # set PATH so it includes user's private bin directories
 # Duplicate this line from .profile because if fish is installed then
 # the following command jump into fish before .profile can get to this line

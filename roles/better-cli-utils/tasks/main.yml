@@ -1,0 +1,73 @@
+---
+# A bunch of better cli utilities for common day tasks
+
+# install nix package manager
+- name: install nix
+  shell: >
+    curl https://nixos.org/nix/install | sh
+
+# lazygit
+- name: add lazygit apt repository
+  apt_repository:
+    repo: ppa:lazygit-team/release
+    state: present
+  become: true
+
+- name: install lazygit
+  package: name=lazygit state=latest
+  become: true
+
+# fasd
+- name: add fasd apt repository
+  apt_repository:
+    repo: ppa:aacebedo/fasd
+    state: present
+  become: true
+
+- name: install fasd
+  package: name=fasd state=latest
+  become: true
+
+- name: add fasd integration with fish
+  shell: env fish -c "fisher add fishgretel/fasd"
+
+# bat
+- name: install bat
+  shell: >
+    nix-env -f '<nixpkgs>' -iA bat
+
+# ranger
+- name: install ranger
+  package: name=ranger state=latest
+  become: true
+
+# fd
+- name: install fd
+  shell: >
+    nix-env -f '<nixpkgs>' -iA fd
+
+# ripgrep
+- name: install ripgrep
+  shell: >
+    nix-env -f '<nixpkgs>' -iA ripgrep
+
+# trash-cli
+- name: install trash-cli
+  package: name=trash-cli state=latest
+  become: true
+
+# exa
+- name: install exa
+  shell: >
+    nix-env -f '<nixpkgs>' -iA exa
+
+# tldr
+- name: Install tldr
+  snap:
+    name: 
+      - tldr
+
+# atool
+- name: install atool
+  package: name=atool state=latest
+  become: true

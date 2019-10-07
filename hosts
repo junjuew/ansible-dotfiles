@@ -5,7 +5,7 @@
 # cloudlet029.maas ansible_connection=ssh ansible_port=22
 # cloudlet030.maas ansible_connection=ssh ansible_port=22
 # cloudlet001 ansible_connection=ssh ansible_port=22
-# localhost ansible_connection=local
+localhost ansible_connection=local
 
 [desktop]
 # localhost ansible_connection=local
@@ -19,7 +19,7 @@
 # cloudlet028.maas ansible_connection=ssh ansible_port=22
 # cloudlet029.maas ansible_connection=ssh ansible_port=22
 # cloudlet030.maas ansible_connection=ssh ansible_port=22
-# cloudlet001 ansible_connection=ssh ansible_port=22
+# cloudlet002 ansible_connection=ssh ansible_port=22
 
 [cv]
 # cloudlet001 ansible_connection=ssh ansible_port=22
