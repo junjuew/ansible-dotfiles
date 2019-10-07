@@ -2,9 +2,24 @@
 # A bunch of better cli utilities for common day tasks
 
 # install nix package manager
+- name: check if nix exits
+  shell: "command -v nix-env > /dev/null 2>&1"
+  register: nix_installed
+  ignore_errors: true
+
 - name: install nix
   shell: >
-    curl https://nixos.org/nix/install | sh
+    sh <(curl https://nixos.org/releases/nix/nix-2.2.2/install)
+  args:
+    executable: /bin/bash
+  when: nix_installed is failed
+
+# source bashrc to make sure nix is activated
+- name: source bashrc
+  shell: "source {HOME}/.bashrc"
+  args:
+    executable: /bin/bash
+  when: nix_installed is failed
 
 # lazygit
 - name: add lazygit apt repository
@@ -64,8 +79,9 @@
 # tldr
 - name: Install tldr
   snap:
-    name: 
+    name:
       - tldr
+  become: true
 
 # atool
 - name: install atool
