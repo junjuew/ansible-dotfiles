@@ -61,7 +61,6 @@
     - njpwerner.autodocstring
     - NuclleaR.vscode-extension-auto-import
     - oderwat.indent-rainbow
-    - PeterJausovec.vscode-docker
     - redhat.java
     - reloadedextensions.reloaded-cpp
     - sandcastle.whitespace
@@ -79,7 +78,6 @@
     - vscjava.vscode-java-test
     - vscjava.vscode-maven
     - vscodevim.vim
-    - vsmobile.vscode-react-native
     - webfreak.debug
     - wholroyd.jinja
     - wlhe.c-cpp-snippets
