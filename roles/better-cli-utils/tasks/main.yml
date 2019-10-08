@@ -1,0 +1,89 @@
+---
+# A bunch of better cli utilities for common day tasks
+
+# install nix package manager
+- name: check if nix exits
+  shell: "command -v nix-env > /dev/null 2>&1"
+  register: nix_installed
+  ignore_errors: true
+
+- name: install nix
+  shell: >
+    sh <(curl https://nixos.org/releases/nix/nix-2.2.2/install)
+  args:
+    executable: /bin/bash
+  when: nix_installed is failed
+
+# source bashrc to make sure nix is activated
+- name: source bashrc
+  shell: "source {HOME}/.bashrc"
+  args:
+    executable: /bin/bash
+  when: nix_installed is failed
+
+# lazygit
+- name: add lazygit apt repository
+  apt_repository:
+    repo: ppa:lazygit-team/release
+    state: present
+  become: true
+
+- name: install lazygit
+  package: name=lazygit state=latest
+  become: true
+
+# fasd
+- name: add fasd apt repository
+  apt_repository:
+    repo: ppa:aacebedo/fasd
+    state: present
+  become: true
+
+- name: install fasd
+  package: name=fasd state=latest
+  become: true
+
+- name: add fasd integration with fish
+  shell: env fish -c "fisher add fishgretel/fasd"
+
+# bat
+- name: install bat
+  shell: >
+    nix-env -f '<nixpkgs>' -iA bat
+
+# ranger
+- name: install ranger
+  package: name=ranger state=latest
+  become: true
+
+# fd
+- name: install fd
+  shell: >
+    nix-env -f '<nixpkgs>' -iA fd
+
+# ripgrep
+- name: install ripgrep
+  shell: >
+    nix-env -f '<nixpkgs>' -iA ripgrep
+
+# trash-cli
+- name: install trash-cli
+  package: name=trash-cli state=latest
+  become: true
+
+# exa
+- name: install exa
+  shell: >
+    nix-env -f '<nixpkgs>' -iA exa
+
+# tldr
+- name: Install tldr
+  snap:
+    name:
+      - tldr
+  become: true
+
+# atool
+- name: install atool
+  package: name=atool state=latest
+  become: true
