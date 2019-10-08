@@ -89,3 +89,7 @@ alias ll='exa -la'
 alias man='tldr'
 alias tar='echo "Use atool, the modern tar"; false'
 alias zip='echo "Use atool, the modern zip"; false'
+# fasd shortcuts
+alias v='f -e vim' # quick opening files with vim
+alias m='f -e mplayer' # quick opening files with mplayer
+alias o='a -e xdg-open' # quick opening files with xdg-open
