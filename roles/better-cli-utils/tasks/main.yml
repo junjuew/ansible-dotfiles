@@ -14,13 +14,6 @@
     executable: /bin/bash
   when: nix_installed is failed
 
-# source bashrc to make sure nix is activated
-- name: source bashrc
-  shell: "source {HOME}/.bashrc"
-  args:
-    executable: /bin/bash
-  when: nix_installed is failed
-
 # lazygit
 - name: add lazygit apt repository
   apt_repository:
@@ -47,9 +40,12 @@
   shell: env fish -c "fisher add fishgretel/fasd"
 
 # bat
+# -lc needed to source .profile for nix-env definition
 - name: install bat
   shell: >
-    nix-env -f '<nixpkgs>' -iA bat
+    bash -lc "nix-env -f '<nixpkgs>' -iA bat"
+  args:
+    executable: /bin/bash
 
 # ranger
 - name: install ranger
@@ -59,12 +55,16 @@
 # fd
 - name: install fd
   shell: >
-    nix-env -f '<nixpkgs>' -iA fd
+    bash -lc "nix-env -f '<nixpkgs>' -iA fd"
+  args:
+    executable: /bin/bash
 
 # ripgrep
 - name: install ripgrep
   shell: >
-    nix-env -f '<nixpkgs>' -iA ripgrep
+    bash -lc "nix-env -f '<nixpkgs>' -iA ripgrep"
+  args:
+    executable: /bin/bash
 
 # trash-cli
 - name: install trash-cli
@@ -74,7 +74,14 @@
 # exa
 - name: install exa
   shell: >
-    nix-env -f '<nixpkgs>' -iA exa
+    bash -lc "nix-env -f '<nixpkgs>' -iA exa"
+  args:
+    executable: /bin/bash
+
+# snap
+- name: install snap
+  package: name=snapd state=latest
+  become: true
 
 # tldr
 - name: Install tldr

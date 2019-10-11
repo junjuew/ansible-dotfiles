@@ -13,3 +13,4 @@
 - name: add aptitude
   package: name=aptitude state=latest
   tags: aptitude
+  become: true
