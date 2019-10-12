@@ -94,3 +94,8 @@
 - name: install atool
   package: name=atool state=latest
   become: true
+
+# dstat for machine introspection
+- name: install dstat
+  package: name=dstat state=latest
+  become: true
