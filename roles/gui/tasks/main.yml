@@ -18,5 +18,11 @@
     state: latest
   become: true
 
+- name: install slack
+  snap:
+    name: slack
+    classic: yes
+  become: true
+
 - include_tasks: autostart.yml
   tags: autostart
