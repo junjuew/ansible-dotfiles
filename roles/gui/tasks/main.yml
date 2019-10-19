@@ -6,8 +6,17 @@
 - include_tasks: gnome-tweak-tool.yml
   tags: gnome-tweak-tool
 
-- include_tasks: tilda.yml
-  tags: tilda
+- name: install chrome-gnome-shell
+  package:
+    name: chrome-gnome-shell
+    state: latest
+  become: true
+
+- name: install guake
+  package:
+    name: guake
+    state: latest
+  become: true
 
 - include_tasks: autostart.yml
   tags: autostart

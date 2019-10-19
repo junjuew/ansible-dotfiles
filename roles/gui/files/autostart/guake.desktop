@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Exec=/usr/bin/tilda
+Exec=/usr/bin/guake
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
-Name[en_US]=tilda
-Name=tilda
+Name[en_US]=guake
+Name=guake
 Comment[en_US]=Dropdown Terminal
 Comment=Dropdown Terminal

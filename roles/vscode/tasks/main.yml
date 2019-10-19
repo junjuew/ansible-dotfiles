@@ -2,10 +2,10 @@
 # install and setup custom settings for VSCode
 
 - name: install vscode
-  include_role:
-    name: ngetchell.vscode
-  vars: 
-    ansible_become: yes
+  snap:
+    name: code
+    classic: yes
+  become: true
 
 - name: Create vscode user setting directory
   file: 
