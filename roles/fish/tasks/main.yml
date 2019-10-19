@@ -5,8 +5,5 @@
 - include_tasks: fisherman.yml
   tags: fisherman
 
-- include_tasks: direnv.yml
-  tags: fish
-
 - include_tasks: nvm.yml
   tags: nvm
