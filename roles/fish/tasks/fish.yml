@@ -33,11 +33,7 @@
     src: functions
     dest: "~/.config/fish"
 
-# - name: clone fish git repo
-#   git:
-#     repo: https://github.com/fish-shell/fish-shell
-#     dest: "/tmp/fish-shell"
-#     version: "fb679ac9c3eefee8714e175a469fcd0ceaf05ea6" # the last commit before fish 3.0.0
-
-# - name: Install fish completions (files)
-#   command: cp -r /tmp/fish-shell/share/completions ~/.config/fish/completions
+- name: Change user shell
+  user: 
+    name: "{{ ansible_env.USER }}"
+    shell: "/usr/bin/fish"

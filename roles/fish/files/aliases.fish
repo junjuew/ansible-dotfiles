@@ -1,13 +1,8 @@
 ## -----------------------------------------------------------------------------------------
-## Created by Vivek Gite <vivek@nixcraft.com>
-## See for more info: http://www.cyberciti.biz/tips/linux-unix-osx-bash-shell-aliases.html
-## Note: I work a lot with Amazon EC2/CDN/Akamai/Server Backups etc so source code of those 
-## scripts not included in this file. YMMV.
-## modified by Junjue Wang <junjuew@cs.cmu.edu>
+## fish aliases by Junjue Wang <junjuew@cs.cmu.edu>
+## inspired by Vivek Gite <vivek@nixcraft.com>
+## http://www.cyberciti.biz/tips/linux-unix-osx-bash-shell-aliases.html
 ## -----------------------------------------------------------------------------------------
-alias ls='ls --color=auto'
-alias ll='ls -la'
-alias l.='ls -d .* --color=auto'
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -15,7 +10,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
-alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias bc='bc -l'
@@ -37,24 +31,20 @@ alias fastping='ping -c 100 -s.2'
 alias ports='netstat -tulanp'
 alias header='curl -I'
 alias headerc='curl -I --compress'
-alias rm='rm -I --preserve-root'
 alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
-alias apt-get="sudo apt-get"
-alias updatey="sudo apt-get --yes"
-alias update='sudo apt-get upgrade; and sudo apt-get update'
+alias sapt='sudo aptitude'
+alias supdate='sudo aptitude update; and sudo aptitude safe-upgrade'
 alias root='sudo -i'
 alias su='sudo -i'
 alias reboot='sudo /sbin/reboot'
 alias poweroff='sudo /sbin/poweroff'
 alias halt='sudo /sbin/halt'
 alias shutdown='sudo /sbin/shutdown'
-alias lightyload='sudo /etc/init.d/lighttpd reload'
-alias lightytest='sudo /usr/sbin/lighttpd -f /etc/lighttpd/lighttpd.conf -t'
 alias httpdreload='sudo /usr/sbin/apachectl -k graceful'
 alias httpdtest='sudo /usr/sbin/apachectl -t ; and /usr/sbin/apachectl -t -D DUMP_VHOSTS'
 alias meminfo='free -m -l -t'

@@ -1,8 +1,5 @@
-# SSH Agent
-#
-# Start SSH Agent if it's not already running, and add the
+# Start SSH Agent if it is not already running, and add the
 # id_(nice_hostname) identity.
-
 setenv SSH_ENV "$HOME/.ssh/environment"
 if [ -n "$SSH_AUTH_SOCK" ]
     ps -ef | grep ssh-agent > /dev/null
@@ -21,12 +18,22 @@ else
     end
 end
 
+# set up fish alias
 if test -e ~/.config/fish/aliases.fish
-   echo "sourcing ~/.config/fish/aliases.fish"
-   . ~/.config/fish/aliases.fish
+    . ~/.config/fish/aliases.fish
 end
 
-if type -q conda
-   source (conda info --root)/etc/fish/conf.d/conda.fish
+# set up bash variables if bass is available
+if type -q bass
+    test -e ~/.bashrc_custom; and bass source ~/.bashrc_custom
 end
-eval (direnv hook fish)
+
+# set up conda
+if type -q conda
+    source (conda info --root)/etc/fish/conf.d/conda.fish
+end
+
+# set up direnv hook
+if type -q direnv
+    eval (direnv hook fish)
+end
