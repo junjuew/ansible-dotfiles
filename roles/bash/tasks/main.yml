@@ -2,27 +2,11 @@
 - include_tasks: bash.yml
   tags: bash
 
-# https://github.com/junegunn/fzf
-# fuzzy commandline finder
-- include_tasks: fzf.yml
-  tags: fzf
-
-# https://github.com/rupa/z
-# z navigation for bash
-- include_tasks: z.yml
-  tags: z
-
-- include_tasks: direnv.yml
-  tags: direnv
-
-- name: install xclip
-  package:
-    name: xclip
-    state: latest
-  become: true
-
-- include_tasks: pathpicker.yml
-  tags: pathpicker
-
-- include_tasks: nvm.yml
-  tags: nvm
+# nvm bash script
+# nvm is a nodejs version manager, implemented as a bash script
+# https://github.com/creationix/nvm#ansible
+- name: install nvm
+  shell: >
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"

@@ -1,6 +1,35 @@
 ---
 # A bunch of better cli utilities for common day tasks
 
+# xclip
+- name: install xclip
+  package:
+    name: xclip
+    state: latest
+  become: true
+
+# direnv
+# automatically set directory-based 
+# project specific configurations
+# https://direnv.net/
+- name: install direnv
+  package:
+    name: direnv
+    state: present
+  become: true
+
+# fzf
+# https://github.com/junegunn/fzf
+# fuzzy command line finder
+- include_tasks: fzf.yml
+  tags: fzf
+
+# fpp
+# facebook pathpicker
+# https://github.com/facebook/PathPicker
+- include_tasks: pathpicker.yml
+  tags: pathpicker
+
 # install nix package manager
 - name: check if nix exits
   shell: "command -v nix-env > /dev/null 2>&1"
