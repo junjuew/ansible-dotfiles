@@ -1,3 +1,13 @@
+# set up editor
+if type -q vim
+    set -gx EDITOR vim
+end
+
+# set up fish alias
+if test -e ~/.config/fish/aliases.fish
+    . ~/.config/fish/aliases.fish
+end
+
 # Start SSH Agent if it is not already running, and add the
 # id_(nice_hostname) identity.
 setenv SSH_ENV "$HOME/.ssh/environment"
@@ -16,11 +26,6 @@ else
     else
         start_agent
     end
-end
-
-# set up fish alias
-if test -e ~/.config/fish/aliases.fish
-    . ~/.config/fish/aliases.fish
 end
 
 # set up bash variables if bass is available
