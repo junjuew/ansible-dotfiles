@@ -32,7 +32,9 @@
 
 # install nix package manager
 - name: check if nix exits
-  shell: "command -v nix-env > /dev/null 2>&1"
+  shell: bash -lc "command -v nix-env > /dev/null 2>&1"
+  args:
+    executable: /bin/bash
   register: nix_installed
   ignore_errors: true
 
@@ -75,7 +77,7 @@
 # -lc needed to source .profile for nix-env definition
 - name: install bat
   shell: >
-    nix-env -f '<nixpkgs>' -iA bat
+    bash -lc "nix-env -f '<nixpkgs>' -iA bat"
   args:
     executable: /bin/bash
 
@@ -87,14 +89,14 @@
 # fd
 - name: install fd
   shell: >
-    nix-env -f '<nixpkgs>' -iA fd
+    bash -lc "nix-env -f '<nixpkgs>' -iA fd"
   args:
     executable: /bin/bash
 
 # ripgrep
 - name: install ripgrep
   shell: >
-    nix-env -f '<nixpkgs>' -iA ripgrep
+    bash -lc  "nix-env -f '<nixpkgs>' -iA ripgrep"
   args:
     executable: /bin/bash
 
@@ -106,7 +108,7 @@
 # exa
 - name: install exa
   shell: >
-    nix-env -f '<nixpkgs>' -iA exa
+    bash -lc "nix-env -f '<nixpkgs>' -iA exa"
   args:
     executable: /bin/bash
 

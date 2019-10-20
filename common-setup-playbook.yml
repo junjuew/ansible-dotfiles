@@ -27,8 +27,8 @@
   roles:
     - bash
     - { role: fish, tags: "fish" }
-    - { role: tmux, tags: ["tmux"] }
     - { role: better-cli-utils, tags: "better-cli-utils"}
+    - { role: tmux, tags: ["tmux"] }
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
@@ -44,10 +44,10 @@
   roles:
     - bash
     - { role: fish, tags: "fish" }
+    - { role: better-cli-utils, tags: "better-cli-utils"}
     - { role: tmux, tags: ["tmux"] }
     - gui
     - { role: vscode, tags: ["vscode"] }
-    - { role: better-cli-utils, tags: "better-cli-utils"}
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu
