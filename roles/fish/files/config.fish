@@ -29,8 +29,9 @@ if type -q bass
 end
 
 # set up conda
-if type -q conda
-    source (conda info --root)/etc/fish/conf.d/conda.fish
+if test -d "$HOME/miniconda/bin"
+    source "$HOME/miniconda/etc/fish/conf.d/conda.fish"
+    conda activate
 end
 
 # set up direnv hook

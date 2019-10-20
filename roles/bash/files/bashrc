@@ -127,6 +127,10 @@ fi
 # source nix if present
 [ -e ~/.nix-profile/etc/profile.d/nix.sh ] && source ~/.nix-profile/etc/profile.d/nix.sh
 
+# source conda if present
+[ -f "$HOME/miniconda/etc/profile.d/conda.sh" ] && source "$HOME/miniconda/etc/profile.d/conda.sh"
+command -v conda 2>&1 > /dev/null && conda activate
+
 # user defined variables
 if [ -f ~/.bashrc_custom ]; then
     . ~/.bashrc_custom

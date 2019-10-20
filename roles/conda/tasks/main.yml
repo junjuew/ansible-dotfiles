@@ -13,23 +13,6 @@
   - name: run the installation script. Does not let the installer modify the bashrc and install miniconda to directory miniconda
     shell: 'bash /tmp/miniconda.sh -b -p ${HOME}/miniconda'
 
-  - name: create bashrc_custom file if it do not exits
-    copy:
-      content: ""
-      dest: '~/.bashrc_custom'
-      force: no
-      owner: '{{ ansible_env.USER }}'
-      group: '{{ ansible_env.USER }}'
-      mode: u=rw,g=r,o=r
-
-  - name: add miniconda path to bashrc_custom
-    blockinfile:
-      path: "{{ ansible_env.HOME }}/.bashrc_custom"
-      marker: "# {mark} ANSIBLE MANAGED BLOCK miniconda #"
-      block: |
-        . {{ ansible_env.HOME }}/miniconda/etc/profile.d/conda.sh
-        conda activate
-
   - name: copy .condarc file
     copy:
       src: condarc

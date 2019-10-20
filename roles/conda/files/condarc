@@ -1,6 +1,7 @@
 channels:
-  - conda-forge
   - defaults
+  - anaconda
+  - conda-forge
 
 create_default_packages:
   - pip

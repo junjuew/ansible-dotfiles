@@ -13,6 +13,15 @@
     force: yes
     backup: yes
 
+- name: remove old fisherman packages
+  shell: "not test -z (fisher ls '{{ item }}'); and fisher rm {{ item }}"
+  args:
+    executable: /usr/bin/fish
+  ignore_errors: yes
+  loop:
+    - 'fisherman\/z'
+    - 'jethrokuan\/z'
+
 - name: install fisherman packages
   shell: "test -z (fisher ls '{{ item }}'); and fisher add {{ item }}"
   args:

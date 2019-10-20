@@ -55,18 +55,21 @@
   become: true
 
 # fasd
-- name: add fasd apt repository
+- name: remove fasd apt repository
   apt_repository:
     repo: ppa:aacebedo/fasd
-    state: present
+    state: absent
   become: true
 
-- name: install fasd
-  package: name=fasd state=latest
+- name: remove fasd installed from apt
+  package: name=fasd state=absent
   become: true
 
-- name: add fasd integration with fish
-  shell: env fish -c "fisher add fishgretel/fasd"
+- name: install fasd from snap
+  snap:
+    name: fasd
+    channel: beta
+  become: true
 
 # bat
 # -lc needed to source .profile for nix-env definition
