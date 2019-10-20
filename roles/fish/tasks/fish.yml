@@ -37,3 +37,4 @@
   user: 
     name: "{{ ansible_env.USER }}"
     shell: "/usr/bin/fish"
+  become: yes
