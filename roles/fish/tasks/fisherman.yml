@@ -13,14 +13,13 @@
     force: yes
     backup: yes
 
-- name: install fish bang-bang
-  shell: env fish -c "fisher add nyarly/fish-bang-bang"
-
-- name: install bass to allow running bash scripts in fish
-  shell: env fish -c "fisher add edc/bass"
-
-- name: install fzf fish binding
-  shell: env fish -c "fisher add jethrokuan/fzf"
-
-- name: install fasd integration
-  shell: env fish -c "fisher add gretel/fasd"
+- name: install fisherman packages
+  shell: "test -z (fisher ls '{{ item }}'); and fisher add {{ item }}"
+  args:
+    executable: /usr/bin/fish
+  ignore_errors: yes
+  loop:
+    - 'nyarly\/fish-bang-bang' # escape needed for fisher ls regex
+    - 'edc\/bass'
+    - 'jethrokuan\/fzf'
+    - 'gretel\/fasd'
