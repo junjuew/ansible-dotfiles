@@ -3,6 +3,9 @@ if type -q vim
     set -gx EDITOR vim
 end
 
+# setup gpg2 tty for git signing
+set -gx GPG_TTY (tty)
+
 # source bash variables if bass is available
 if type -q bass
     test -f /etc/profile; and bass source /etc/profile
