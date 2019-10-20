@@ -75,7 +75,7 @@
 # -lc needed to source .profile for nix-env definition
 - name: install bat
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA bat"
+    nix-env -f '<nixpkgs>' -iA bat
   args:
     executable: /bin/bash
 
@@ -87,14 +87,14 @@
 # fd
 - name: install fd
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA fd"
+    nix-env -f '<nixpkgs>' -iA fd
   args:
     executable: /bin/bash
 
 # ripgrep
 - name: install ripgrep
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA ripgrep"
+    nix-env -f '<nixpkgs>' -iA ripgrep
   args:
     executable: /bin/bash
 
@@ -106,7 +106,7 @@
 # exa
 - name: install exa
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA exa"
+    nix-env -f '<nixpkgs>' -iA exa
   args:
     executable: /bin/bash
 
