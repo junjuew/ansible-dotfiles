@@ -1,16 +1,13 @@
-# set up fish alias
-if test -e ~/.config/fish/aliases.fish
-    source ~/.config/fish/aliases.fish
-end
-
 # set up editor
 if type -q vim
     set -gx EDITOR vim
 end
 
-# set up bash variables if bass is available
+# source bash variables if bass is available
 if type -q bass
-    test -e ~/.bashrc_custom; and bass source ~/.bashrc_custom
+    test -f /etc/profile; and bass source /etc/profile
+    test -f ~/.profile; and bass source ~/.profile
+    test -f ~/.bashrc_custom; and bass source ~/.bashrc_custom
 end
 
 # set up conda
@@ -28,7 +25,7 @@ end
 # id_(nice_hostname) identity.
 setenv SSH_ENV "$HOME/.ssh/environment"
 if [ -n "$SSH_AUTH_SOCK" ]
-    ps -ef | grep ssh-agent > /dev/null
+    ps -ef | /bin/grep ssh-agent > /dev/null
     if [ $status -eq 0 ]
         test_identities
     end
@@ -36,10 +33,17 @@ else
     if [ -f $SSH_ENV ]
         . $SSH_ENV > /dev/null
     end
-    ps -ef | grep ssh-agent > /dev/null
+    ps -ef | /bin/grep ssh-agent > /dev/null
     if [ $status -eq 0 ]
         test_identities
     else
         start_agent
     end
+end
+
+# set up user fish alias
+# this is done in the end to avoid user aliasing
+# interfere with initialization files
+if test -e ~/.config/fish/aliases.fish
+    source ~/.config/fish/aliases.fish
 end

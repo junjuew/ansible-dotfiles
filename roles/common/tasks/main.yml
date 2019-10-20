@@ -14,3 +14,8 @@
   package: name=aptitude state=latest
   tags: aptitude
   become: true
+
+- name: add snapd
+  package: name=snapd state=latest
+  tags: snapd
+  become: true

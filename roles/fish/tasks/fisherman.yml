@@ -1,12 +1,12 @@
 ---
-# fisherman installation
+# fisher installation
 
 - name: make sure fish functions directory exists
   file:
     path: "~/.config/fish/functions"
     state: directory
 
-- name: install or update fisherman
+- name: install or update fisher
   get_url:
     url: https://git.io/fisher
     dest: "~/.config/fish/functions/fisher.fish"
