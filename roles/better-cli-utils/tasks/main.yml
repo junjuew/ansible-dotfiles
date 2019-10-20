@@ -118,8 +118,8 @@
 # tldr
 - name: Install tldr
   snap:
-    name:
-      - tldr
+    name: tldr
+    channel: latest/edge
   become: true
 
 # atool
