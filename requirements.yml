@@ -1,5 +1,4 @@
 # Install requirement role from the Ansible Galaxy
 - src: angstwad.ubuntu_python_apt
 - src: bobbyrenwick.pip
-- src: CSCfi.cuda
 - src: geerlingguy.docker

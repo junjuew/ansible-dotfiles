@@ -7,6 +7,12 @@ such automated configurations are often implemented with
 to read shell scripts when we have mature IT automation tools like
 [Ansible](https://www.ansible.com/)?
 
+## Installation
+
+```bash
+git clone --recurse-submodules -j8 https://github.com/junjuew/ansible-dotfiles.git
+```
+
 ## How to Use
 
 1. Modify hosts to be machine hostname or ip.
