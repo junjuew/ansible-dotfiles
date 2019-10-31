@@ -59,6 +59,8 @@
         gpu: true
         cuda_packages:
           - cuda-10-0
+        cuda_init: true
+        cuda_init_compute_mode: 0
         ansible_become: yes
     - name: install cudnn
       include_role:
@@ -66,7 +68,7 @@
       vars:
         ubuntu_version: 1804
         cudnn_major_version: 7
-        cudnn_minor_version: 7.6.3
+        cudnn_minor_version: 7.6.3.30
         cuda_version: 10.0 # a version both TF and pytorch supports as of 11/2019
         remove_other_versions: true
 
