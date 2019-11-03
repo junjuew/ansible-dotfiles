@@ -8,18 +8,18 @@
   become: true
 
 - name: Create vscode user setting directory
-  file: 
+  file:
     path: "{{ ansible_env.HOME }}/.config/Code/User"
     state: directory
 
 - name: Copy keybindings.json
-  copy: 
+  copy:
     src: keybindings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
     backup: yes
 
 - name: Copy settings.json
-  copy: 
+  copy:
     src: settings.json
     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
     backup: yes
@@ -29,7 +29,6 @@
   loop:
     - 2gua.rainbow-brackets
     - austin.code-gnu-global
-    - aztechcorps.aio-compiler
     - bierner.lit-html
     - blanu.vscode-styled-jsx
     - christian-kohler.npm-intellisense
@@ -42,7 +41,6 @@
     - EditorConfig.EditorConfig
     - esbenp.prettier-vscode
     - formulahendry.code-runner
-    - HookyQR.beautify
     - IBM.output-colorizer
     - James-Yu.latex-workshop
     - magicstack.MagicPython
