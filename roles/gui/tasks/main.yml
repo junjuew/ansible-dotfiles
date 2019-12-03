@@ -12,6 +12,18 @@
     state: latest
   become: true
 
+- name: install vim
+  package:
+    name: vim-gtk
+    state: latest
+  become: true
+
+- name: vimrc
+  copy: 
+    src: vimrc
+    dest: "~/.vimrc"
+    backup: yes
+
 - name: install guake
   package:
     name: guake
