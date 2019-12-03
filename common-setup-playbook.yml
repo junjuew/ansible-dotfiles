@@ -29,15 +29,17 @@
     - { role: fish, tags: "fish" }
     - { role: better-cli-utils, tags: "better-cli-utils" }
     - { role: tmux, tags: ["tmux"] }
+    - { role: editors, tags: ["editors"] }
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
   roles:
     - bash
     - { role: fish, tags: "fish" }
-    - { role: tmux, tags: ["tmux"] }
-    - gui
     - { role: better-cli-utils, tags: "better-cli-utils" }
+    - { role: tmux, tags: ["tmux"] }
+    - { role: editors, tags: ["editors"] }
+    - gui
 
 - name: install desktop dev environment
   hosts: dev-desktop
@@ -46,6 +48,7 @@
     - { role: fish, tags: "fish" }
     - { role: better-cli-utils, tags: "better-cli-utils" }
     - { role: tmux, tags: ["tmux"] }
+    - { role: editors, tags: ["editors"] }
     - gui
     - { role: vscode, tags: ["vscode"] }
 
