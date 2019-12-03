@@ -1,0 +1,3 @@
+[submodule "roles/cuda"]
+	path = roles/cuda
+	url = https://github.com/CSCfi/ansible-role-cuda.git

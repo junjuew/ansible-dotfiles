@@ -27,7 +27,7 @@
   roles:
     - bash
     - { role: fish, tags: "fish" }
-    - { role: better-cli-utils, tags: "better-cli-utils"}
+    - { role: better-cli-utils, tags: "better-cli-utils" }
     - { role: tmux, tags: ["tmux"] }
 
 - name: apply basic, advanced, and gui to desktops
@@ -37,14 +37,14 @@
     - { role: fish, tags: "fish" }
     - { role: tmux, tags: ["tmux"] }
     - gui
-    - { role: better-cli-utils, tags: "better-cli-utils"}
+    - { role: better-cli-utils, tags: "better-cli-utils" }
 
 - name: install desktop dev environment
   hosts: dev-desktop
   roles:
     - bash
     - { role: fish, tags: "fish" }
-    - { role: better-cli-utils, tags: "better-cli-utils"}
+    - { role: better-cli-utils, tags: "better-cli-utils" }
     - { role: tmux, tags: ["tmux"] }
     - gui
     - { role: vscode, tags: ["vscode"] }
@@ -54,27 +54,30 @@
   tasks:
     - name: install cuda
       include_role:
-        name: CSCfi.cuda
+        name: cuda
       vars:
         gpu: true
         cuda_packages:
-          - cuda-9-0
+          - cuda-10-0
+        cuda_init: true
+        cuda_init_compute_mode: 0
         ansible_become: yes
     - name: install cudnn
       include_role:
         name: cudnn
       vars:
-        ubuntu_version: 1604
+        ubuntu_version: 1804
         cudnn_major_version: 7
-        cudnn_minor_version: 7.1.4.18
-        cuda_version: 9.0
+        cudnn_minor_version: 7.6.3.30
+        cuda_version: 10.0 # a version both TF and pytorch supports as of 11/2019
         remove_other_versions: true
 
 - name: install packages needed for cv
   hosts: cv
   roles:
     - { role: conda, tags: ["conda"] }
-    - { role: tensorflow-object-detection-api, tags: ["tensorflow"] }
+    # - { role: tensorflow-object-detection-api, tags: ["tensorflow"] } # not
+    #   migrated to tf 2.0 yet
 
 - name: install packages needed for kvm-host
   hosts: kvm-host
@@ -91,8 +94,9 @@
         docker_package_state: present
         docker_users:
           - "{{ ansible_env.USER }}"
+        docker_install_compose: true
         ansible_become: yes
-      when: ("ansible_distribution == 'Ubuntu'") and ("ansible_distribution_release == 'xenial'")
+      when: ("ansible_distribution == 'Ubuntu'")
 
 - name: install nvidia-docker
   hosts: nvidia-docker-host
