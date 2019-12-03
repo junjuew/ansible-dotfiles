@@ -1,0 +1,14 @@
+
+---
+
+- name: install vim
+  package:
+    name: vim-gtk
+    state: latest
+  become: true
+
+- name: vimrc
+  copy: 
+    src: vimrc
+    dest: "~/.vimrc"
+    backup: yes
