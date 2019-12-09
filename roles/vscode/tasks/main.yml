@@ -33,7 +33,6 @@
       - blanu.vscode-styled-jsx
       - christian-kohler.npm-intellisense
       - christian-kohler.path-intellisense
-      - DavidAnson.vscode-markdownlint
       - davidbroetje.algorithm-mnemonics-vscode
       - DotJoshJohnson.xml
       - eamodio.gitlens
