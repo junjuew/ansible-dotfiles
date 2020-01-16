@@ -10,6 +10,10 @@
 - include_tasks: git.yml
   tags: git
 
+- name: add curl
+  package: name=curl state=latest
+  become: true
+
 - name: add aptitude
   package: name=aptitude state=latest
   tags: aptitude
