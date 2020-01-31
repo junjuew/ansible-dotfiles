@@ -31,4 +31,4 @@
     - 'nyarly\/fish-bang-bang' # escape needed for fisher ls regex
     - 'edc\/bass'
     - 'jethrokuan\/fzf'
-    - 'gretel\/fasd'
+    - 'fishgretel\/fasd'
