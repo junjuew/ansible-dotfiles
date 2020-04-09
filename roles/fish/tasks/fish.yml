@@ -4,8 +4,8 @@
 
 - name: add fish repository
   apt_repository:
-    repo: ppa:fish-shell/release-3
-    state: present
+      repo: ppa:fish-shell/release-3
+      state: present
   become: true
   when: ansible_distribution == 'Ubuntu'
 
@@ -15,26 +15,27 @@
 
 - name: create fish config dir
   file:
-    path: "~/.config/fish"
-    state: directory
+      path: "~/.config/fish"
+      state: directory
 
 - name: Install custom fish configuration
-  copy: 
-    src: config.fish
-    dest: "~/.config/fish/config.fish"
+  copy:
+      src: config.fish
+      dest: "~/.config/fish/config.fish"
 
 - name: Install custom fish aliases
-  copy: 
-    src: aliases.fish
-    dest: "~/.config/fish/aliases.fish"
+  copy:
+      src: aliases.fish
+      dest: "~/.config/fish/aliases.fish"
 
 - name: Install custom fish functions
-  copy: 
-    src: functions
-    dest: "~/.config/fish"
-
-- name: Change user shell
-  user: 
-    name: "{{ ansible_env.USER }}"
-    shell: "/usr/bin/fish"
-  become: yes
+  copy:
+      src: functions
+      dest: "~/.config/fish"
+# not setting fish shell to be the default shell for better compatibility
+# instead, bashrc launch fish shell as a command
+# - name: Change user shell
+#   user:
+#     name: "{{ ansible_env.USER }}"
+#     shell: "/usr/bin/fish"
+#   become: yes

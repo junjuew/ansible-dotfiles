@@ -135,3 +135,8 @@ command -v conda 2>&1 > /dev/null && conda activate
 if [ -f ~/.bashrc_custom ]; then
     . ~/.bashrc_custom
 fi
+
+# activate fish if installed
+# not using chsh to make fish the default shell due to many incompatibilities
+# for example, vscode remote dev is only supporting bash.
+command -v fish 2>&1 > /dev/null && fish
