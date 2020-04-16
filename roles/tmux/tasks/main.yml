@@ -9,65 +9,61 @@
 
 - name: remove custom tmux repo
   apt_repository:
-    repo: ppa:jamesw05/tmux
-    state: absent
+      repo: ppa:jamesw05/tmux
+      state: absent
   become: true
 
 - name: install tmux if it is not the latest
   apt:
-    name: tmux
-    state: latest
-    update_cache: yes
+      name: tmux
+      state: latest
+      update_cache: yes
   become: true
 
 - name: install tmux plugin manager
   git:
-    repo: https://github.com/tmux-plugins/tpm
-    dest: "~/.tmux/plugins/tpm"
+      repo: https://github.com/tmux-plugins/tpm
+      dest: "~/.tmux/plugins/tpm"
 
 - name: configure tmux
   copy:
-    src: tmux.conf
-    dest: "~/.tmux.conf"
+      src: tmux.conf
+      dest: "~/.tmux.conf"
 
 - name: configure tmux remote conf
   copy:
-    src: tmux.remote.conf
-    dest: "~/.tmux/tmux.remote.conf"
+      src: tmux.remote.conf
+      dest: "~/.tmux/tmux.remote.conf"
 
-- name: configure tmux renew env
-  copy:
-    src: renew_env.sh
-    dest: "~/.tmux/renew_env.sh"
+# use the new tmup command defined in the aliases
+# - name: add to sshrc file to make ssh agent forwarding sustain tmux disconnection
+#   blockinfile:
+#       path: "{{ ansible_env.HOME }}/.ssh/rc"
+#       state: present
+#       marker: "# {mark} ANSIBLE MANAGED BLOCK: add by tmux"
+#       block: |
+#           # need to setup xauth for X11 forwarding. as once this
+#           # file exists, ssh no longer setup xauth itself
+#           # see more in man sshd
+#           if read proto cookie && [ -n "$DISPLAY" ]; then
+#             if [ 'echo $DISPLAY | cut -c1-10' = 'localhost:' ]; then
+#                 # X11UseLocalhost=yes
+#                 echo add unix:'echo $DISPLAY |
+#                 cut -c11-' $proto $cookie
+#             else
+#                 # X11UseLocalhost=no
+#                 echo add $DISPLAY $proto $cookie
+#             fi | xauth -q -
+#           fi
 
-- name: add to sshrc file to make ssh agent forwarding sustain tmux disconnection
-  blockinfile:
-    path: "{{ ansible_env.HOME }}/.ssh/rc"
-    state: present
-    marker: "# {mark} ANSIBLE MANAGED BLOCK: add by tmux"
-    block: |
-      # need to setup xauth for X11 forwarding. as once this 
-      # file exists, ssh no longer setup xauth itself
-      # see more in man sshd
-      if read proto cookie && [ -n "$DISPLAY" ]; then
-        if [ 'echo $DISPLAY | cut -c1-10' = 'localhost:' ]; then
-            # X11UseLocalhost=yes
-            echo add unix:'echo $DISPLAY |
-            cut -c11-' $proto $cookie
-        else
-            # X11UseLocalhost=no
-            echo add $DISPLAY $proto $cookie
-        fi | xauth -q -
-      fi
-
-      # create a link for current active ssh agent auth socket for ssh
-      # agent persistence across multiple ssh session and re-attach tmux
-      # see more: https://werat.github.io/2017/02/04/tmux-ssh-agent-forwarding.html
-      if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
-          ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-      fi
-    create: yes
-    mode: "u=rw"
+#           # create a link for current active ssh agent auth socket for ssh
+#           # agent persistence across multiple ssh session and re-attach tmux
+#           # see more: https://werat.github.io/2017/02/04/tmux-ssh-agent-forwarding.html
+#           if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
+#               ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+#           fi
+#       create: yes
+#       mode: "u=rw"
 
 - name: use tpm installation script to install plugins
   shell: "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
