@@ -4,18 +4,18 @@
 # xclip
 - name: install xclip
   package:
-    name: xclip
-    state: latest
+      name: xclip
+      state: latest
   become: true
 
 # direnv
-# automatically set directory-based 
+# automatically set directory-based
 # project specific configurations
 # https://direnv.net/
 - name: install direnv
   package:
-    name: direnv
-    state: present
+      name: direnv
+      state: present
   become: true
 
 # fzf
@@ -34,22 +34,22 @@
 - name: check if nix exits
   shell: bash -lc "command -v nix-env > /dev/null 2>&1"
   args:
-    executable: /bin/bash
+      executable: /bin/bash
   register: nix_installed
   ignore_errors: true
 
 - name: install nix
   shell: >
-    sh <(curl https://nixos.org/releases/nix/nix-2.2.2/install)
+      sh <(curl https://nixos.org/releases/nix/nix-2.2.2/install)
   args:
-    executable: /bin/bash
+      executable: /bin/bash
   when: nix_installed is failed
 
 # lazygit
 - name: add lazygit apt repository
   apt_repository:
-    repo: ppa:lazygit-team/release
-    state: present
+      repo: ppa:lazygit-team/release
+      state: present
   become: true
 
 - name: install lazygit
@@ -59,8 +59,8 @@
 # fasd
 - name: remove fasd apt repository
   apt_repository:
-    repo: ppa:aacebedo/fasd
-    state: absent
+      repo: ppa:aacebedo/fasd
+      state: absent
   become: true
 
 - name: remove fasd installed from apt
@@ -69,17 +69,17 @@
 
 - name: install fasd from snap
   snap:
-    name: fasd
-    channel: beta
+      name: fasd
+      channel: beta
   become: true
 
 # bat
 # -lc needed to source .profile for nix-env definition
 - name: install bat
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA bat"
+      bash -lc "nix-env -f '<nixpkgs>' -iA bat"
   args:
-    executable: /bin/bash
+      executable: /bin/bash
 
 # ranger
 - name: install ranger
@@ -89,16 +89,16 @@
 # fd
 - name: install fd
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA fd"
+      bash -lc "nix-env -f '<nixpkgs>' -iA fd"
   args:
-    executable: /bin/bash
+      executable: /bin/bash
 
 # ripgrep
 - name: install ripgrep
   shell: >
-    bash -lc  "nix-env -f '<nixpkgs>' -iA ripgrep"
+      bash -lc  "nix-env -f '<nixpkgs>' -iA ripgrep"
   args:
-    executable: /bin/bash
+      executable: /bin/bash
 
 # trash-cli
 - name: install trash-cli
@@ -108,9 +108,9 @@
 # exa
 - name: install exa
   shell: >
-    bash -lc "nix-env -f '<nixpkgs>' -iA exa"
+      bash -lc "nix-env -f '<nixpkgs>' -iA exa"
   args:
-    executable: /bin/bash
+      executable: /bin/bash
 
 # snap
 - name: install snap
@@ -119,9 +119,7 @@
 
 # tldr
 - name: Install tldr
-  snap:
-    name: tldr
-    channel: latest/edge
+  package: name=tldr state=latest
   become: true
 
 # atool
