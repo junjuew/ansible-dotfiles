@@ -116,7 +116,7 @@ if command -v direnv 2>&1 > /dev/null; then
 fi
 
 # set fasd hook if installed
-if command -v direnv 2>&1 > /dev/null; then
+if command -v fasd 2>&1 > /dev/null; then
     eval "$(fasd --init auto)"
 fi
 
