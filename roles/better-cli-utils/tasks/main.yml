@@ -57,20 +57,14 @@
   become: true
 
 # fasd
-- name: remove fasd apt repository
+- name: add fasd apt repository
   apt_repository:
       repo: ppa:aacebedo/fasd
-      state: absent
+      state: present
   become: true
 
-- name: remove fasd installed from apt
-  package: name=fasd state=absent
-  become: true
-
-- name: install fasd from snap
-  snap:
-      name: fasd
-      channel: beta
+- name: install fasd installed from apt
+  package: name=fasd state=latest
   become: true
 
 # bat
