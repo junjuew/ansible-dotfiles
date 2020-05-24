@@ -76,8 +76,8 @@
   package: name=dstat state=latest
   become: true
 
-# rust and tools built with it: fd, ripgrep, exa,
-- name: install rust, its toolchain, and selective packages
+# fd, ripgrep, exa using cargo and rust
+- name: install rust-based packages
   include_role:
       name: hurricanehrndz.rustup
   vars:
@@ -87,3 +87,7 @@
             - ripgrep
             - exa
             - bat
+
+# lazydocker
+- name: install lazydocker
+  shell: "go get github.com/jesseduffield/lazydocker"
