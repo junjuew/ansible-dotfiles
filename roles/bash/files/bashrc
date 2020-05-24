@@ -131,6 +131,12 @@ fi
 [ -f "$HOME/miniconda/etc/profile.d/conda.sh" ] && source "$HOME/miniconda/etc/profile.d/conda.sh"
 command -v conda 2>&1 > /dev/null && conda activate
 
+# source rustrc if present
+[ -f "$HOME/.rustrc" ] && source "$HOME/.rustrc"
+
+# add gopath to PATH if present
+export PATH="$HOME/software/go/bin:$PATH"
+
 # user defined variables
 if [ -f ~/.bashrc_custom ]; then
     . ~/.bashrc_custom

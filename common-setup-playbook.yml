@@ -17,6 +17,7 @@
   roles:
       - bash
       - { role: fish, tags: "fish" }
+      - { role: modern-languages, tags: "modern-languages" }
       - { role: better-cli-utils, tags: "better-cli-utils" }
       - { role: tmux, tags: ["tmux"] }
       - { role: editors, tags: ["editors"] }
@@ -26,6 +27,7 @@
   roles:
       - bash
       - { role: fish, tags: "fish" }
+      - { role: modern-languages, tags: "modern-languages" }
       - { role: better-cli-utils, tags: "better-cli-utils" }
       - { role: tmux, tags: ["tmux"] }
       - { role: editors, tags: ["editors"] }

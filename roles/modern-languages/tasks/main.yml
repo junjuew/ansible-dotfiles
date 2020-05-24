@@ -1,0 +1,18 @@
+---
+# Install modern languages
+
+# rust and tools built with it: fd, ripgrep, exa,
+- name: install rust and its toolchain
+  include_role:
+      name: hurricanehrndz.rustup
+  vars:
+      - rustup_user: "{{ ansible_env.USER }}"
+      - rustup_cargo_crates: []
+
+# golang
+- name: install golang and its toolchain
+  include_role:
+      name: gantsign.golang
+  vars:
+      - golang_install_dir: "{{ ansible_env.HOME }}/software/go"
+      - golang_gopath: "{{ ansible_env.HOME }}/go"

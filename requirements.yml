@@ -3,3 +3,4 @@
 # - src: bobbyrenwick.pip
 - src: geerlingguy.docker
 - src: hurricanehrndz.rustup
+- src: gantsign.golang
