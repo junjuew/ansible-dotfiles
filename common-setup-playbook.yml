@@ -1,111 +1,101 @@
 ---
 # This playbook deploys the whole application stack in this site.
 
-# need to install python 2 since ansible by default uses python2 as interpreter
-# see: https://github.com/ansible/ansible/issues/17081
-- hosts: all
-  gather_facts: False
-  tasks:
-    - name: install python 2 if not installed
-      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-apt python-pip)
-      become: true
-  tags: must_run
-
 - name: create a user
   hosts: all
   roles:
-    - user
+      - user
   tags: user_setup
 
 - name: apply common configuration to all nodes
   hosts: all
   roles:
-    - common
+      - common
 
 - name: deploying servers
   hosts: server
   roles:
-    - bash
-    - { role: fish, tags: "fish" }
-    - { role: better-cli-utils, tags: "better-cli-utils" }
-    - { role: tmux, tags: ["tmux"] }
-    - { role: editors, tags: ["editors"] }
+      - bash
+      - { role: fish, tags: "fish" }
+      - { role: better-cli-utils, tags: "better-cli-utils" }
+      - { role: tmux, tags: ["tmux"] }
+      - { role: editors, tags: ["editors"] }
 
 - name: apply basic, advanced, and gui to desktops
   hosts: desktop
   roles:
-    - bash
-    - { role: fish, tags: "fish" }
-    - { role: better-cli-utils, tags: "better-cli-utils" }
-    - { role: tmux, tags: ["tmux"] }
-    - { role: editors, tags: ["editors"] }
-    - gui
+      - bash
+      - { role: fish, tags: "fish" }
+      - { role: better-cli-utils, tags: "better-cli-utils" }
+      - { role: tmux, tags: ["tmux"] }
+      - { role: editors, tags: ["editors"] }
+      - gui
 
 - name: install desktop dev environment
   hosts: dev-desktop
   roles:
-    - bash
-    - { role: fish, tags: "fish" }
-    - { role: better-cli-utils, tags: "better-cli-utils" }
-    - { role: tmux, tags: ["tmux"] }
-    - { role: editors, tags: ["editors"] }
-    - gui
-    - { role: vscode, tags: ["vscode"] }
+      - bash
+      - { role: fish, tags: "fish" }
+      - { role: better-cli-utils, tags: "better-cli-utils" }
+      - { role: tmux, tags: ["tmux"] }
+      - { role: editors, tags: ["editors"] }
+      - gui
+      - { role: vscode, tags: ["vscode"] }
 
 - name: install gpu drivers, cuda, and cudnn
   hosts: gpu
   tasks:
-    - name: install cuda
-      include_role:
-        name: cuda
-      vars:
-        gpu: true
-        cuda_packages:
-          - cuda-10-0
-        cuda_init: true
-        cuda_init_compute_mode: 0
-        ansible_become: yes
-    - name: install cudnn
-      include_role:
-        name: cudnn
-      vars:
-        ubuntu_version: 1804
-        cudnn_major_version: 7
-        cudnn_minor_version: 7.6.3.30
-        cuda_version: 10.0 # a version both TF and pytorch supports as of 11/2019
-        remove_other_versions: true
+      - name: install cuda
+        include_role:
+            name: cuda
+        vars:
+            gpu: true
+            cuda_packages:
+                - cuda-10-0
+            cuda_init: true
+            cuda_init_compute_mode: 0
+            ansible_become: yes
+      - name: install cudnn
+        include_role:
+            name: cudnn
+        vars:
+            ubuntu_version: 1804
+            cudnn_major_version: 7
+            cudnn_minor_version: 7.6.3.30
+            cuda_version: 10.0 # a version both TF and pytorch supports as of 11/2019
+            remove_other_versions: true
 
 - name: install packages needed for cv
   hosts: cv
   roles:
-    - { role: conda, tags: ["conda"] }
-    # - { role: tensorflow-object-detection-api, tags: ["tensorflow"] } # not
-    #   migrated to tf 2.0 yet
+      - { role: conda, tags: ["conda"] }
+      # - { role: tensorflow-object-detection-api, tags: ["tensorflow"] } # not
+      #   migrated to tf 2.0 yet
 
 - name: install packages needed for kvm-host
   hosts: kvm-host
   roles:
-    - kvm
-    - vagrant
+      - kvm
+      - vagrant
 
 - name: install docker packages
   hosts: docker-host
   tasks:
-    - include_role:
-        name: geerlingguy.docker
-      vars:
-        docker_package_state: present
-        docker_users:
-          - "{{ ansible_env.USER }}"
-        docker_install_compose: true
-        ansible_become: yes
-      when: ("ansible_distribution == 'Ubuntu'")
+      - include_role:
+            name: geerlingguy.docker
+        vars:
+            docker_package_state: present
+            docker_users:
+                - "{{ ansible_env.USER }}"
+            docker_install_compose: true
+            ansible_become: yes
+        when: ("ansible_distribution == 'Ubuntu'")
 
 - name: install nvidia-docker
   hosts: nvidia-docker-host
   tasks:
-    - include_role:
-        name: nvidia-docker
-      vars:
-        ansible_become: yes
-      when: "ansible_distribution == 'Ubuntu'"
+      - include_role:
+            name: nvidia-docker
+        vars:
+            ansible_become: yes
+        when: "ansible_distribution == 'Ubuntu'"

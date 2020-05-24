@@ -1,8 +1,2 @@
 ---
 dependencies:
-  - 
-    role: angstwad.ubuntu_python_apt
-    become: true
-  - 
-    role: bobbyrenwick.pip
-    become: true

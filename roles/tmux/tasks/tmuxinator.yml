@@ -1,51 +1,51 @@
 ---
 - name: install tmuxinator
   package:
-    name: tmuxinator
-    state: present
+      name: tmuxinator
+      state: present
   become: yes
 
 - name: download tmuxinator bash completion
   get_url:
-    url: "https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.bash"
-    dest: "~/.tmuxinator.bash"
-    force: yes
+      url: "https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.bash"
+      dest: "~/.tmuxinator.bash"
+      force: yes
 
 - name: install tmuxinator completion for bash
   lineinfile:
-    dest: "~/.bashrc_custom"
-    line: "source ~/.tmuxinator.bash"
-    create: yes
-    mode: "u=rw,g=r,a=r"
+      dest: "~/.bashrc_custom"
+      line: "source ~/.tmuxinator.bash"
+      create: yes
+      mode: "u=rw,g=r,a=r"
 
 - name: check if fish exits
   shell: "command -v fish > /dev/null 2>&1"
   register: fish_installed
 
 - block: # setup tmuxinator for fish
-    - name: create fish completions dir if not exist
-      file:
-        path: "~/.config/fish/completions"
-        state: directory
-        recurse: yes
+      - name: create fish completions dir if not exist
+        file:
+            path: "~/.config/fish/completions"
+            state: directory
+            recurse: yes
 
-    - name: install tmuxinator completion for fish
-      get_url:
-        url: "https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.fish"
-        dest: "~/.config/fish/completions/tmuxinator.fish"
+      - name: install tmuxinator completion for fish
+        get_url:
+            url: "https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.fish"
+            dest: "~/.config/fish/completions/tmuxinator.fish"
 
-    - name: symlink mux.fish to tmuxinator.fish
-      file:
-        src: "~/.config/fish/completions/tmuxinator.fish"
-        dest: "~/.config/fish/completions/mux.fish"
-        owner: "{{ ansible_env.USER }}"
-        group: "{{ ansible_env.USER }}"
-        state: link
-  when: fish_installed
+      - name: symlink mux.fish to tmuxinator.fish
+        file:
+            src: "~/.config/fish/completions/tmuxinator.fish"
+            dest: "~/.config/fish/completions/mux.fish"
+            owner: "{{ ansible_env.USER }}"
+            group: "{{ ansible_env.USER }}"
+            state: link
+  when: fish_installed.rc == 0
 
 - name: install commonly used tmuxinator projects
   copy:
-    src: "{{ item }}"
-    dest: "~/.tmuxinator/"
+      src: "{{ item }}"
+      dest: "~/.tmuxinator/"
   with_fileglob:
-    - "tmuxinator/*"
+      - "tmuxinator/*"

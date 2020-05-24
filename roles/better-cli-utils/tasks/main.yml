@@ -30,21 +30,6 @@
 - include_tasks: pathpicker.yml
   tags: pathpicker
 
-# install nix package manager
-- name: check if nix exits
-  shell: bash -lc "command -v nix-env > /dev/null 2>&1"
-  args:
-      executable: /bin/bash
-  register: nix_installed
-  ignore_errors: true
-
-- name: install nix
-  shell: >
-      sh <(curl https://nixos.org/releases/nix/nix-2.2.2/install)
-  args:
-      executable: /bin/bash
-  when: nix_installed is failed
-
 # lazygit
 - name: add lazygit apt repository
   apt_repository:
@@ -57,54 +42,19 @@
   become: true
 
 # fasd
-- name: add fasd apt repository
-  apt_repository:
-      repo: ppa:aacebedo/fasd
-      state: present
-  become: true
-
 - name: install fasd installed from apt
   package: name=fasd state=latest
   become: true
-
-# bat
-# -lc needed to source .profile for nix-env definition
-- name: install bat
-  shell: >
-      bash -lc "nix-env -f '<nixpkgs>' -iA bat"
-  args:
-      executable: /bin/bash
 
 # ranger
 - name: install ranger
   package: name=ranger state=latest
   become: true
 
-# fd
-- name: install fd
-  shell: >
-      bash -lc "nix-env -f '<nixpkgs>' -iA fd"
-  args:
-      executable: /bin/bash
-
-# ripgrep
-- name: install ripgrep
-  shell: >
-      bash -lc  "nix-env -f '<nixpkgs>' -iA ripgrep"
-  args:
-      executable: /bin/bash
-
 # trash-cli
 - name: install trash-cli
   package: name=trash-cli state=latest
   become: true
-
-# exa
-- name: install exa
-  shell: >
-      bash -lc "nix-env -f '<nixpkgs>' -iA exa"
-  args:
-      executable: /bin/bash
 
 # snap
 - name: install snap
@@ -125,3 +75,15 @@
 - name: install dstat
   package: name=dstat state=latest
   become: true
+
+# rust and tools built with it: fd, ripgrep, exa,
+- name: install rust, its toolchain, and selective packages
+  include_role:
+      name: hurricanehrndz.rustup
+  vars:
+      - rustup_user: "{{ ansible_env.USER }}"
+      - rustup_cargo_crates:
+            - fd-find
+            - ripgrep
+            - exa
+            - bat
