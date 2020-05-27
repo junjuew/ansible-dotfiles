@@ -90,4 +90,6 @@
 
 # lazydocker
 - name: install lazydocker
-  shell: "go get github.com/jesseduffield/lazydocker"
+  shell: bash -lc "go get github.com/jesseduffield/lazydocker"
+  args:
+      executable: /bin/bash
