@@ -50,3 +50,12 @@ end
 if test -e ~/.config/fish/aliases.fish
     source ~/.config/fish/aliases.fish
 end
+
+# custom key bindings
+# bind Ctrl-RightArrow to jump a word
+bind \e\[1\;5C forward-word
+# bind Ctrl-LeftArrow to backward jump a word
+bind \e\[1\;5D backward-word
+# bind Ctrl-Backsapce to kill previous word under cursor
+bind \b backward-kill-word
+

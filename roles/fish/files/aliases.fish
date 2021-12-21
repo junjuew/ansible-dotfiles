@@ -92,3 +92,5 @@ alias sf='fasd -sif'     # interactive file selection
 alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 alias zz='fasd_cd -d -i' # cd with interactive selection
 alias tmup='bass (tmux showenv -s)'
+alias tmdev='tmux has-session -t dev && tmux attach -t dev || tmux new -s dev'
+
