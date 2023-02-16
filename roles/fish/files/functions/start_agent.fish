@@ -8,4 +8,5 @@ function start_agent
     chmod 600 $SSH_ENV 
     . $SSH_ENV > /dev/null
     ssh-add ~/.ssh/id_rsa
+    ssh-add ~/.ssh/id_ed25519
 end
