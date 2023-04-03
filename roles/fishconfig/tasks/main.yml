@@ -1,0 +1,139 @@
+---
+# Config fish shell 
+
+- name: create fish config dir
+  file:
+      path: "~/.config/fish"
+      state: directory
+  tags: fishconfig
+
+- name: set up basic fish config
+  ansible.builtin.blockinfile:
+    path: ~/.config/fish/config.fish
+    block: |
+      # Note that the following configuration assumes your fish shell
+      # is invoked by the default shell (usually as a part of *rc file) rather than
+      # being configured as the default shell.
+      # This means all system shell variables (e.g. those defined in ~/.zshrc or ~/.bashrc
+      # depending on your default shell), should already be inherited by fish.
+      if status is-interactive
+        # Commands to run in interactive sessions
+
+        ####################
+        # set up editor
+        ####################
+        if type -q vim
+            set -gx EDITOR vim
+        end
+
+        ####################
+        # set up gpg2 tty for git signing
+        ####################
+        set -gx GPG_TTY (tty)
+
+        ####################
+        # Note that fish has auto-function loading capability, so we don't need to source any functions definitions.
+        ####################
+
+        ####################
+        # set up user fish alias
+        # Since default shell alias do not get passed down when fish shell is invoked, we need to re-define aliases for fish.
+        # this is recommended to be done in the end to avoid user aliasing
+        # interfere with initialization files
+        ####################
+
+        # replace BSD grep with GNU grep if available.
+        # fisher fasd plugin needs GNU grep to work properly
+        if test -e /opt/homebrew/opt/grep/libexec/gnubin/grep
+          alias grep='/opt/homebrew/opt/grep/libexec/gnubin/grep'
+        end
+
+        if test -e ~/.config/fish/aliases.fish
+            source ~/.config/fish/aliases.fish
+        end
+
+        ####################
+        # set up custom key bindings
+        ####################
+
+      end
+    marker: "# {mark} Basic Config Managed by Ansible"
+  tags: fishconfig
+
+- name: setup basic fish aliases
+  ansible.builtin.blockinfile:
+    path: ~/.config/fish/config.fish
+    block: |
+      alias ..='cd ..'
+      alias ...='cd ../../'
+      alias ....='cd ../../../'
+      alias .....='cd ../../../../'
+      alias .4='cd ../../../../'
+      alias .5='cd ../../../../..'
+      alias h='history'
+      alias j='jobs -l'
+      alias o='open'
+      alias v='vim'
+      alias fv='f -e vim' # TODO move to functions?
+      alias mv='mv -i'
+      alias cp='cp -i'
+      alias ln='ln -i'
+      alias df='df -H'
+      alias du='du -ch'
+      alias top='htop'
+      alias mkdir='mkdir -pv'
+      alias root='sudo -i'
+      alias reboot='sudo /sbin/reboot'
+      alias halt='sudo /sbin/halt'
+      alias shutdown='sudo /sbin/shutdown'
+      alias gits='git status'
+      alias gita='git add'
+      alias gitau='git add -u'
+      alias gitc='git commit -m'
+      alias gitp='git push'
+      alias gitpo='git push origin'
+      alias gitpom='git push origin master'
+      alias python='python -B'
+      alias lg='lazygit'
+      alias cat='bat'
+      alias ls='exa'
+      alias l='exa -la'
+      alias tmup='bass (tmux showenv -s)'
+      alias tmdev='tmux has-session -t dev && tmux attach -t dev || tmux new -s dev'
+    marker: "# {mark} Basic Aliases Managed by Ansible"
+  tags: fishconfig
+
+- name: Get the path to fish shell executable
+  block:
+    - name: trying to obtain fish shell executable
+      ansible.builtin.shell: command -v fish
+      register: fish_path
+      ignore_errors: false
+  rescue:
+    - name: failed to find fish shell path. use default path from homebrew installation.
+      set_fact:
+        fish_path: "/opt/homebrew/bin/fish"
+  tags: fishconfig
+
+- name: remove old fisher packages
+  shell: "not test -z (fisher list '{{ item }}'); and fisher remove {{ item }}"
+  args:
+    executable: "{{ fish_path }}"
+  ignore_errors: true
+  loop:
+    - 'fisherman\/z'
+    - 'jethrokuan\/z'
+    - 'jethrokuan\/fzf'
+  tags: fishconfig
+
+- name: install fisher packages
+  shell: "test -z (fisher list '{{ item }}'); and fisher install {{ item }}"
+  args:
+    executable: "{{ fish_path }}"
+  ignore_errors: true
+  loop:
+    - 'nyarly\/fish-bang-bang' # escape needed for fisher ls regex
+    - 'edc\/bass'
+    - 'fishgretel\/fasd'
+    - 'patrickf1\/fzf.fish'
+  tags: fishconfig

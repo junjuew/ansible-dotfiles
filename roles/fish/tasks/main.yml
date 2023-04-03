@@ -2,8 +2,5 @@
 - include_tasks: fish.yml
   tags: fish
 
-- include_tasks: fisherman.yml
-  tags: fisherman
-
 - include_tasks: nvm.yml
   tags: nvm

@@ -1,0 +1,5 @@
+---
+# Install homebrew
+- name: install homebrew
+  shell: 'bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+  tags: homebrew

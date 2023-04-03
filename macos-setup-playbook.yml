@@ -1,0 +1,65 @@
+---
+# Setup for macos development machines
+
+# default to manually install brew
+# - name: install brew
+#   hosts: dev-desktop
+#   roles:
+#       - { role: homebrew, tags: "homebrew" }
+
+- name: install basic packages and shells
+  hosts: all
+  tasks:
+    - name: install home brew packages
+      community.general.homebrew:
+        name:
+          - git
+          - grep
+          - htop
+          - btop
+          - mosh
+          - tmux
+          - rg
+          - fd
+          - bat
+          - fzf
+          - fpp
+          - lazygit
+          - fasd
+          - exa
+          - ranger
+          - fish
+          - fisher
+        state: present
+        update_homebrew: true
+
+    - name: install home brew cask packages
+      community.general.homebrew_cask:
+        name:
+          - miniconda
+          - iterm2
+        state: present
+
+    - lineinfile: dest=~/.zshrc line='[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
+    - lineinfile:
+        dest: ~/.zshrc
+        line: 'type fish > /dev/null && fish'
+        regexp: '^type fish > /dev/null && fish$'
+        insertafter: EOF
+
+    - name: setup miniconda for fish
+      shell: '/opt/homebrew/bin/conda init fish'
+      args:
+        executable: /opt/homebrew/bin/fish
+
+    - name: setup fzf keybindings and fuzzy completion. Note that the install scripts set up configurations for all shells it can find.
+      shell: '. /etc/profile && /opt/homebrew/opt/fzf/install --all'
+      args:
+        executable: /bin/bash
+
+- name: configure packages and system tools
+  hosts: all
+  roles:
+    - fishconfig
+    - iterm2config
+    - tmuxconfig

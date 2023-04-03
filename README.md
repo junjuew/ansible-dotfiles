@@ -15,11 +15,21 @@ git clone --recurse-submodules -j8 https://github.com/junjuew/ansible-dotfiles.g
 
 ## How to Use
 
+### Linux Servers
 1. Modify hosts to be machine hostname or ip.
 3. Modify group_vars/desktops to configure whether you want to install emacs gui, fish, and what fish auto completions scripts to install
 4. Run:
 
         ./run.sh
+
+### MacOS Dev Machine
+
+1. Modify hosts to be machine hostname or ip. See host-example
+2. Run:
+```
+ansible-playbook -u <user-name> -i hosts macos-setup-playbook.yml
+```
+
 
 ## What's in this Repo?
 

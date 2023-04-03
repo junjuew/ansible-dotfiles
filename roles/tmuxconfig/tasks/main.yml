@@ -1,0 +1,26 @@
+---
+# Configure tmux
+
+- name: install tmux plugin manager
+  git:
+      repo: https://github.com/tmux-plugins/tpm
+      dest: "~/.tmux/plugins/tpm"
+  tags: tmuxconfig
+
+- name: configure tmux
+  copy:
+      src: tmux.conf
+      dest: "~/.tmux.conf"
+  tags: tmuxconfig
+
+- name: configure tmux remote conf
+  copy:
+      src: tmux.remote.conf
+      dest: "~/.tmux/tmux.remote.conf"
+  tags: tmuxconfig
+
+- name: use tpm installation script to install plugins
+  shell: ". /etc/profile && ~/.tmux/plugins/tpm/scripts/install_plugins.sh"
+  args:
+    executable: /bin/bash
+  tags: tmuxconfig
